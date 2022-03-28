@@ -1,0 +1,134 @@
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:4:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    4 |   char* iter = argv;
+      |                ^~~~
+2.c:5:16: warning: comparison between pointer and integer
+    5 |   while( *iter != NULL) {
+      |                ^~
+2.c:6:12: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [-Wint-conversion]
+    6 |     printf(*iter)
+      |            ^~~~~
+      |            |
+      |            char
+In file included from 2.c:1:
+/usr/include/stdio.h:332:43: note: expected ‘const char * restrict’ but argument is of type ‘char’
+  332 | extern int printf (const char *__restrict __format, ...);
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+2.c:6:5: warning: format not a string literal and no format arguments [-Wformat-security]
+    6 |     printf(*iter)
+      |     ^~~~~~
+2.c:6:18: error: expected ‘;’ before ‘}’ token
+    6 |     printf(*iter)
+      |                  ^
+      |                  ;
+    7 |   }
+      |   ~               
+2.c:3:14: warning: unused parameter ‘argc’ [-Wunused-parameter]
+    3 | int main(int argc, char* argv[]) {
+      |          ~~~~^~~~
+2.c: At top level:
+2.c:9:2: warning: ISO C does not allow extra ‘;’ outside of a function [-Wpedantic]
+    9 | };
+      |  ^
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    5 |   char* iter = argv;
+      |                ^~~~
+2.c:6:16: warning: comparison between pointer and integer
+    6 |   while( *iter != NULL) {
+      |                ^~
+2.c:7:12: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [-Wint-conversion]
+    7 |     printf(*iter)
+      |            ^~~~~
+      |            |
+      |            char
+In file included from 2.c:1:
+/usr/include/stdio.h:332:43: note: expected ‘const char * restrict’ but argument is of type ‘char’
+  332 | extern int printf (const char *__restrict __format, ...);
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+2.c:7:5: warning: format not a string literal and no format arguments [-Wformat-security]
+    7 |     printf(*iter)
+      |     ^~~~~~
+2.c:7:18: error: expected ‘;’ before ‘}’ token
+    7 |     printf(*iter)
+      |                  ^
+      |                  ;
+    8 |   }
+      |   ~               
+2.c: At top level:
+2.c:10:2: warning: ISO C does not allow extra ‘;’ outside of a function [-Wpedantic]
+   10 | };
+      |  ^
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    5 |   char* iter = argv;
+      |                ^~~~
+2.c:6:16: warning: comparison between pointer and integer
+    6 |   while( *iter != NULL) {
+      |                ^~
+2.c:7:12: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [-Wint-conversion]
+    7 |     printf(*iter);
+      |            ^~~~~
+      |            |
+      |            char
+In file included from 2.c:1:
+/usr/include/stdio.h:332:43: note: expected ‘const char * restrict’ but argument is of type ‘char’
+  332 | extern int printf (const char *__restrict __format, ...);
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+2.c:7:5: warning: format not a string literal and no format arguments [-Wformat-security]
+    7 |     printf(*iter);
+      |     ^~~~~~
+2.c: At top level:
+2.c:10:2: warning: ISO C does not allow extra ‘;’ outside of a function [-Wpedantic]
+   10 | };
+      |  ^
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    5 |   char* iter = argv;
+      |                ^~~~
+2.c:6:16: warning: comparison between pointer and integer
+    6 |   while( *iter != NULL) {
+      |                ^~
+2.c:7:5: warning: implicit declaration of function ‘print’; did you mean ‘printf’? [-Wimplicit-function-declaration]
+    7 |     print(*iter);
+      |     ^~~~~
+      |     printf
+2.c: At top level:
+2.c:10:2: warning: ISO C does not allow extra ‘;’ outside of a function [-Wpedantic]
+   10 | };
+      |  ^
+/usr/bin/ld: /tmp/ccYLc7RU.o: in function `main':
+/home/danhu849/tdiu16-labs/ass2/2.c:7: undefined reference to `print'
+collect2: error: ld returned 1 exit status
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    5 |   char* iter = argv;
+      |                ^~~~
+2.c:6:16: warning: comparison between pointer and integer
+    6 |   while( *iter != NULL) {
+      |                ^~
+2.c:7:5: warning: implicit declaration of function ‘print’; did you mean ‘printf’? [-Wimplicit-function-declaration]
+    7 |     print(*iter);
+      |     ^~~~~
+      |     printf
+/usr/bin/ld: /tmp/ccMkaoTh.o: in function `main':
+/home/danhu849/tdiu16-labs/ass2/2.c:7: undefined reference to `print'
+collect2: error: ld returned 1 exit status
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    5 |   char* iter = argv;
+      |                ^~~~
+2.c:7:5: warning: implicit declaration of function ‘print’; did you mean ‘printf’? [-Wimplicit-function-declaration]
+    7 |     print(*iter);
+      |     ^~~~~
+      |     printf
+/usr/bin/ld: /tmp/ccIIHL8C.o: in function `main':
+/home/danhu849/tdiu16-labs/ass2/2.c:7: undefined reference to `print'
+collect2: error: ld returned 1 exit status
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ 
