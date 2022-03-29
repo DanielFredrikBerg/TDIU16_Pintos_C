@@ -131,4 +131,3414 @@ danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
 /usr/bin/ld: /tmp/ccIIHL8C.o: in function `main':
 /home/danhu849/tdiu16-labs/ass2/2.c:7: undefined reference to `print'
 collect2: error: ld returned 1 exit status
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ collect2: error: ld returned 1 exit status
+collect2:: command not found
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    5 |   char* iter = argv;
+      |                ^~~~
+2.c:7:5: warning: implicit declaration of function ‘print’; did you mean ‘printf’? [-Wimplicit-function-declaration]
+    7 |     print(*iter);
+      |     ^~~~~
+      |     printf
+/usr/bin/ld: /tmp/ccAtBonP.o: in function `main':
+/home/danhu849/tdiu16-labs/ass2/2.c:7: undefined reference to `print'
+collect2: error: ld returned 1 exit status
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    5 |   char* iter = argv;
+      |                ^~~~
+2.c:7:14: warning: format ‘%s’ expects argument of type ‘char *’, but argument 2 has type ‘int’ [-Wformat=]
+    7 |     printf("%s",*iter);
+      |             ~^  ~~~~~
+      |              |  |
+      |              |  int
+      |              char *
+      |             %d
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    5 |   char* iter = argv;
+      |                ^~~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char ***’ [-Wincompatible-pointer-types]
+    5 |   char* iter = &argv;
+      |                ^
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:15: warning: initialization of ‘char’ from ‘char **’ makes integer from pointer without a cast [-Wint-conversion]
+    5 |   char iter = argv;
+      |               ^~~~
+2.c:6:10: error: invalid type argument of unary ‘*’ (have ‘int’)
+    6 |   while( *iter ) {
+      |          ^~~~~
+2.c:7:17: error: invalid type argument of unary ‘*’ (have ‘int’)
+    7 |     printf("%c",*iter);
+      |                 ^~~~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:15: warning: initialization of ‘char’ from ‘char ***’ makes integer from pointer without a cast [-Wint-conversion]
+    5 |   char iter = &argv;
+      |               ^
+2.c:6:10: error: invalid type argument of unary ‘*’ (have ‘int’)
+    6 |   while( *iter ) {
+      |          ^~~~~
+2.c:7:17: error: invalid type argument of unary ‘*’ (have ‘int’)
+    7 |     printf("%c",*iter);
+      |                 ^~~~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out 
+./a.outdanhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$a.out 
+a.out: command not found
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out 
+./a.outdanhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs bög hora
+./a.outdanhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs bög hora
+./a.outdanhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs bög hora
+./a.outdanhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ .
+bash: .: filename argument required
+.: usage: . filename [arguments]
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out
+./a.outdanhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out
+./a.outdanhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out
+.
+/
+a
+.
+o
+u
+t
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs bög hora
+.
+/
+a
+.
+o
+u
+t
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs bög hora
+.
+/
+a
+.
+o
+u
+t
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char ***’ [-Wincompatible-pointer-types]
+    5 |   char* iter = &argv;
+      |                ^
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:16: warning: initialization of ‘char *’ from incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
+    5 |   char* iter = argv;
+      |                ^~~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:5:18: error: invalid initializer
+    5 |   char* iter[] = argv;
+      |                  ^~~~
+2.c:7:14: warning: format ‘%c’ expects argument of type ‘int’, but argument 2 has type ‘char *’ [-Wformat=]
+    7 |     printf("%c\n",*iter);
+      |             ~^    ~~~~~
+      |              |    |
+      |              int  char *
+      |             %s
+2.c:8:9: error: lvalue required as increment operand
+    8 |     iter++;
+      |         ^~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:7:14: warning: format ‘%c’ expects argument of type ‘int’, but argument 2 has type ‘char *’ [-Wformat=]
+    7 |     printf("%c\n",*argv);
+      |             ~^    ~~~~~
+      |              |    |
+      |              int  char *
+      |             %s
+2.c:8:5: error: ‘iter’ undeclared (first use in this function)
+    8 |     iter++;
+      |     ^~~~
+2.c:8:5: note: each undeclared identifier is reported only once for each function it appears in
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:8:5: error: ‘iter’ undeclared (first use in this function)
+    8 |     iter++;
+      |     ^~~~
+2.c:8:5: note: each undeclared identifier is reported only once for each function it appears in
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out 
+./a.out
+Segmentation fault (core dumped)
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:8:15: warning: comparison between pointer and integer
+    8 |     while( *c != NULL ) {
+      |               ^~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out 
+./a.outdanhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.outbajsdanhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:12:5: warning: implicit declaration of function ‘print’; did you mean ‘printf’? [-Wimplicit-function-declaration]
+   12 |     print("\n");
+      |     ^~~~~
+      |     printf
+/usr/bin/ld: /tmp/ccVxOA1t.o: in function `main':
+/home/danhu849/tdiu16-labs/ass2/2.c:12: undefined reference to `print'
+collect2: error: ld returned 1 exit status
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.out
+bajs
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.out
+bajs
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:4:7: warning: unused variable ‘total_letters’ [-Wunused-variable]
+    4 |   int total_letters = 0;
+      |       ^~~~~~~~~~~~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.out7
+bajs4
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.out                   7
+bajs                   4
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:14:15: warning: format ‘%td’ expects argument of type ‘ptrdiff_t’, but argument 2 has type ‘int’ [-Wformat=]
+   14 |     printf("%td\n", letters);
+      |             ~~^     ~~~~~~~
+      |               |     |
+      |               |     int
+      |               long int
+      |             %d
+2.c:13:9: warning: unused variable ‘t’ [-Wunused-variable]
+   13 |     int t = 20-letters;
+      |         ^
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:14:14: warning: unknown conversion type character ‘{’ in format [-Wformat=]
+   14 |     printf("%{t}d\n", letters);
+      |              ^
+2.c:14:12: warning: too many arguments for format [-Wformat-extra-args]
+   14 |     printf("%{t}d\n", letters);
+      |            ^~~~~~~~~
+2.c:13:9: warning: unused variable ‘t’ [-Wunused-variable]
+   13 |     int t = 20-letters;
+      |         ^
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:14:14: warning: unknown conversion type character ‘{’ in format [-Wformat=]
+   14 |     printf("%{20-letters}d\n", letters);
+      |              ^
+2.c:14:12: warning: too many arguments for format [-Wformat-extra-args]
+   14 |     printf("%{20-letters}d\n", letters);
+      |            ^~~~~~~~~~~~~~~~~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:14:14: warning: initialization of ‘int *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+   14 |     int* t = 20-letters;
+      |              ^~
+2.c:15:14: warning: field width specifier ‘*’ expects argument of type ‘int’, but argument 2 has type ‘int *’ [-Wformat=]
+   15 |     printf("%*d\n",t,letters);
+      |             ~^~    ~
+      |              |     |
+      |              int   int *
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:14:14: warning: initialization of ‘int *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+   14 |     int* t = 20-letters;
+      |              ^~
+2.c:15:14: warning: field width specifier ‘*’ expects argument of type ‘int’, but argument 2 has type ‘int *’ [-Wformat=]
+   15 |     printf("%*d\n",t, " ");
+      |             ~^~    ~
+      |              |     |
+      |              int   int *
+2.c:15:15: warning: format ‘%d’ expects argument of type ‘int’, but argument 3 has type ‘char *’ [-Wformat=]
+   15 |     printf("%*d\n",t, " ");
+      |             ~~^       ~~~
+      |               |       |
+      |               int     char *
+      |             %*s
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:14:14: warning: initialization of ‘int *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+   14 |     int* t = 20-letters;
+      |              ^~
+2.c:15:15: warning: format ‘%d’ expects a matching ‘int’ argument [-Wformat=]
+   15 |     printf("%*d\n",*t);
+      |             ~~^
+      |               |
+      |               int
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:14:14: warning: initialization of ‘int *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+   14 |     int* t = 20-letters;
+      |              ^~
+2.c:15:15: warning: format ‘%d’ expects argument of type ‘int’, but argument 3 has type ‘char *’ [-Wformat=]
+   15 |     printf("%*d\n",*t, " ");
+      |             ~~^        ~~~
+      |               |        |
+      |               int      char *
+      |             %*s
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:14:14: warning: initialization of ‘int *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+   14 |     int* t = 20-letters;
+      |              ^~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:14:14: warning: initialization of ‘int *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+   14 |     int *t = 20-letters;
+      |              ^~
+2.c:15:14: warning: conversion lacks type at end of format [-Wformat=]
+   15 |     printf("%*", *t);
+      |              ^
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:16:14: warning: conversion lacks type at end of format [-Wformat=]
+   16 |     printf("%*", *x);
+      |              ^
+2.c:17:20: error: invalid type argument of unary ‘*’ (have ‘int’)
+   17 |     printf("%*d\n",*t, letters);
+      |                    ^~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:17:20: error: invalid type argument of unary ‘*’ (have ‘int’)
+   17 |     printf("%*d\n",*t, letters);
+      |                    ^~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:17:12: warning: too many arguments for format [-Wformat-extra-args]
+   17 |     printf("%d\n",*x, letters);
+      |            ^~~~~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.out137
+bajs164
+danhu849@DESKTOP-UP7F191:~/tdiu
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.out            7
+bajs               4
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:15:16: warning: implicit declaration of function ‘strlen’ [-Wimplicit-function-declaration]
+   15 |     int t = 20-strlen(argv[word]);
+      |                ^~~~~~
+2.c:15:16: warning: incompatible implicit declaration of built-in function ‘strlen’
+2.c:2:1: note: include ‘<string.h>’ or provide a declaration of ‘strlen’
+    1 | #include <stdio.h>
+  +++ |+#include <string.h>
+    2 | 
+2.c:20:10: warning: missing terminating " character
+   20 |   printf("Total length%d
+      |          ^
+2.c:20:10: error: missing terminating " character
+   20 |   printf("Total length%d
+      |          ^~~~~~~~~~~~~~~
+2.c:22:3: error: expected expression before ‘return’
+   22 |   return 0;
+      |   ^~~~~~
+2.c:22:12: error: expected ‘;’ before ‘}’ token
+   22 |   return 0;
+      |            ^
+      |            ;
+   23 | 
+   24 | }
+      | ~           
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:21:10: warning: missing terminating " character
+   21 |   printf("Total length%d
+      |          ^
+2.c:21:10: error: missing terminating " character
+   21 |   printf("Total length%d
+      |          ^~~~~~~~~~~~~~~
+2.c:23:3: error: expected expression before ‘return’
+   23 |   return 0;
+      |   ^~~~~~
+2.c:23:12: error: expected ‘;’ before ‘}’ token
+   23 |   return 0;
+      |            ^
+      |            ;
+   24 | 
+   25 | }
+      | ~           
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:21:36: warning: passing argument 1 of ‘strlen’ makes pointer from integer without a cast [-Wint-conversion]
+   21 |   int total_length_len = 20-strlen(total_letters);
+      |                                    ^~~~~~~~~~~~~
+      |                                    |
+      |                                    int
+In file included from 2.c:2:
+/usr/include/string.h:385:35: note: expected ‘const char *’ but argument is of type ‘int’
+  385 | extern size_t strlen (const char *__s)
+      |                       ~~~~~~~~~~~~^~~
+2.c:22:29: error: ‘total_length’ undeclared (first use in this function); did you mean ‘total_length_len’?
+   22 |   printf("Total length%*d", total_length,
+      |                             ^~~~~~~~~~~~
+      |                             total_length_len
+2.c:22:29: note: each undeclared identifier is reported only once for each function it appears in
+2.c:24:3: error: expected expression before ‘return’
+   24 |   return 0;
+      |   ^~~~~~
+2.c:24:12: error: expected ‘;’ before ‘}’ token
+   24 |   return 0;
+      |            ^
+      |            ;
+   25 | 
+   26 | }
+      | ~           
+2.c:21:7: warning: unused variable ‘total_length_len’ [-Wunused-variable]
+   21 |   int total_length_len = 20-strlen(total_letters);
+      |       ^~~~~~~~~~~~~~~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:21:36: warning: passing argument 1 of ‘strlen’ makes pointer from integer without a cast [-Wint-conversion]
+   21 |   int total_length_len = 20-strlen(total_letters);
+      |                                    ^~~~~~~~~~~~~
+      |                                    |
+      |                                    int
+In file included from 2.c:2:
+/usr/include/string.h:385:35: note: expected ‘const char *’ but argument is of type ‘int’
+  385 | extern size_t strlen (const char *__s)
+      |                       ~~~~~~~~~~~~^~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.out            7
+bajs               4
+Total length       11danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.out            7
+bajs               4
+Total length       11
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs
+./a.out            7
+bajs               4
+Total length      11
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+Total length1943                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+Total length1943                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+Total length1943                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs bajs
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+Total length1943                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ clear
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ clr
+
+Command 'clr' not found, did you mean:
+
+  command 'cpr' from deb node-cpr (3.0.1-1)
+  command 'mlr' from deb miller (5.6.2-1)
+  command 'cl' from deb cl-launch (4.1.4-1)
+  command 'ctr' from deb containerd (1.5.5-0ubuntu3~20.04.2)
+  command 'clm' from deb mcl (1:14-137+ds-4)
+  command 'car' from deb ucommon-utils (7.0.0-16ubuntu2)
+  command 'csr' from deb rheolef (7.1-1)
+  command 'cyr' from deb console-cyrillic (0.9-17)
+  command 'clp' from deb coinor-clp (1.17.5+repack1-1)
+  command 'lr' from deb lr (1.5.1-2)
+  command 'cli' from deb mono-runtime (6.8.0.105+dfsg-2)
+  command 'ccr' from deb codecrypt (1.8-1build1)
+
+Try: sudo apt install <deb name>
+
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ clear
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ collect2: error: ld returned 1 exit status
+collect2:: command not found
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out 
+./a.out            7
+Total length            7
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:21:37: error: ‘string’ undeclared (first use in this function); did you mean ‘stdin’?
+   21 |   int total_length_len = 20-strlen((string)total_letters);
+      |                                     ^~~~~~
+      |                                     stdin
+2.c:21:37: note: each undeclared identifier is reported only once for each function it appears in
+2.c:21:44: error: expected ‘)’ before ‘total_letters’
+   21 |   int total_length_len = 20-strlen((string)total_letters);
+      |                                            ^~~~~~~~~~~~~
+      |                                            )
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:21:36: warning: implicit declaration of function ‘itoa’ [-Wimplicit-function-declaration]
+   21 |   int total_length_len = 20-strlen(itoa(total_letters));
+      |                                    ^~~~
+2.c:21:36: warning: passing argument 1 of ‘strlen’ makes pointer from integer without a cast [-Wint-conversion]
+   21 |   int total_length_len = 20-strlen(itoa(total_letters));
+      |                                    ^~~~~~~~~~~~~~~~~~~
+      |                                    |
+      |                                    int
+In file included from 2.c:2:
+/usr/include/string.h:385:35: note: expected ‘const char *’ but argument is of type ‘int’
+  385 | extern size_t strlen (const char *__s)
+      |                       ~~~~~~~~~~~~^~~
+/usr/bin/ld: /tmp/ccE6ybSH.o: in function `main':
+/home/danhu849/tdiu16-labs/ass2/2.c:21: undefined reference to `itoa'
+collect2: error: ld returned 1 exit status
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:23:40: error: expected ‘;’ before ‘int’
+   23 |   sprintf(len_str, "%d", total_letters)
+      |                                        ^
+      |                                        ;
+   24 |   int total_length_len = 20-strlen(len_str);
+      |   ~~~                                   
+2.c:26:31: error: ‘total_length_len’ undeclared (first use in this function)
+   26 |   printf("Total length%*d\n", total_length_len, total_letters);
+      |                               ^~~~~~~~~~~~~~~~
+2.c:26:31: note: each undeclared identifier is reported only once for each function it appears in
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs
+./a.out            7
+bajs               4
+Total length                11
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs
+./a.out            7
+bajs               4
+Total length                11
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs
+./a.out            7
+bajs               4
+Total length                11
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs
+./a.out            7
+bajs               4
+Total length    11
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:24:7: warning: unused variable ‘total_length_len’ [-Wunused-variable]
+   24 |   int total_length_len = 20-strlen(len_str);
+      |       ^~~~~~~~~~~~~~~~
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs
+./a.out            7
+bajs               4
+Total length11                  
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs
+./a.out            7
+bajs               4
+Total length11
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs
+./a.out            7
+bajs               4
+Total length11                  kla
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs
+./a.out            7
+bajs               4
+Total length                  11
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/assgg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs
+./a.out            7
+bajs               4
+Total length      11
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs bajs bajs bajs ksanlksfn sakjnflask flaksnflaksnflaksnf asfalskf  a kf lk klt tflf tdlskt tf tttttt
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+ksanlksfn          9
+sakjnflask        10
+flaksnflaksnflaksnf19
+asfalskf           8
+a                  1
+kf                 2
+lk                 2
+klt                3
+tflf               4
+tdlskt             6
+tf                 2
+tttttt             6
+Total length      95
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs bajs bajs bajs ksanlksfn sakjnflask flaksnflaksnflaksnf asfalskf  a kf lk klt tftflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf ttttttlf tdlskt tf tttttt
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+ksanlksfn          9
+sakjnflask        10
+flaksnflaksnflaksnf19
+asfalskf           8
+a                  1
+kf                 2
+lk                 2
+klt                3
+tftflf             6
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+ttttttlf           8
+tdlskt             6
+tf                 2
+tttttt             6
+Total length    1139
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:26:24: warning: field width specifier ‘*’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+   26 |   printf("Total length%*d\n", 20-strlen("Total_length"), total_letters);
+      |                       ~^~     ~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                        |        |
+      |                        int      size_t {aka long unsigned int}
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs bajs bajs bajs ksanlksfn sakjnflask flaksnflaksnflaksnf asfalskf  a kf lk klt tflf tdlskt tf tttttt
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+ksanlksfn          9
+sakjnflask        10
+flaksnflaksnflaksnf19
+asfalskf           8
+a                  1
+kf                 2
+lk                 2
+klt                3
+tflf               4
+tdlskt             6
+tf                 2
+tttttt             6
+Total length      95
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs bajs bajs bajs ksanlksfn sakjnflask flaksnflaksnflaksnf asfalskf  a kf lk klt tftflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf ttttttlf tdlskt tf tttttt
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+ksanlksfn          9
+sakjnflask        10
+flaksnflaksnflaksnf19
+asfalskf           8
+a                  1
+kf                 2
+lk                 2
+klt                3
+tftflf             6
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+ttttttlf           8
+tdlskt             6
+tf                 2
+tttttt             6
+Total length    1139
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs bajs bajs bajs ksanlksfn sakjnflask flaksnflaksnflaksnf asfalskf  a kf lk klt tftflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf ttttttlf tdlskt tf tttttt
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+ksanlksfn          9
+sakjnflask        10
+flaksnflaksnflaksnf19
+asfalskf           8
+a                  1
+kf                 2
+lk                 2
+klt                3
+tftflf             6
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+ttttttlf           8
+tdlskt             6
+tf                 2
+tttttt             6
+Total length    1139
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:24:35: error: expected expression before ‘)’ token
+   24 |   printf("Average length%6.2f\n", );
+      |                                   ^
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+2.c: In function ‘main’:
+2.c:24:29: warning: format ‘%f’ expects argument of type ‘double’, but argument 2 has type ‘int’ [-Wformat=]
+   24 |   printf("Average length%6.2f\n", total_letters/argc);
+      |                         ~~~~^     ~~~~~~~~~~~~~~~~~~
+      |                             |                  |
+      |                             double             int
+      |                         %6.2d
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ gg 2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out  bajs bajs bajs bajs ksanlksfn sakjnflask flaksnflaksnflaksnf asfalskf  a kf lk klt tftflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf tttttttflf tdlskt tf ttttttlf tdlskt tf tttttt
+./a.out            7
+bajs               4
+bajs               4
+bajs               4
+bajs               4
+ksanlksfn          9
+sakjnflask        10
+flaksnflaksnflaksnf19
+asfalskf           8
+a                  1
+kf                 2
+lk                 2
+klt                3
+tftflf             6
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+tttttttflf        10
+tdlskt             6
+tf                 2
+ttttttlf           8
+tdlskt             6
+tf                 2
+tttttt             6
+Total length    1139
+Average length  5.96
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ./a.out testing one two three
+./a.out            7
+testing            7
+one                3
+two                3
+three              5
+Total length      25
+Average length  5.00
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$  ./a.out testing one two thr
+./a.out            7
+testing            7
+one                3
+two                3
+thr                3
+Total length      23
+Average length  4.60
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ echo $?
+0
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git add *
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   #*shell*#
+	new file:   *shell*
+	new file:   2.c
+	new file:   2.c~
+	new file:   a.out
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.#*shell*
+	../p.c
+
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ls
+'#*shell*#'  '*shell*'   2.c   2.c~   a.out
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ rm #\*shell\*\# 
+rm: missing operand
+Try 'rm --help' for more information.
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ rm -f #\*shell\*\# 
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ rm -f  *shell\* 
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ ls
+'#*shell*#'   2.c   2.c~   a.out
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git add 2.c 
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   #*shell*#
+	new file:   *shell*
+	new file:   2.c
+	new file:   2.c~
+	new file:   a.out
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   #*shell*#
+	deleted:    *shell*
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.#*shell*
+	../p.c
+
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git restire --staged #\*shell\*\# *shell* 2.c~ a.out
+git: 'restire' is not a git command. See 'git --help'.
+
+The most similar command is
+	restore
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git restore --staged #\*shell\*\# *shell* 2.c~ a.out
+fatal: you must specify path(s) to restore
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git restore --staged ./#\*shell\*\# ./*shell* ./2.c~ ./a.out
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   *shell*
+	new file:   2.c
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    *shell*
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	#*shell*#
+	.#*shell*
+	2.c~
+	a.out
+	../p.c
+
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git comm"second ass tdiu16"
+git: 'commsecond ass tdiu16' is not a git command. See 'git --help'.
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git commit -m "second ass tdiu16"
+[main c457a66] second ass tdiu16
+ 2 files changed, 159 insertions(+)
+ create mode 100644 ass2/*shell*
+ create mode 100644 ass2/2.c
+danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ git push
+setsockopt IPV6_TCLASS 8: Operation not permitted:
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (5/5), 1.50 KiB | 765.00 KiB/s, done.
+Total 5 (delta 1), reused 0 (delta 0)
+To gitlab.liu.se:andpl509/tdiu16.git
+   a988cc6..c457a66  main -> main
 danhu849@DESKTOP-UP7F191:~/tdiu16-labs/ass2$ 

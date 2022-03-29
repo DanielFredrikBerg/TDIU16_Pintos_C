@@ -82,46 +82,44 @@ int main()
     id = map_insert(&container, obj);
   }
 
-  map_print(&container);
+  /* remember to test with invalid keys (like 4711, or -1) */
+  for ( i = 0; i < LOOPS; ++i)
+  {
+    printf("Enter id to find value for: ");
+    scanf("%d", &id);
+
+    /*! find the value for a key in the map */
+    obj = map_find(&container, id);
+
+    /*! if it was found, display it */
+    //YOUR CODE HERE
   
-  /* /\* remember to test with invalid keys (like 4711, or -1) *\/ */
-  /* for ( i = 0; i < LOOPS; ++i) */
-  /* { */
-  /*   printf("Enter id to find value for: "); */
-  /*   scanf("%d", &id); */
+    /* since we leave the value in the map we may use it again and
+     * should not free the memory */
+  }
 
-  /*   /\*! find the value for a key in the map *\/ */
-  /*   obj = map_find(&container, id); */
-
-  /*   /\*! if it was found, display it *\/ */
-  /*   //YOUR CODE HERE */
-  
-  /*   /\* since we leave the value in the map we may use it again and */
-  /*    * should not free the memory *\/ */
-  /* } */
-
-  /* /\* remember to test with invalid keys (like 4711, or -1) *\/ */
-  /* for ( i = 0; i < LOOPS; ++i) */
-  /* { */
-  /*   printf("Enter id to remove value for: "); */
-  /*   scanf("%d", &id); */
+  /* remember to test with invalid keys (like 4711, or -1) */
+  for ( i = 0; i < LOOPS; ++i)
+  {
+    printf("Enter id to remove value for: ");
+    scanf("%d", &id);
     
-  /*   /\*! find and remove a value for a key in the map *\/ */
-  /*   obj = map_remove(&container, id); */
+    /*! find and remove a value for a key in the map */
+    obj = map_remove(&container, id);
 
-  /*   /\*! if it was found, display it *\/ */
-  /*   // YOUR CODE HERE */
-  /*   /\* since we removed the value from the map we will never use it again and */
-  /*    * must properly free the memory (if it was allocated) *\/ */
-  /* } */
+    /*! if it was found, display it */
+    // YOUR CODE HERE
+    /* since we removed the value from the map we will never use it again and
+     * must properly free the memory (if it was allocated) */
+  }
 
-  /* /\*! print all strings representing an integer less than N *\/ */
-  /* printf("Will now display all values less than N. Choose N: "); */
-  /* scanf("%d", &i); */
-  /* map_for_each(&container, print_less, i); */
+  /*! print all strings representing an integer less than N */
+  printf("Will now display all values less than N. Choose N: ");
+  scanf("%d", &i);
+  map_for_each(&container, print_less, i);
   
-  /* /\*! free all remaining memory and remove from map *\/ */
-  /* map_remove_if(&container, do_free, 0); */
+  /*! free all remaining memory and remove from map */
+  map_remove_if(&container, do_free, 0);
   
   return 0;
 }
