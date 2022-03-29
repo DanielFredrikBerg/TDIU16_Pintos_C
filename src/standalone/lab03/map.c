@@ -26,7 +26,6 @@ key_t map_insert(struct map* m, value_t v)
 
 void map_print(struct map* m)
 {
-  //value_t* walker = m->content;
   int counter = 0;
   while( counter < MAP_SIZE )
     {
@@ -44,11 +43,21 @@ void map_print(struct map* m)
 
 // NULL returned if not found
 value_t map_find(struct map* m, key_t k)
-{}
+{
+  if( k < 0 || MAP_SIZE < k )
+    {
+      // TODO: put pintos error code here
+    }
+  return m->content[k];
+}
 
 // fungerar som map_find men tar bort värdet ur samlingen.
 value_t map_remove(struct map* m, key_t k)
-{}
+{
+  value_t ret = m->content[k];
+  m->content[k] = NULL;
+  return ret;
+}
 
 /* Anropa exec för varje association i map.
  * aux skickas med som inparameter till funktionen *exec representerar.
