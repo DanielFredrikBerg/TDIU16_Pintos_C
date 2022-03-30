@@ -111,7 +111,9 @@ int main()
 
     /*! if it was found, display it */
     // YOUR CODE HERE
-    printf("Removed value: %s from key: %d", obj, id); 
+    if(obj == NULL)
+    {obj = "null";}
+    printf("Removed value: %s from key: %d\n", obj, id); 
     /* since we removed the value from the map we will never use it again and
      * must properly free the memory (if it was allocated) */
   }
@@ -122,7 +124,7 @@ int main()
   map_for_each(&container, print_less, i);
   
   /*! free all remaining memory and remove from map */
-  //map_remove_if(&container, do_free, 0);
+  map_remove_if(&container, do_free, 0);
   
   return 0;
 }
