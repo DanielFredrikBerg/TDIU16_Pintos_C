@@ -45,7 +45,7 @@ void print_less(key_t k UNUSED, value_t v, int aux)
 }
 
 
-#define LOOPS 2
+#define LOOPS 10
 
 char* my_strdup(char* str)
 {
@@ -94,7 +94,10 @@ int main()
 
     /*! if it was found, display it */
     //YOUR CODE HERE
-    printf("Found value: %s for key: %d\n", obj, id);
+    if(obj != NULL)
+    {
+      printf("Found value: %s for key: %d\n", obj, id);
+    }
   
     /* since we leave the value in the map we may use it again and
      * should not free the memory */
@@ -111,11 +114,13 @@ int main()
 
     /*! if it was found, display it */
     // YOUR CODE HERE
-    if(obj == NULL)
-    {obj = "null";}
-    printf("Removed value: %s from key: %d\n", obj, id); 
     /* since we removed the value from the map we will never use it again and
      * must properly free the memory (if it was allocated) */
+    if( obj != NULL)
+    {
+      printf("Removed value: %s from key: %d\n", (char*)obj, id); 
+      free(obj);
+    }
   }
 
   /*! print all strings representing an integer less than N */

@@ -40,5 +40,5 @@ void map_remove_if(struct map* m,
 		   bool (*cond)(key_t k, value_t v, int aux),
 		   int aux);
 
- 
+bool check_within_bounds(key_t k); 
 
