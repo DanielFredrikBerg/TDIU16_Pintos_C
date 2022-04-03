@@ -1,0 +1,1 @@
+make -C ~/tdiu16/src/examples/ && make -C ~/tdiu16/src/userprog/
