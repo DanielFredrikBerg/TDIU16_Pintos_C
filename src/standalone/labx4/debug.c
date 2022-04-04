@@ -8,7 +8,7 @@ int main()
   char **bufi;
   char **bufend;
   bufi = buf;
-  bufend = &buf[9];
+  bufend = &buf[8]; //buf is of size 9 but index is max 8.
   
   while (bufi != bufend){
     *bufi = stri;

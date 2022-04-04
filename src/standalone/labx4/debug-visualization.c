@@ -1,9 +1,13 @@
+#define _DEFAULT_SOURCE
+
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int main(void)
 {
-  char *str = strdup("sihtgubed");
+  const char *dupstr = "sihtgubed";
+  char *str = strdup(dupstr);
   char *stri = &str[8];
   char *buf[9];
   char **bufi;
@@ -28,6 +32,8 @@ int main(void)
   }
 
   putchar('\n');
+
+  free(str);
 
   return 0;
 }

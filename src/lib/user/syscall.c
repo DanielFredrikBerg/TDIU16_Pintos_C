@@ -1,4 +1,5 @@
 #include <syscall.h>
+#include <stdio.h>
 #include "../syscall-nr.h"
 
 /* Invokes syscall NUMBER, passing no arguments, and returns the
@@ -60,6 +61,8 @@
                : "memory");                                     \
           retval;                                               \
         })
+
+#define DBG(format, ...) printf(format "\n", ##__VA_ARGS__)
 
 void
 halt (void) 

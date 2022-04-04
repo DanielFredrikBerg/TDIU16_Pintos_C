@@ -106,11 +106,11 @@ void map_remove_if(struct map *m,
 
 bool check_within_bounds(key_t k)
 {
-  // Fix this fucking shitass NULL comparison. 
+  // Fix this  NULL comparison. 
   // if(k != NULL)
   // {
     //printf("%s", (char*)k);
-  bool status = 0 < k && k < MAP_SIZE;
+  bool status = -1 < k && k < MAP_SIZE;
   if (!status)
   {
     puts("Map key out of bounds");

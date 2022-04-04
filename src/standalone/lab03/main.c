@@ -24,7 +24,7 @@
 /* The code assumes that key_t is `int' and value_t is `char*' */
 
 /* function passed as parameter to map_remove_if in order to free the
- * memory for all inseted values, and return true to remove them from
+ * memory for all inserted values, and return true to remove them from
  * the map */
 bool do_free(key_t k UNUSED, value_t v, int aux UNUSED)
 {

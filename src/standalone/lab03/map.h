@@ -18,9 +18,9 @@ struct map
 // Constructor
 void map_init(struct map* m);
 
-void map_print(struct map* m);
-
 key_t map_insert(struct map* m, value_t v);
+
+void map_print(struct map* m);
 
 // NULL returned if not found
 value_t map_find(struct map* m, key_t k);
