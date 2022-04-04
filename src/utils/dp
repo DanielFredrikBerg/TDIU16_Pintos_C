@@ -1,0 +1,19 @@
+print_usage () {
+  printf "Usage: dp filename\n"
+}
+
+cd ~/tdiu16/src/userprog
+
+#printf "$#  $1\n"
+filename=""
+
+if [ $# -eq 1 ]
+ then
+  filename=$1
+  printf "Running debugpintos with file: ${filename}\n"
+else
+ print_usage
+ exit
+fi
+
+debugpintos -v -k --fs-disk=2 -p ../examples/${filename} -a ${filename} -- -f -q run '${filename}'&

@@ -1,0 +1,20 @@
+print_usage () {
+  printf "Usage: pi filename\n"
+}
+
+# GOTO userprog
+cd ~/tdiu16/src/userprog
+
+#printf "$#  $1\n"
+filename=""
+
+if [ $# -eq 1 ]
+ then
+  filename=$1
+  printf "Running pintos with file: ${filename}\n"
+else
+ print_usage
+ exit
+fi
+
+pintos -v -k --fs-disk=2 -p ../examples/${filename} -a ${filename} -- -f -q run '${filename}'

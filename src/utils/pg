@@ -1,0 +1,7 @@
+cd ~/tdiu16/src/userprog
+if [ $1 -eq "2" ]
+then
+pintos-gdb -tui build/kernel
+else
+pintos-gdb build/kernel
+fi
