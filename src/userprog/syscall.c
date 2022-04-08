@@ -90,33 +90,41 @@ syscall_handler (struct intr_frame *f)
       puts("----SYS READ");
       if(esp[1] == STDIN_FILENO) 
       {
-        uint8_t buffer[esp[3]]; //
+        char* buffer[esp[3]]; //
         for(int i = 0; i < esp[3]; i++)
         {
-          puts("--1");
           buffer[i] = input_getc();
-          puts("--2");
-          
           if(buffer[i] == '\r')
           {
-          puts("--3");
-
             buffer[i] = '\n';
           }
-          printf("$$$$$$$ : %c\n", buffer[i]);
-          
-          
-          puts("--4");
-
-          putbuf((char*)esp[2], 1); 
-
-          //putbuf((char)buffer[i], 1);
         }
-        esp[2] = &buffer;
+
+        putbuf(&buffer, 1); 
+        esp[2] = (int32_t)buffer;
 
         f->eax = esp[3];
-        //return esp[3];
       }
+      // kinda works
+      // if(esp[1] == STDIN_FILENO) 
+      // {
+      //   uint8_t buffer[esp[3]]; //
+      //   for(int i = 0; i < esp[3]; i++)
+      //   {
+      //     buffer[i] = input_getc();
+          
+      //     if(buffer[i] == '\r')
+      //     {
+      //       buffer[i] = '\n';
+      //     }
+      //     printf("%c", buffer[i]);
+
+      //     //putbuf((char)buffer[i], 1); 
+      //   }
+      //   esp[2] = (int32_t)buffer;
+
+      //   f->eax = esp[3];
+      // }
       break;
     }
     default:
