@@ -76,24 +76,25 @@ syscall_handler (struct intr_frame *f)
     }
     case SYS_WRITE:
     {
+      
       if(esp[1] == STDIN_FILENO) 
       {
+        puts("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         f->eax = -1;
         break;
       }
 
-      puts("----SYS WRITE");
       if (esp[1] == STDOUT_FILENO)
       {
+        puts("BBBBBBBBBBBBBBBBBBBNothing come out in write ;)\n");
         putbuf((char*)esp[2], esp[3]); 
       }
       f->eax = esp[3];
-      //return f->eax;
       break;
     }
+
     case SYS_READ:
     {
-      puts("----SYS READ");
       if(esp[1] == STDOUT_FILENO) 
       {
         f->eax = -1;
@@ -111,13 +112,14 @@ syscall_handler (struct intr_frame *f)
           }
         }
 
-        putbuf((char*)&buffer, 1); 
+        putbuf((char*)&buffer, esp[3]); 
 
-
-        esp[2] = (int32_t)buffer;
+        //esp[2] = (int32_t)buffer;
 
         f->eax = esp[3];
+        
       }
+      break;
       // kinda works
       // if(esp[1] == STDIN_FILENO) 
       // {
@@ -138,7 +140,7 @@ syscall_handler (struct intr_frame *f)
 
       //   f->eax = esp[3];
       // }
-      break;
+      //break;
     }
     default:
     {

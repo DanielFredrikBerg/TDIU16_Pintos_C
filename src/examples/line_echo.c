@@ -20,13 +20,16 @@ int main(void)
   for ( ; ; )
   {
     length = getline(buf, 10);
-    
+    puts("GGGGGGGAAAAAAAAAAAAAAAAYYYYYYYYYY");
     if (length != mystrlen(buf))
       exit(111);
 
     if (length < 1)
+    {
+      puts("---breaking");
       break;
-    
+    }
+      
     write(STDOUT_FILENO, buf, length);
     write(STDOUT_FILENO, &endl, 1);
   }
