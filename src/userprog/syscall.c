@@ -50,7 +50,6 @@ syscall_handler (struct intr_frame *f)
 {
   int32_t* esp = (int32_t*)f->esp;
   int32_t syscall_num = *(esp);
-  puts("----something");
   /*
    * sys_call_id = esp[0]
    * fd = esp[1]
@@ -91,17 +90,27 @@ syscall_handler (struct intr_frame *f)
       puts("----SYS READ");
       if(esp[1] == STDIN_FILENO) 
       {
-        char* buffer[esp[3]]; //
+        uint8_t buffer[esp[3]]; //
         for(int i = 0; i < esp[3]; i++)
         {
-          *buffer[i] = (char)input_getc();
+          puts("--1");
+          buffer[i] = input_getc();
+          puts("--2");
           
-          if(*buffer[i] == '\r')
+          if(buffer[i] == '\r')
           {
-            *buffer[i] = '\n';
-          }
+          puts("--3");
 
-          putbuf(buffer[i], 1);
+            buffer[i] = '\n';
+          }
+          printf("$$$$$$$ : %c\n", buffer[i]);
+          
+          
+          puts("--4");
+
+          putbuf((char*)esp[2], 1); 
+
+          //putbuf((char)buffer[i], 1);
         }
         esp[2] = &buffer;
 
