@@ -76,6 +76,12 @@ syscall_handler (struct intr_frame *f)
     }
     case SYS_WRITE:
     {
+      if(esp[1] == STDIN_FILENO) 
+      {
+        f->eax = -1;
+        break;
+      }
+
       puts("----SYS WRITE");
       if (esp[1] == STDOUT_FILENO)
       {
@@ -88,19 +94,26 @@ syscall_handler (struct intr_frame *f)
     case SYS_READ:
     {
       puts("----SYS READ");
+      if(esp[1] == STDOUT_FILENO) 
+      {
+        f->eax = -1;
+        break;
+      }
       if(esp[1] == STDIN_FILENO) 
       {
         char* buffer[esp[3]]; //
         for(int i = 0; i < esp[3]; i++)
         {
-          buffer[i] = input_getc();
-          if(buffer[i] == '\r')
+          buffer[i] = (char*)input_getc();
+          if(buffer[i] == (char*)'\r')
           {
-            buffer[i] = '\n';
+            buffer[i] = (char*)'\n';
           }
         }
 
-        putbuf(&buffer, 1); 
+        putbuf((char*)&buffer, 1); 
+
+
         esp[2] = (int32_t)buffer;
 
         f->eax = esp[3];
@@ -119,7 +132,7 @@ syscall_handler (struct intr_frame *f)
       //     }
       //     printf("%c", buffer[i]);
 
-      //     //putbuf((char)buffer[i], 1); 
+      //     //putbuf((char*)buffer[i], 1); 
       //   }
       //   esp[2] = (int32_t)buffer;
 
