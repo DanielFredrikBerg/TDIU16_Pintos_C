@@ -101,13 +101,13 @@ syscall_handler (struct intr_frame *f)
       }
       if(esp[1] == STDIN_FILENO) 
       {
-        char* buffer[esp[3]]; //
+        char buffer[esp[3]]; //
         for(int i = 0; i < esp[3]; i++)
         {
-          buffer[i] = (char*)input_getc();
-          if(buffer[i] == (char*)'\r')
+          buffer[i] = input_getc();
+          if(buffer[i] == '\r')
           {
-            buffer[i] = (char*)'\n';
+            buffer[i] = '\n';
           }
         }
 
