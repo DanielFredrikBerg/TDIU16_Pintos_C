@@ -50,6 +50,13 @@ syscall_handler (struct intr_frame *f)
 {
   int32_t* esp = (int32_t*)f->esp;
   int32_t syscall_num = *(esp);
+  puts("----something");
+  /*
+   * sys_call_id = esp[0]
+   * fd = esp[1]
+   * buffer = esp[2]
+   * length = esp[3]
+   */
 
   switch (  syscall_num /* retrive syscall number */ )
   {
@@ -58,6 +65,7 @@ syscall_handler (struct intr_frame *f)
       puts("++INSIDE SYS_EXIT");
       
       printf("__EXIT STATUS = %d\n", *(esp+1));
+      thread_exit();
       break;
     } 
     case SYS_HALT:
@@ -66,6 +74,41 @@ syscall_handler (struct intr_frame *f)
       power_off();
       break;
       
+    }
+    case SYS_WRITE:
+    {
+      puts("----SYS WRITE");
+      if (esp[1] == STDOUT_FILENO)
+      {
+        putbuf((char*)esp[2], esp[3]); 
+      }
+      f->eax = esp[3];
+      //return f->eax;
+      break;
+    }
+    case SYS_READ:
+    {
+      puts("----SYS READ");
+      if(esp[1] == STDIN_FILENO) 
+      {
+        char* buffer[esp[3]]; //
+        for(int i = 0; i < esp[3]; i++)
+        {
+          *buffer[i] = (char)input_getc();
+          
+          if(*buffer[i] == '\r')
+          {
+            *buffer[i] = '\n';
+          }
+
+          putbuf(buffer[i], 1);
+        }
+        esp[2] = &buffer;
+
+        f->eax = esp[3];
+        //return esp[3];
+      }
+      break;
     }
     default:
     {

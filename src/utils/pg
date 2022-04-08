@@ -1,4 +1,4 @@
-cd ~/tdiu16/src/userprog
+cd ~/tdiu16-labs/src/userprog
 if [ $1 -eq "2" ]
 then
 pintos-gdb -tui build/kernel
