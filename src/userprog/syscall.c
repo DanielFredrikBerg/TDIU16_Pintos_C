@@ -104,6 +104,7 @@ syscall_handler (struct intr_frame *f)
         //int32_t *buffer = esp[2];
         for(int i = 0; i < esp[3]; i++)
         {
+          puts()
           char c = (char)input_getc();
           
           if(c == '\r')
@@ -111,11 +112,14 @@ syscall_handler (struct intr_frame *f)
             c = '\n';
           }
           
+          // cast void pointer to let the compiler know how much memory to alloc
+          // overides the first place of the buffer?
+          // how to move esp[2] pointer forward?
           *((char*)esp[2]) = c;
         }
 
         
-        putbuf((char*)esp[2], esp[3]);          
+        putbuf((char*)esp[2], 1);          
         
         f->eax = esp[3];
       }
