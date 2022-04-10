@@ -76,13 +76,13 @@ syscall_handler (struct intr_frame *f)
     }
     case SYS_WRITE:
     {
+      puts("----SYS WRITE");
       if(esp[1] == STDIN_FILENO) 
       {
         f->eax = -1;
         break;
       }
 
-      puts("----SYS WRITE");
       if (esp[1] == STDOUT_FILENO)
       {
         putbuf((char*)esp[2], esp[3]); 
@@ -112,7 +112,6 @@ syscall_handler (struct intr_frame *f)
         }
 
         putbuf((char*)&buffer, 1); 
-
 
         esp[2] = (int32_t)buffer;
 
