@@ -93,7 +93,12 @@ syscall_handler (struct intr_frame *f)
     }
     case SYS_READ:
     {
-      puts("----SYS READ");
+      puts("\n----SYS READ\n ");
+      printf("////////// FD%d\n", *(esp+1));
+      printf("////////// BUFFER%d\n", *(esp+2));
+      printf("////////// LENGTH%d\n", *(esp+3));
+     
+
       if(esp[1] == STDOUT_FILENO) 
       {
         f->eax = -1;
@@ -101,7 +106,10 @@ syscall_handler (struct intr_frame *f)
       }
       if(esp[1] == STDIN_FILENO) 
       {
-        char buffer[esp[3]]; //
+        
+
+        char buffer[esp[3]]; 
+        
         for(int i = 0; i < esp[3]; i++)
         {
           buffer[i] = input_getc();
@@ -111,32 +119,15 @@ syscall_handler (struct intr_frame *f)
           }
         }
 
-        putbuf((char*)&buffer, 1); 
-
-        esp[2] = (int32_t)buffer;
+        puts("---before");
+        putbuf((char*)esp[2], 1); 
+        esp[2] = &buffer;
+        puts("---after");
+        putbuf((char*)esp[2], 1); 
+        puts("----done");
 
         f->eax = esp[3];
       }
-      // kinda works
-      // if(esp[1] == STDIN_FILENO) 
-      // {
-      //   uint8_t buffer[esp[3]]; //
-      //   for(int i = 0; i < esp[3]; i++)
-      //   {
-      //     buffer[i] = input_getc();
-          
-      //     if(buffer[i] == '\r')
-      //     {
-      //       buffer[i] = '\n';
-      //     }
-      //     printf("%c", buffer[i]);
-
-      //     //putbuf((char*)buffer[i], 1); 
-      //   }
-      //   esp[2] = (int32_t)buffer;
-
-      //   f->eax = esp[3];
-      // }
       break;
     }
     default:

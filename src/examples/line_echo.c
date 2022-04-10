@@ -21,6 +21,9 @@ int main(void)
   {
     length = getline(buf, 10);
     
+    printf("mystrlen(buffer): %d", mystrlen(buf));
+    printf("INSIDE BUF: %c", buf[0]);
+
     if (length != mystrlen(buf))
       exit(111);
 
@@ -41,7 +44,11 @@ int getline(char *buf, int size)
   for (i = 0; i < size-1; ++i)
   {
     if (read(STDIN_FILENO, &buf[i], 1) != 1)
+    {
+      printf("getline: %d", i);
       break;
+    }
+      
     if (buf[i] == '\n')
       break;
   }
