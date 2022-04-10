@@ -112,7 +112,6 @@ syscall_handler (struct intr_frame *f)
           }
           
           *((char*)esp[2]) = c;
-          //*((char*)esp[2]);
         }
 
         
