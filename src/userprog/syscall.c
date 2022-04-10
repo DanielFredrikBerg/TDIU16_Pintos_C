@@ -45,6 +45,7 @@ const int argc[] = {
   0, 1
 };
 
+
 static void
 syscall_handler (struct intr_frame *f)
 {
@@ -61,8 +62,6 @@ syscall_handler (struct intr_frame *f)
   {
     case SYS_EXIT:
     {
-      puts("++INSIDE SYS_EXIT");
-      
       printf("__EXIT STATUS = %d\n", *(esp+1));
       thread_exit();
       break;
@@ -88,16 +87,11 @@ syscall_handler (struct intr_frame *f)
         putbuf((char*)esp[2], esp[3]); 
       }
       f->eax = esp[3];
-      //return f->eax;
       break;
     }
     case SYS_READ:
     {
-      puts("\n----SYS READ\n ");
-      printf("////////// FD%d\n", *(esp+1));
-      printf("////////// BUFFER%d\n", *(esp+2));
-      printf("////////// LENGTH%d\n", *(esp+3));
-     
+       puts("\n----SYS READ\n ");
 
       if(esp[1] == STDOUT_FILENO) 
       {
@@ -107,25 +101,23 @@ syscall_handler (struct intr_frame *f)
       if(esp[1] == STDIN_FILENO) 
       {
         
-
-        char buffer[esp[3]]; 
-        
+        //int32_t *buffer = esp[2];
         for(int i = 0; i < esp[3]; i++)
         {
-          buffer[i] = input_getc();
-          if(buffer[i] == '\r')
+          char c = (char)input_getc();
+          
+          if(c == '\r')
           {
-            buffer[i] = '\n';
+            c = '\n';
           }
+          
+          *((char*)esp[2]) = c;
+          //*((char*)esp[2]);
         }
 
-        puts("---before");
-        putbuf((char*)esp[2], 1); 
-        esp[2] = &buffer;
-        puts("---after");
-        putbuf((char*)esp[2], 1); 
-        puts("----done");
-
+        
+        putbuf((char*)esp[2], esp[3]);          
+        
         f->eax = esp[3];
       }
       break;

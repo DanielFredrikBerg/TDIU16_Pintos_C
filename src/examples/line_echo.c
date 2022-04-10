@@ -21,15 +21,19 @@ int main(void)
   {
     length = getline(buf, 10);
     
-    printf("mystrlen(buffer): %d", mystrlen(buf));
-    printf("INSIDE BUF: %c", buf[0]);
+    //printf("mystrlen(buffer): %d", mystrlen(buf));
+    //printf("INSIDE BUF: %c", buf[0]);
+
+    //printf("\n_______lenght: %d mystrlen: %d", length, mystrlen(buf));
 
     if (length != mystrlen(buf))
+    {
       exit(111);
-
+    }
     if (length < 1)
       break;
     
+    puts("    we never get here");
     write(STDOUT_FILENO, buf, length);
     write(STDOUT_FILENO, &endl, 1);
   }
@@ -45,7 +49,6 @@ int getline(char *buf, int size)
   {
     if (read(STDIN_FILENO, &buf[i], 1) != 1)
     {
-      printf("getline: %d", i);
       break;
     }
       
@@ -59,9 +62,12 @@ int getline(char *buf, int size)
 int mystrlen(char *start)
 {
   char* end = start;
+
   
   while(*end != '\0')
-    ++end;
-  
+    {
+      puts("inside while");
+      ++end;
+    }  
   return (end - start);
 }
