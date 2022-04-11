@@ -44,80 +44,80 @@ int main(int argc, char* argv[])
   int id = JUNK;
   int i, j;
 
-  msg ( "* ------------------ write screen test ------------------ *" );
-  {
-    char* msg = "Now displaying the arguments to main\n";
-    int length = strlen (msg);
-    int result = JUNK;
-
-    result = write (STDOUT_FILENO, msg, length);
-
-    for ( i = 0; i < argc; ++i )
-    {
-      write (STDOUT_FILENO, argv[i], strlen (argv[i]) );
-      write (STDOUT_FILENO, "\n", 1);
-    }
-
-    verify (length == result);
-  }
-  end ( "* -------------------- press enter ---------------------- *" );
-
-  printf ("To emergency exit QEMU at any time:\n");
-  printf ("Hold 'Control' and press 'a' and then \n");
-  printf ("release 'Control' and press 'x'\n");
-
-  end ( "* -------------------- press enter ---------------------- *" );
-
-
-  msg ( "* ----------------- read keyboard test ------------------ *" );
-  {
-    char* input = "qwerty1234";
-    char buffer[10];
-    int length = CRAP;
-    int result = JUNK;
-    char yes;
-
-    init_buffer(buffer, 10);
-
-    printf ("Will now try to read 10 characters.\n");
-    printf ("Please write \"%s\": ", input);
-    result = read ( STDIN_FILENO, buffer, 10 );
-    length = strlen( buffer );
-    printf ("\nThe following characters was read: '%s'\n", buffer);
-
-    verify ( length == result && memcmp(buffer, input, 10) == 0 );
-
-    printf ("\nDid you see each character as you typed it? (y/n) ");
-    result = read ( STDIN_FILENO, &yes, 1 );
-    printf ("\n");
-
-    verify ( result == 1 && yes == 'y');
-  }
-  end ( "* -------------------- press enter ---------------------- *" );
-
-
-  // msg ( "* ------------------ create file test ------------------- *" );
+  // msg ( "* ------------------ write screen test ------------------ *" );
   // {
-  //   int success = JUNK;
+  //   char* msg = "Now displaying the arguments to main\n";
+  //   int length = strlen (msg);
+  //   int result = JUNK;
 
-  //   printf ("Will try to create 'test.txt'\n");
-  //   success = create("test.txt", SIZE);
-  //   verify ( success != JUNK && success );
+  //  result = write (STDOUT_FILENO, msg, length);
+
+  //   for ( i = 0; i < argc; ++i )
+  //   {
+  //     write (STDOUT_FILENO, argv[i], strlen (argv[i]) );
+  //     write (STDOUT_FILENO, "\n", 1);
+  //   }
+
+  //   verify (length == result);
+  // }
+  // end ( "* -------------------- press enter ---------------------- *" );
+
+  // printf ("To emergency exit QEMU at any time:\n");
+  // printf ("Hold 'Control' and press 'a' and then \n");
+  // printf ("release 'Control' and press 'x'\n");
+
+  // end ( "* -------------------- press enter ---------------------- *" );
+
+
+  // msg ( "* ----------------- read keyboard test ------------------ *" );
+  // {
+  //   char* input = "qwerty1234";
+  //   char buffer[10];
+  //   int length = CRAP;
+  //   int result = JUNK;
+  //   char yes;
+
+  //   init_buffer(buffer, 10);
+
+  //   printf ("Will now try to read 10 characters.\n");
+  //   printf ("Please write \"%s\": ", input);
+  //   result = read ( STDIN_FILENO, buffer, 10 );
+  //   length = strlen( buffer );
+  //   printf ("\nThe following characters was read: '%s'\n", buffer);
+
+  //   verify ( length == result && memcmp(buffer, input, 10) == 0 );
+
+  //   printf ("\nDid you see each character as you typed it? (y/n) ");
+  //   result = read ( STDIN_FILENO, &yes, 1 );
+  //   printf ("\n");
+
+  //   verify ( result == 1 && yes == 'y');
   // }
   // end ( "* -------------------- press enter ---------------------- *" );
 
 
-  // msg ( "* ------------------ open file test --------------------- *" );
-  // {
-  //   printf ("Will try to open 'non_existent_file'\n");
-  //   id = open("non_existent_file");
-  //   verify ( id == -1 );
+  msg ( "* ------------------ create file test ------------------- *" );
+  {
+    int success = JUNK;
 
-  //   printf ("Will try to open 'test.txt'\n");
-  //   id = open("test.txt");
-  //   verify ( id > 1 );
-  // }
-  // end ( "* -------------------- press enter ---------------------- *" );
+    printf ("Will try to create 'test.txt'\n");
+    success = create("test.txt", SIZE);
+    verify ( success != JUNK && success );
+  }
+  end ( "* -------------------- press enter ---------------------- *" );
+
+
+  msg ( "* ------------------ open file test --------------------- *" );
+  {
+    printf ("Will try to open 'non_existent_file'\n");
+    id = open("non_existent_file");
+    verify ( id == -1 );
+
+    printf ("Will try to open 'test.txt'\n");
+    id = open("test.txt");
+    verify ( id > 1 );
+  }
+  end ( "* -------------------- press enter ---------------------- *" );
 
 
   // msg ( "* ------------------ write file test -------------------- *" );

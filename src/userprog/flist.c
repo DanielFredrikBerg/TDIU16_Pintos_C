@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include "flist.h"
+//#include "../filesys/file.h"
 #include <stdlib.h>
 
 void map_init(struct map *m)
@@ -35,7 +36,7 @@ void map_print(struct map *m)
     }
     else
     {
-      printf("%s\n", m->content[counter]);
+      printf("%p\n", m->content[counter]);
     }
     counter++;
   }

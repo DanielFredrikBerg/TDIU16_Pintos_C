@@ -19,11 +19,14 @@
 #define DBG(format, ...) printf(format "\n", ##__VA_ARGS__)
 
 static void syscall_handler (struct intr_frame *);
+struct map* file_table;
+
 
 void syscall_init (void)
 {
   //DBG("_________SYSCALL INITIATED row: %d, file: %s", __LINE__, __FILE__);
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
+  //map_init(file_table);
 }
 
 
@@ -126,32 +129,43 @@ syscall_handler (struct intr_frame *f)
     }
     case SYS_CREATE:
     {
-      puts("------- INSIDE SYS_CREATE")
+      f->eax = filesys_create((char*)esp[1], esp[2]);
       break;
     }
     case SYS_OPEN:
     {
-      puts("------- INSIDE SYS_OPEN")
+      puts("------- INSIDE SYS_OPEN");
+      printf("_______%s _____", (char*)esp[1]);
+      const char * file_name = (char*)esp[1];
+      struct file * bajs= filesys_open(file_name);
+      if (bajs == NULL)
+      {
+        f->eax = -1;
+      }
+      else
+      {
+        // return fd LOL
+      }
       break;
     }
     case SYS_CLOSE:
     {
-      puts("------- INSIDE SYS_CLOSE")
+      puts("------- INSIDE SYS_CLOSE");
       break;
     }
     case SYS_REMOVE:
     {
-      puts("------- INSIDE SYS_REMOVE")
+      puts("------- INSIDE SYS_REMOVE");
       break;
     }
     case SYS_SEEK:
     {
-      puts("------- INSIDE SYS_SEEK")
+      puts("------- INSIDE SYS_SEEK");
       break;
     }
     case SYS_TELL:
     {
-      puts("------- INSIDE SYS_TELL")
+      puts("------- INSIDE SYS_TELL");
       break;
     }
     default:
