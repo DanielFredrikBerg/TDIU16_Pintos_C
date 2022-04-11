@@ -124,6 +124,36 @@ syscall_handler (struct intr_frame *f)
       }
       break;
     }
+    case SYS_CREATE:
+    {
+      puts("------- INSIDE SYS_CREATE")
+      break;
+    }
+    case SYS_OPEN:
+    {
+      puts("------- INSIDE SYS_OPEN")
+      break;
+    }
+    case SYS_CLOSE:
+    {
+      puts("------- INSIDE SYS_CLOSE")
+      break;
+    }
+    case SYS_REMOVE:
+    {
+      puts("------- INSIDE SYS_REMOVE")
+      break;
+    }
+    case SYS_SEEK:
+    {
+      puts("------- INSIDE SYS_SEEK")
+      break;
+    }
+    case SYS_TELL:
+    {
+      puts("------- INSIDE SYS_TELL")
+      break;
+    }
     default:
     {
       printf ("______Executed an unknown system call!\n");
