@@ -75,7 +75,7 @@ syscall_handler (struct intr_frame *f)
     }
     case SYS_WRITE:
     {
-      puts("----SYS WRITE");
+      //puts("----SYS WRITE");
       if(esp[1] == STDIN_FILENO) 
       {
         f->eax = -1;
@@ -91,7 +91,7 @@ syscall_handler (struct intr_frame *f)
     }
     case SYS_READ:
     {
-       puts("\n----SYS READ\n ");
+       //puts("\n----SYS READ\n ");
 
       if(esp[1] == STDOUT_FILENO) 
       {
@@ -116,11 +116,10 @@ syscall_handler (struct intr_frame *f)
           // overides the first place of the buffer?
           // how to move esp[2] pointer forward?
           *((char*)esp[2]+i) = c;
-        }
 
-        
-        putbuf((char*)esp[2], 1);          
-        
+          putbuf((char*)esp[2]+i, 1);          
+
+        }
         f->eax = esp[3];
       }
       break;

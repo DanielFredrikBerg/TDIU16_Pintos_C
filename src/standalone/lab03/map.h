@@ -3,9 +3,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define PANIC(message) do { printf("PANIC: %s\n", message); exit(1); } while(0)
+//#define PANIC(message) do { printf("PANIC: %s\n", message); exit(1); } while(0)
 // Symbolic constant for size of map
-#define MAP_SIZE 128
+//#define MAP_SIZE 128
 
 typedef char* value_t;
 typedef int key_t;
