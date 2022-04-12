@@ -4,8 +4,10 @@
 #include <debug.h>
 #include <list.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include "../userprog/flist.h"
 
-#include "userprog/flist.h"
+
 
 /* States in a thread's life cycle. */
 enum thread_status
@@ -94,7 +96,14 @@ struct thread
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
 
+   //struct map container = malloc(sizeof (struct map));
+
+   struct map container;
     /* YES! You may want to add stuff. But make note of point 2 above. */
+   // malloc map_container
+   // free map on thread_exit()
+   // char* dst = (char*)malloc(len);
+   //map_init(&constainer);
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */

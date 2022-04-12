@@ -135,16 +135,26 @@ syscall_handler (struct intr_frame *f)
     case SYS_OPEN:
     {
       puts("------- INSIDE SYS_OPEN");
-      printf("_______%s _____", (char*)esp[1]);
-      const char * file_name = (char*)esp[1];
-      struct file * bajs= filesys_open(file_name);
-      if (bajs == NULL)
+      struct thread* current_thread = thread_current();
+      const char* file_name = (char*)esp[1];
+      struct file* file_ptr = filesys_open(file_name);
+      if (file_ptr == NULL)
       {
+        //file does not exist
+        //printf("file doesn't exist\n\n");
         f->eax = -1;
       }
       else
       {
-        // return fd LOL
+        // if fd is not found, -1 is returned. else the fd is returned
+        int fd = map_contains_value(&current_thread->container, file_ptr);
+        
+        //printf("Filedescriptor: %d\n", fd);
+        if (fd == -1) {
+        //printf("File exists but is not open.\nOpening and inserting file '%s' to process wide file table.\n", file_name);
+          fd = map_insert(&current_thread->container, file_ptr);
+        }
+        f->eax = fd;
       }
       break;
     }

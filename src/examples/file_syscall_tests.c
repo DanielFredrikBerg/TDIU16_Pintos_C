@@ -103,6 +103,10 @@ int main(int argc, char* argv[])
     printf ("Will try to create 'test.txt'\n");
     success = create("test.txt", SIZE);
     verify ( success != JUNK && success );
+
+    printf ("Will try to create 'test2.txt'\n");
+    success = create("test2.txt", SIZE);
+    verify ( success != JUNK && success );
   }
   end ( "* -------------------- press enter ---------------------- *" );
 
@@ -115,7 +119,18 @@ int main(int argc, char* argv[])
 
     printf ("Will try to open 'test.txt'\n");
     id = open("test.txt");
+    printf("returned: %d", id);
     verify ( id > 1 );
+
+    // printf ("Will try to open already open file 'test.txt'\n");
+    // id = open("test.txt");
+    // printf("Sould return 2, returned: %d", id);
+    // verify ( id == 2 );
+
+    // printf ("Will try to open 'test2.txt'\n");
+    // id = open("test2.txt");
+    // printf("Sould return 3, returned: %d", id);
+    // verify ( id == 3 );
   }
   end ( "* -------------------- press enter ---------------------- *" );
 

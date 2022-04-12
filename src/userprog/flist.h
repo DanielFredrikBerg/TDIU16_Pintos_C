@@ -1,5 +1,6 @@
 #ifndef _MAP_H_
 #define _MAP_H_
+#include "../filesys/file.h"
 
 /* Place code to keep track of your per-process open file table here.
  *
@@ -72,7 +73,7 @@
 // Symbolic constant for size of map
 #define MAP_SIZE 128
 
-typedef char* value_t;
+typedef struct file* value_t;
 typedef int key_t;
 
 struct map
@@ -92,6 +93,8 @@ value_t map_find(struct map* m, key_t k);
 
 // fungerar som map_find men tar bort värdet ur samlingen.
 value_t map_remove(struct map* m, key_t k);
+
+key_t map_contains_value(struct map *m, value_t target);
 
 /* Anropa exec för varje association i map.
  * aux skickas med som inparameter till funktionen *exec representerar.

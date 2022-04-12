@@ -12,7 +12,11 @@
 #include "threads/synch.h"
 #include "threads/vaddr.h"
 #ifdef USERPROG
+
+
 #include "userprog/process.h"
+#include <stdlib.h>
+#include "threads/malloc.h"
 #endif
 
 /* Random value for struct thread's `magic' member.
@@ -115,6 +119,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->magic = THREAD_MAGIC;
 
   /* YES! You may want add stuff here. */
+  map_init(&t->container);
 }
 
 /* Starts preemptive thread scheduling by enabling interrupts.

@@ -6,7 +6,7 @@
 void map_init(struct map *m)
 {
   printf("Map size: %d\n", (int)sizeof(m->content) / 8);
-  for (int i = 0; i < MAP_SIZE; i++)
+  for (int i = 2; i < MAP_SIZE; i++)
   {
     m->content[i] = NULL;
   }
@@ -14,8 +14,8 @@ void map_init(struct map *m)
 
 key_t map_insert(struct map *m, value_t v)
 {
-  value_t *walker = m->content;
-  int counter = 0;
+  value_t *walker = m->content+2;
+  int counter = 2;
   while (*walker != NULL)
   {
     walker++;
@@ -27,16 +27,16 @@ key_t map_insert(struct map *m, value_t v)
 
 void map_print(struct map *m)
 {
-  int counter = 0;
+  int counter = 2;
   while (counter < MAP_SIZE)
   {
     if (m->content[counter] == NULL)
     {
-      puts("null");
+      //puts("null");
     }
     else
     {
-      printf("%p\n", m->content[counter]);
+      printf("%d->%p\n", counter, m->content[counter]);
     }
     counter++;
   }
@@ -79,13 +79,27 @@ value_t map_remove(struct map *m, key_t k)
   }
 }
 
+
+key_t map_contains_value(struct map *m, value_t target)
+{
+  for (int i = 2; i < MAP_SIZE; i++)
+  {
+    if (m->content[i] == target)
+    {
+      printf("Currently comparing %d == %d", m->content[i], target);
+      return i;
+    }
+  }
+  return -1;
+}
+
 /* Anropa exec för varje association i map.
  * aux skickas med som inparameter till funktionen *exec representerar. */
 void map_for_each(struct map *m,
                   void (*exec)(key_t k, value_t v, int aux),
                   int aux)
 {
-  for (int i = 0; i < MAP_SIZE; i++)
+  for (int i = 2; i < MAP_SIZE; i++)
   {
     if (m->content[i] != NULL)
     {
@@ -99,7 +113,7 @@ void map_remove_if(struct map *m,
                    bool (*cond)(key_t k, value_t v, int aux),
                    int aux)
 {
-  for (int i = 0; i < MAP_SIZE; i++)
+  for (int i = 2; i < MAP_SIZE; i++)
   {
     (*cond)(i, m->content[i], aux);
   }
