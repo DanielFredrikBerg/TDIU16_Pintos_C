@@ -72,6 +72,7 @@
 //#define PANIC(message) do { printf("PANIC: %s\n", message); exit(1); } while(0)
 // Symbolic constant for size of map
 #define MAP_SIZE 128
+#define BEGIN 2
 
 typedef struct file* value_t;
 typedef int key_t;

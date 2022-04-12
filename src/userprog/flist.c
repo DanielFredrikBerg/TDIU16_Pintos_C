@@ -6,7 +6,7 @@
 void map_init(struct map *m)
 {
   printf("Map size: %d\n", (int)sizeof(m->content) / 8);
-  for (int i = 2; i < MAP_SIZE; i++)
+  for (int i = BEGIN; i < MAP_SIZE; i++)
   {
     m->content[i] = NULL;
   }
@@ -15,7 +15,7 @@ void map_init(struct map *m)
 key_t map_insert(struct map *m, value_t v)
 {
   value_t *walker = m->content+2;
-  int counter = 2;
+  int counter = BEGIN;
   while (*walker != NULL)
   {
     walker++;
@@ -27,7 +27,7 @@ key_t map_insert(struct map *m, value_t v)
 
 void map_print(struct map *m)
 {
-  int counter = 2;
+  int counter = BEGIN;
   while (counter < MAP_SIZE)
   {
     if (m->content[counter] == NULL)
@@ -82,7 +82,7 @@ value_t map_remove(struct map *m, key_t k)
 
 key_t map_contains_value(struct map *m, value_t target)
 {
-  for (int i = 2; i < MAP_SIZE; i++)
+  for (int i = BEGIN; i < MAP_SIZE; i++)
   {
     if (m->content[i] == target)
     {
@@ -99,7 +99,7 @@ void map_for_each(struct map *m,
                   void (*exec)(key_t k, value_t v, int aux),
                   int aux)
 {
-  for (int i = 2; i < MAP_SIZE; i++)
+  for (int i = BEGIN; i < MAP_SIZE; i++)
   {
     if (m->content[i] != NULL)
     {
@@ -113,7 +113,7 @@ void map_remove_if(struct map *m,
                    bool (*cond)(key_t k, value_t v, int aux),
                    int aux)
 {
-  for (int i = 2; i < MAP_SIZE; i++)
+  for (int i = BEGIN; i < MAP_SIZE; i++)
   {
     (*cond)(i, m->content[i], aux);
   }
