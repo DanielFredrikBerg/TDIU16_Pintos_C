@@ -6,7 +6,7 @@
 void map_init(struct map *m)
 {
   printf("Map size: %d\n", (int)sizeof(m->content) / 8);
-  for (int i = BEGIN; i < MAP_SIZE; i++)
+  for (unsigned i = BEGIN; i < MAP_SIZE; i++)
   {
     m->content[i] = NULL;
   }
@@ -14,7 +14,7 @@ void map_init(struct map *m)
 
 key_t map_insert(struct map *m, value_t v)
 {
-  value_t *walker = m->content+2;
+  value_t *walker = m->content+BEGIN;
   int counter = BEGIN;
   while (*walker != NULL)
   {
@@ -30,11 +30,7 @@ void map_print(struct map *m)
   int counter = BEGIN;
   while (counter < MAP_SIZE)
   {
-    if (m->content[counter] == NULL)
-    {
-      //puts("null");
-    }
-    else
+    if (m->content[counter] != NULL)
     {
       printf("%d->%p\n", counter, m->content[counter]);
     }
@@ -47,6 +43,7 @@ value_t map_find(struct map *m, key_t k)
 {
   if (check_within_bounds(k))
   {
+    printf("ERROR map_find: Key out of bounds!\n");
     return m->content[k];
   } 
   else 
@@ -61,6 +58,7 @@ value_t map_remove(struct map *m, key_t k)
 {
   if (!check_within_bounds(k))
   {
+    printf("ERROR map_remove: Key out of bounds!\n");
     return NULL;
   }
   else
@@ -73,7 +71,7 @@ value_t map_remove(struct map *m, key_t k)
     }
     else
     {
-      puts("Value for key not allocated");
+      puts("Value for key not allocated\n");
       return NULL;
     }
   }
@@ -82,7 +80,7 @@ value_t map_remove(struct map *m, key_t k)
 
 key_t map_contains_value(struct map *m, value_t target)
 {
-  for (int i = BEGIN; i < MAP_SIZE; i++)
+  for (unsigned i = BEGIN; i < MAP_SIZE; i++)
   {
     if (m->content[i] == target)
     {
@@ -99,7 +97,7 @@ void map_for_each(struct map *m,
                   void (*exec)(key_t k, value_t v, int aux),
                   int aux)
 {
-  for (int i = BEGIN; i < MAP_SIZE; i++)
+  for (unsigned i = BEGIN; i < MAP_SIZE; i++)
   {
     if (m->content[i] != NULL)
     {
@@ -113,7 +111,7 @@ void map_remove_if(struct map *m,
                    bool (*cond)(key_t k, value_t v, int aux),
                    int aux)
 {
-  for (int i = BEGIN; i < MAP_SIZE; i++)
+  for (unsigned i = BEGIN; i < MAP_SIZE; i++)
   {
     (*cond)(i, m->content[i], aux);
   }
