@@ -78,50 +78,42 @@ syscall_handler (struct intr_frame *f)
     }
     case SYS_WRITE:
     {
-      //puts("----SYS WRITE");
-      if(esp[1] == STDIN_FILENO) 
+      int fd = esp[1];
+      char* buffer = (char*)esp[2];
+      int buffer_length = esp[3];
+      if(fd != STDOUT_FILENO) 
       {
+	printf("ERROR SYS_WRITE: fd not STDOUT_FILENO\n");
         f->eax = -1;
-        break;
       }
-
-      if (esp[1] == STDOUT_FILENO)
+      else if (fd == STDOUT_FILENO)
       {
-        putbuf((char*)esp[2], esp[3]); 
+        putbuf(buffer, buffer_length); 
       }
-      f->eax = esp[3];
+      f->eax = buffer_length;
       break;
     }
     case SYS_READ:
     {
-       //puts("\n----SYS READ\n ");
-
-      if(esp[1] == STDOUT_FILENO) 
+      int fd = esp[1];
+      if(fd == STDOUT_FILENO) 
       {
         f->eax = -1;
         break;
       }
-      if(esp[1] == STDIN_FILENO) 
+      else if(fd == STDIN_FILENO) 
       {
-        
-        //int32_t *buffer = esp[2];
-        for(int i = 0; i < esp[3]; i++)
+	unsigned buffer_length = esp[3];
+        char* buffer = (char*)esp[2];
+        for(unsigned i = 0; i < buffer_length; i++)
         {
-          
           char c = (char)input_getc();
-          
           if(c == '\r')
           {
             c = '\n';
           }
-          
-          // cast void pointer to let the compiler know how much memory to alloc
-          // overides the first place of the buffer?
-          // how to move esp[2] pointer forward?
-          *((char*)esp[2]+i) = c;
-
-          putbuf((char*)esp[2]+i, 1);          
-
+          *(buffer+i) = c;
+          putbuf(buffer+i, 1);          
         }
         f->eax = esp[3];
       }
@@ -134,24 +126,21 @@ syscall_handler (struct intr_frame *f)
     }
     case SYS_OPEN:
     {
-      puts("------- INSIDE SYS_OPEN");
       struct thread* current_thread = thread_current();
       const char* file_name = (char*)esp[1];
       struct file* file_ptr = filesys_open(file_name);
       if (file_ptr == NULL)
       {
-        //file does not exist
-        //printf("file doesn't exist\n\n");
+        printf("ERROR SYS_OPEN: File doe not exist\n");
         f->eax = -1;
       }
       else
       {
-        // if fd is not found, -1 is returned. else the fd is returned
+        // if fd is not open, -1 is returned. else the fd is returned
         int fd = map_contains_value(&current_thread->container, file_ptr);
-        
-        //printf("Filedescriptor: %d\n", fd);
         if (fd == -1) {
-        //printf("File exists but is not open.\nOpening and inserting file '%s' to process wide file table.\n", file_name);
+        printf("File exists but is not open.\nOpening and inserting file '%s' to process wide file table.\n",
+	       file_name);
           fd = map_insert(&current_thread->container, file_ptr);
         }
         f->eax = fd;
