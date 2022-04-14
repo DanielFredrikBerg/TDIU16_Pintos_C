@@ -208,6 +208,8 @@ syscall_handler (struct intr_frame *f)
     case SYS_REMOVE:
     {
       puts("------- INSIDE SYS_REMOVE");
+      const char* file_name = (char*)esp[1];
+      f->eax = filesys_remove(file_name);
       break;
     }
 

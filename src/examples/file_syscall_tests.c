@@ -232,20 +232,20 @@ int main(int argc, char* argv[])
   end ( "* -------------------- press enter ---------------------- *" );
 
 
-  // msg ( "* ------------------ remove file test ------------------- *" );
-  // {
-  //   int success = JUNK;
+  msg ( "* ------------------ remove file test ------------------- *" );
+  {
+    int success = JUNK;
 
-  //   printf ("Will try to remove 'test.txt' and then open it\n");
-  //   success = remove("test.txt");
-  //   id = open("test.txt");
-  //   verify ( success && id == -1 );
+    printf ("Will try to remove 'test.txt' and then open it\n");
+    success = remove("test.txt");
+    id = open("test.txt");
+    verify ( success && id == -1 );
 
-  //   printf ("Will try to remove 'non_existent_file'\n");
-  //   success = remove("non_existent_file");
-  //   verify ( ! success );
-  // }
-  // end ( "* -------------------- press enter ---------------------- *" );
+    printf ("Will try to remove 'non_existent_file'\n");
+    success = remove("non_existent_file");
+    verify ( ! success );
+  }
+  end ( "* -------------------- press enter ---------------------- *" );
 
   // printf ("To emergency exit QEMU at any time:\n");
   // printf ("Hold 'Control' and press 'a' and then \n");
