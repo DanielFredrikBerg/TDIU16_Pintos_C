@@ -3,7 +3,6 @@
 #include "userprog/syscall.h"
 #include "threads/interrupt.h"
 #include "threads/thread.h"
-
 #include <inttypes.h>
 
 /* header files you probably need, they are not used yet */
@@ -49,107 +48,197 @@ const int argc[] = {
 };
 
 
+static
+int syscall_write(struct thread* thread, int fd, char* buffer, int buffer_length)
+{
+  if(fd == STDIN_FILENO) 
+      {
+        return -1;
+      }
+    else if (fd == STDOUT_FILENO)
+    {
+      // write to screen
+      putbuf(buffer, buffer_length);
+      return buffer_length;
+    }
+    else 
+    {
+      // fd is a file
+      struct file *file_ptr = map_find(&thread->container, fd);
+      if (file_ptr)
+      {
+        // write from buffer to file_ptr
+        return file_write(file_ptr, buffer, buffer_length);
+      } else
+      {
+        return -1;
+      }
+    }
+}
+
+
+static
+int syscall_read(struct thread* thread, int fd, char* buffer, int buffer_length)
+{
+  if(fd == STDOUT_FILENO) 
+  {
+    return -1;
+  }
+  else if(fd == STDIN_FILENO) 
+  {
+    // read from keyboard
+    for(int i = 0; i < buffer_length; i++)
+    {
+      char c = (char)input_getc();
+      if(c == '\r')
+      {
+        c = '\n';
+      }
+      *(buffer+i) = c;
+      putbuf(buffer+i, 1);          
+    }
+    return buffer_length;
+  } 
+  else
+  {
+    // read from file
+    struct file *file_ptr = map_find(&thread->container, fd);
+    
+    if(file_ptr)
+    {
+      return file_read(file_ptr, buffer, buffer_length);
+    }
+    else 
+    {
+      // file does not exists;
+      return -1;
+    }
+  }
+}
+
+
+static
+int syscall_open(struct thread* thread, const char* file_name)
+{
+  struct file* file_ptr = filesys_open(file_name);
+  if (file_ptr)
+  {
+    // if fd is not open, -1 is returned. else the fd is returned
+    int fd = map_contains_value(&thread->container, file_ptr);
+    if (fd == -1) {
+      // file exists but not opened
+      // add fd in process wide file table
+      fd = map_insert(&thread->container, file_ptr);
+    }
+    return fd;
+  }
+  else
+  {
+    // file does not exist
+    return -1;
+  }
+}
+
+
+static
+void syscall_close(struct thread* thread, int fd)
+{
+  struct file *file_ptr = map_find(&thread->container, fd);
+
+  if(file_ptr)
+  {
+    map_remove(&thread->container, fd);
+    file_close(file_ptr);
+  }
+}
+
+
+static
+void syscall_seek(struct thread* thread, int fd, int32_t new_pos)
+{
+  struct file *file_ptr = map_find(&thread->container, fd);
+
+  if (file_ptr)
+  {
+    /* calling seek past filesize is defined to return the position of the end of file */
+    int32_t max_len = file_length(file_ptr); 
+    if (new_pos > max_len)
+    {
+      file_seek(file_ptr, max_len);
+    }
+    else
+    {
+      file_seek(file_ptr, new_pos);
+    }
+  }
+}
+
+
+static
+int syscall_tell(struct thread* thread, int fd)
+{
+  struct file *file_ptr = map_find(&thread->container, fd);
+  if(file_ptr)
+  {
+    return file_tell(file_ptr);
+  } 
+  else
+  {
+    return -1;
+  } 
+}
+
+
+static
+int syscall_filesize(struct thread* thread, int fd)
+{
+  struct file *file_ptr = map_find(&thread->container, fd);
+
+  if(file_ptr)
+  {
+    return file_length(file_ptr);
+  } 
+  else
+  {
+    return -1;
+  }
+}
+
+
 static void
 syscall_handler (struct intr_frame *f)
 {
   int32_t* esp = (int32_t*)f->esp;
   int32_t syscall_num = *(esp);
+  struct thread* current_thread = thread_current();
   int fd = esp[1];
 
-  switch (  syscall_num /* retrive syscall number */ )
+  switch (  syscall_num )
   {
     case SYS_EXIT:
     {
-      //printf("__EXIT STATUS = %d\n", *(esp+1));
       thread_exit();
       break;
     }
 
-
     case SYS_HALT:
     {
-      //puts("++INSIDE SYS_HALT\n");
       power_off();
       break;
       
     }
 
-
     case SYS_WRITE: /* int fd, void *buffer, unsigned lenght */
     {
-      struct thread* current_thread = thread_current();
-      char* buffer = (char*)esp[2];
-      int buffer_length = esp[3];
-      //printf("\n------ FD = %d \n", fd);
-
-      if(fd == STDIN_FILENO) 
-      {
-	      //printf("ERROR SYS_WRITE: fd not STDOUT_FILENO\n");
-        f->eax = -1;
-
-      }
-      else if (fd == STDOUT_FILENO)
-      {
-        putbuf(buffer, buffer_length); 
-      }
-      else 
-      {
-        struct file *file_ptr = map_find(&current_thread->container, fd);
-        if (file_ptr)
-        {
-          // write from buffer to file_ptr
-          f->eax = file_write(file_ptr, buffer, esp[3]);
-        } else
-        {
-          f->eax = -1;
-        }
-      }
+      f->eax = syscall_write(current_thread, fd, (char*)esp[2], esp[3]);
       break;
     }
-
 
     case SYS_READ:
     {
-      struct thread* current_thread = thread_current();
-      char* buffer = (char*)esp[2];
-      unsigned buffer_length = esp[3];
-
-      if(fd == STDOUT_FILENO) 
-      {
-        f->eax = -1;
-        break;
-      }
-      else if(fd == STDIN_FILENO) 
-      {
-
-        for(unsigned i = 0; i < buffer_length; i++)
-        {
-          char c = (char)input_getc();
-          if(c == '\r')
-          {
-            c = '\n';
-          }
-          *(buffer+i) = c;
-          putbuf(buffer+i, 1);          
-        }
-        f->eax = esp[3];
-      } 
-      else
-      {
-        struct file *file_ptr = map_find(&current_thread->container, fd);
-        
-        if(file_ptr)
-        {
-          f->eax = file_read(file_ptr, buffer, buffer_length);
-        }
-        else 
-        {
-          f->eax = -1;
-        }
-      }
+      f->eax = syscall_read(current_thread, fd, (char*)esp[2], esp[3]);
       break;
     }
-
 
     case SYS_CREATE:
     {
@@ -157,122 +246,48 @@ syscall_handler (struct intr_frame *f)
       break;
     }
 
-
     case SYS_OPEN:
     {
-      struct thread* current_thread = thread_current();
-      const char* file_name = (char*)esp[1];
-      struct file* file_ptr = filesys_open(file_name);
-      if (file_ptr == NULL)
-      {
-        printf("ERROR SYS_OPEN: File doe not exist\n");
-        f->eax = -1;
-      }
-      else
-      {
-        // if fd is not open, -1 is returned. else the fd is returned
-        int fd = map_contains_value(&current_thread->container, file_ptr);
-        if (fd == -1) {
-        printf("File exists but is not open.\nOpening and inserting file '%s' to process wide file table.\n",
-	       file_name);
-          fd = map_insert(&current_thread->container, file_ptr);
-        }
-        f->eax = fd;
-      }
+      f->eax = syscall_open(current_thread, (char*)esp[1]);
       break;
     }
-
 
     case SYS_CLOSE:
     {
-      //puts("------- INSIDE SYS_CLOSE");
-      struct thread* current_thread = thread_current();
-      struct file *file_ptr = map_find(&current_thread->container, fd);
-
-      if(file_ptr != NULL)
-      {
-        map_remove(&current_thread->container, fd);
-        file_close(file_ptr);
-      }
+      syscall_close(current_thread, fd);
       break;
     }
 
-
     case SYS_REMOVE:
     {
-      //puts("------- INSIDE SYS_REMOVE");
       const char* file_name = (char*)esp[1];
       f->eax = filesys_remove(file_name);
       break;
     }
 
-
     case SYS_SEEK:
     {
-      //puts("------- INSIDE SYS_SEEK");
-      int32_t new_pos = esp[2];
-      struct thread* current_thread = thread_current();
-      struct file *file_ptr = map_find(&current_thread->container, fd);
-
-      if (file_ptr)
-      {
-        /* calling seek past filesize is defined to return the position of the end of file */
-        int32_t max_len = file_length(file_ptr); 
-        if (new_pos > max_len)
-        {
-          file_seek(file_ptr, max_len);
-        }
-        else
-        {
-          file_seek(file_ptr, new_pos);
-        }
-
-      }
+      syscall_seek(current_thread, fd, esp[2]);
       break;
     }
-
 
     case SYS_TELL:
     {
-      //puts("------- INSIDE SYS_TELL");
-      struct thread* current_thread = thread_current();
-      struct file *file_ptr = map_find(&current_thread->container, fd);
-      if(file_ptr)
-      {
-        f->eax = file_tell(file_ptr);
-      } 
-      else
-      {
-        f->eax = -1;
-      } 
-
+      f->eax = syscall_tell(current_thread, fd);
       break;
     }
-
 
     case SYS_FILESIZE:
     {
-      struct thread* current_thread = thread_current();
-      struct file *file_ptr = map_find(&current_thread->container, fd);
-
-      if(file_ptr)
-      {
-        f->eax = file_length(file_ptr);
-      } 
-      else
-      {
-        f->eax = -1;
-      }
+      f->eax = syscall_filesize(current_thread, fd);
       break;
     }
-
 
     default:
     {
       printf ("______Executed an unknown system call!\n");
       printf ("___Stack top + 0: %d\n", esp[0]);
       printf ("___Stack top + 1: %d\n", esp[1]);
-
       thread_exit ();
     }
   }
