@@ -56,18 +56,11 @@ syscall_handler (struct intr_frame *f)
   int32_t syscall_num = *(esp);
   int fd = esp[1];
 
-  /*
-   * sys_call_id = esp[0]
-   * fd = esp[1]
-   * buffer = esp[2]
-   * length = esp[3]
-   */
-
   switch (  syscall_num /* retrive syscall number */ )
   {
     case SYS_EXIT:
     {
-      printf("__EXIT STATUS = %d\n", *(esp+1));
+      //printf("__EXIT STATUS = %d\n", *(esp+1));
       thread_exit();
       break;
     }
@@ -75,7 +68,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_HALT:
     {
-      puts("++INSIDE SYS_HALT\n");
+      //puts("++INSIDE SYS_HALT\n");
       power_off();
       break;
       
@@ -91,7 +84,7 @@ syscall_handler (struct intr_frame *f)
 
       if(fd == STDIN_FILENO) 
       {
-	      printf("ERROR SYS_WRITE: fd not STDOUT_FILENO\n");
+	      //printf("ERROR SYS_WRITE: fd not STDOUT_FILENO\n");
         f->eax = -1;
 
       }
@@ -192,7 +185,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_CLOSE:
     {
-      puts("------- INSIDE SYS_CLOSE");
+      //puts("------- INSIDE SYS_CLOSE");
       struct thread* current_thread = thread_current();
       struct file *file_ptr = map_find(&current_thread->container, fd);
 
@@ -207,7 +200,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_REMOVE:
     {
-      puts("------- INSIDE SYS_REMOVE");
+      //puts("------- INSIDE SYS_REMOVE");
       const char* file_name = (char*)esp[1];
       f->eax = filesys_remove(file_name);
       break;
@@ -216,14 +209,60 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_SEEK:
     {
-      puts("------- INSIDE SYS_SEEK");
+      //puts("------- INSIDE SYS_SEEK");
+      int32_t new_pos = esp[2];
+      struct thread* current_thread = thread_current();
+      struct file *file_ptr = map_find(&current_thread->container, fd);
+
+      if (file_ptr)
+      {
+        /* calling seek past filesize is defined to return the position of the end of file */
+        int32_t max_len = file_length(file_ptr); 
+        if (new_pos > max_len)
+        {
+          file_seek(file_ptr, max_len);
+        }
+        else
+        {
+          file_seek(file_ptr, new_pos);
+        }
+
+      }
       break;
     }
 
 
     case SYS_TELL:
     {
-      puts("------- INSIDE SYS_TELL");
+      //puts("------- INSIDE SYS_TELL");
+      struct thread* current_thread = thread_current();
+      struct file *file_ptr = map_find(&current_thread->container, fd);
+      if(file_ptr)
+      {
+        f->eax = file_tell(file_ptr);
+      } 
+      else
+      {
+        f->eax = -1;
+      } 
+
+      break;
+    }
+
+
+    case SYS_FILESIZE:
+    {
+      struct thread* current_thread = thread_current();
+      struct file *file_ptr = map_find(&current_thread->container, fd);
+
+      if(file_ptr)
+      {
+        f->eax = file_length(file_ptr);
+      } 
+      else
+      {
+        f->eax = -1;
+      }
       break;
     }
 
@@ -231,7 +270,6 @@ syscall_handler (struct intr_frame *f)
     default:
     {
       printf ("______Executed an unknown system call!\n");
-
       printf ("___Stack top + 0: %d\n", esp[0]);
       printf ("___Stack top + 1: %d\n", esp[1]);
 

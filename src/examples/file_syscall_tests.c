@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
     int length = strlen (msg);
     int result = JUNK;
 
-   result = write (STDOUT_FILENO, msg, length);
+    result = write (STDOUT_FILENO, msg, length);
 
     for ( i = 0; i < argc; ++i )
     {
@@ -103,10 +103,6 @@ int main(int argc, char* argv[])
     printf ("Will try to create 'test.txt'\n");
     success = create("test.txt", SIZE);
     verify ( success != JUNK && success );
-
-    printf ("Will try to create 'test2.txt'\n");
-    success = create("test2.txt", SIZE);
-    verify ( success != JUNK && success );
   }
   end ( "* -------------------- press enter ---------------------- *" );
 
@@ -119,18 +115,7 @@ int main(int argc, char* argv[])
 
     printf ("Will try to open 'test.txt'\n");
     id = open("test.txt");
-    printf("returned: %d", id);
     verify ( id > 1 );
-
-    // printf ("Will try to open already open file 'test.txt'\n");
-    // id = open("test.txt");
-    // printf("Sould return 2, returned: %d", id);
-    // verify ( id == 2 );
-
-    // printf ("Will try to open 'test2.txt'\n");
-    // id = open("test2.txt");
-    // printf("Sould return 3, returned: %d", id);
-    // verify ( id == 3 );
   }
   end ( "* -------------------- press enter ---------------------- *" );
 
@@ -162,6 +147,7 @@ int main(int argc, char* argv[])
     verify ( result == -1 );
   }
   end ( "* -------------------- press enter ---------------------- *" );
+
 
   msg ( "* ------------------ read file test --------------------- *" );
   {
@@ -247,71 +233,73 @@ int main(int argc, char* argv[])
   }
   end ( "* -------------------- press enter ---------------------- *" );
 
-  // printf ("To emergency exit QEMU at any time:\n");
-  // printf ("Hold 'Control' and press 'a' and then \n");
-  // printf ("release 'Control' and press 'x'\n");
+  printf ("To emergency exit QEMU at any time:\n");
+  printf ("Hold 'Control' and press 'a' and then \n");
+  printf ("release 'Control' and press 'x'\n");
 
-  // end ( "* -------------------- press enter ---------------------- *" );
+  end ( "* -------------------- press enter ---------------------- *" );
 
 
-  // msg ( "* ---------------- seek/tell file test ------------------ *" );
-  // {
-  //   char buffer[8];
-  //   char verify_buffer[8];
-  //   int result = JUNK;
-  //   int success = CRAP;
+  msg ( "* ---------------- seek/tell file test ------------------ *" );
+  {
+    char buffer[8];
+    char verify_buffer[8];
+    int result = JUNK;
+    int success = CRAP;
 
-  //   init_buffer(buffer, 8);
-  //   init_buffer(verify_buffer, 8);
+    init_buffer(buffer, 8);
+    init_buffer(verify_buffer, 8);
 
-  //   printf ("Will try to create and open 'test.txt'\n");
-  //   success = create("test.txt", SIZE);
-  //   id = open("test.txt");
-  //   verify ( success != CRAP && success && id > 1 );
+    printf ("Will try to create and open 'test.txt'\n");
+    success = create("test.txt", SIZE);
+    id = open("test.txt");
+    verify ( success != CRAP && success && id > 1 );
 
-  //   printf ("Will try to write a sequence to '%d'\n", id);
-  //   for ( i = 0; i < 16; ++i)
-  //   {
-  //     for ( j = 0; j < 16; ++j)
-  //     {
-  //       snprintf (buffer, 8, "%4d", j*16+i);
-  //       seek (id, (j*16+i)*4);
-  //       result = write (STDOUT_FILENO, buffer, 4);
-  //       result = write (id, buffer, 4);
-  //       success = success && (result == 4);
-  //       result = tell (id);
-  //       success = success && (result == (j*16+i+1)*4);
-  //     }
-  //     result = write(STDOUT_FILENO, "\n", 1);
-  //   }
-  //   verify ( success );
+    printf ("Will try to write a sequence to '%d'\n", id);
+    for ( i = 0; i < 16; ++i)
+    {
+      for ( j = 0; j < 16; ++j)
+      {
+        snprintf (buffer, 8, "%4d", j*16+i);
+        seek (id, (j*16+i)*4);
+        result = write (STDOUT_FILENO, buffer, 4);
+        result = write (id, buffer, 4); // this is correct
+        success = success && (result == 4); // true for the first one fd = 0
 
-  //   printf ("Will try to read the sequence from '%d'\n", id);
-  //   seek (id, 0);
-  //   for ( i = 0; i < 16; ++i)
-  //   {
-  //     for ( j = 0; j < 16; ++j)
-  //     {
-  //       snprintf (verify_buffer, 8, "%4d", i*16+j);
-  //       result = read(id, buffer, 4);
-  //       success = success && (result == 4);
-  //       result = write(STDOUT_FILENO, buffer, 4);
+        result = tell (id);
+        success = success && (result == (j*16+i+1)*4);
 
-  //       success = success && (memcmp(buffer, verify_buffer, 4) == 0);
-  //     }
-  //     result = write(STDOUT_FILENO, "\n", 1);
-  //   }
-  //   result = tell (id);
-  //   verify ( success && result == 256*4 );
+      }
+      result = write(STDOUT_FILENO, "\n", 1);
+    }
+    verify ( success );
 
-  //   printf ("Will try to determine filesize and seek past it\n");
-  //   result = filesize (id);
-	// /* calling seek past filesize is defined to return the position of the end of file */
-  //   seek (id, result*2);
-  //   result = tell (id);
-  //   verify ( result == SIZE );
-  // }
-  // end ( "* -------------------- press enter ---------------------- *" );
+    printf ("Will try to read the sequence from '%d'\n", id);
+    seek (id, 0);
+    for ( i = 0; i < 16; ++i)
+    {
+      for ( j = 0; j < 16; ++j)
+      {
+        snprintf (verify_buffer, 8, "%4d", i*16+j);
+        result = read(id, buffer, 4);
+        success = success && (result == 4);
+        result = write(STDOUT_FILENO, buffer, 4);
+
+        success = success && (memcmp(buffer, verify_buffer, 4) == 0);
+      }
+      result = write(STDOUT_FILENO, "\n", 1);
+    }
+    result = tell (id);
+    verify ( success && result == 256*4 );
+
+    printf ("Will try to determine filesize and seek past it\n");
+    result = filesize (id);
+	/* calling seek past filesize is defined to return the position of the end of file */
+    seek (id, result*2);
+    result = tell (id);
+    verify ( result == SIZE );
+  }
+  end ( "* -------------------- press enter ---------------------- *" );
   return 0;
 }
 
