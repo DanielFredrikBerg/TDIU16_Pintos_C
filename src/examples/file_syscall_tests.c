@@ -44,56 +44,56 @@ int main(int argc, char* argv[])
   int id = JUNK;
   int i, j;
 
-  // msg ( "* ------------------ write screen test ------------------ *" );
-  // {
-  //   char* msg = "Now displaying the arguments to main\n";
-  //   int length = strlen (msg);
-  //   int result = JUNK;
+  msg ( "* ------------------ write screen test ------------------ *" );
+  {
+    char* msg = "Now displaying the arguments to main\n";
+    int length = strlen (msg);
+    int result = JUNK;
 
-  //  result = write (STDOUT_FILENO, msg, length);
+   result = write (STDOUT_FILENO, msg, length);
 
-  //   for ( i = 0; i < argc; ++i )
-  //   {
-  //     write (STDOUT_FILENO, argv[i], strlen (argv[i]) );
-  //     write (STDOUT_FILENO, "\n", 1);
-  //   }
+    for ( i = 0; i < argc; ++i )
+    {
+      write (STDOUT_FILENO, argv[i], strlen (argv[i]) );
+      write (STDOUT_FILENO, "\n", 1);
+    }
 
-  //   verify (length == result);
-  // }
-  // end ( "* -------------------- press enter ---------------------- *" );
+    verify (length == result);
+  }
+  end ( "* -------------------- press enter ---------------------- *" );
 
-  // printf ("To emergency exit QEMU at any time:\n");
-  // printf ("Hold 'Control' and press 'a' and then \n");
-  // printf ("release 'Control' and press 'x'\n");
+  printf ("To emergency exit QEMU at any time:\n");
+  printf ("Hold 'Control' and press 'a' and then \n");
+  printf ("release 'Control' and press 'x'\n");
 
-  // end ( "* -------------------- press enter ---------------------- *" );
+  end ( "* -------------------- press enter ---------------------- *" );
 
 
-  // msg ( "* ----------------- read keyboard test ------------------ *" );
-  // {
-  //   char* input = "qwerty1234";
-  //   char buffer[10];
-  //   int length = CRAP;
-  //   int result = JUNK;
-  //   char yes;
+  msg ( "* ----------------- read keyboard test ------------------ *" );
+  {
+    char* input = "qwerty1234";
+    char buffer[10];
+    int length = CRAP;
+    int result = JUNK;
+    char yes;
 
-  //   init_buffer(buffer, 10);
+    init_buffer(buffer, 10);
 
-  //   printf ("Will now try to read 10 characters.\n");
-  //   printf ("Please write \"%s\": ", input);
-  //   result = read ( STDIN_FILENO, buffer, 10 );
-  //   length = strlen( buffer );
-  //   printf ("\nThe following characters was read: '%s'\n", buffer);
+    printf ("Will now try to read 10 characters.\n");
+    printf ("Please write \"%s\": ", input);
+    result = read ( STDIN_FILENO, buffer, 10 );
+    length = strlen( buffer );
+    printf ("\nThe following characters was read: '%s'\n", buffer);
 
-  //   verify ( length == result && memcmp(buffer, input, 10) == 0 );
+    verify ( length == result && memcmp(buffer, input, 10) == 0 );
 
-  //   printf ("\nDid you see each character as you typed it? (y/n) ");
-  //   result = read ( STDIN_FILENO, &yes, 1 );
-  //   printf ("\n");
+    printf ("\nDid you see each character as you typed it? (y/n) ");
+    result = read ( STDIN_FILENO, &yes, 1 );
+    printf ("\n");
 
-  //   verify ( result == 1 && yes == 'y');
-  // }
-  // end ( "* -------------------- press enter ---------------------- *" );
+    verify ( result == 1 && yes == 'y');
+  }
+  end ( "* -------------------- press enter ---------------------- *" );
 
 
   msg ( "* ------------------ create file test ------------------- *" );
@@ -135,34 +135,33 @@ int main(int argc, char* argv[])
   end ( "* -------------------- press enter ---------------------- *" );
 
 
-  // msg ( "* ------------------ write file test -------------------- *" );
-  // {
-  //   char buffer[8];
-  //   int result = JUNK;
-  //   bool success = true;
+  msg ( "* ------------------ write file test -------------------- *" );
+  {
+    char buffer[8];
+    int result = JUNK;
+    bool success = true;
 
-  //   init_buffer(buffer, 8);
+    init_buffer(buffer, 8);
 
-  //   printf ("Will try to write a sequence to '%d'\n", id);
-  //   for ( i = 0; i < 16; ++i)
-  //   {
-  //     for ( j = 0; j < 16; ++j)
-  //     {
-  //       snprintf(buffer, 8, "%4d", i*16+j);
-  //       result = write(STDOUT_FILENO, buffer, 4);
-  //       result = write(id, buffer, 4);
-  //       success = success && (result == 4);
-  //     }
-  //     result = write(STDOUT_FILENO, "\n", 1);
-  //   }
-  //   verify ( success );
+    printf ("Will try to write a sequence to '%d'\n", id);
+    for ( i = 0; i < 16; ++i)
+    {
+      for ( j = 0; j < 16; ++j)
+      {
+        snprintf(buffer, 8, "%4d", i*16+j);
+        result = write(STDOUT_FILENO, buffer, 4);
+        result = write(id, buffer, 4);
+        success = success && (result == 4);
+      }
+      result = write(STDOUT_FILENO, "\n", 1);
+    }
+    verify ( success );
 
-  //   printf ("Will try to write 8 characters to '%d'\n", JUNK);
-  //   result = write(JUNK, buffer, 8);
-  //   verify ( result == -1 );
-  // }
-  // end ( "* -------------------- press enter ---------------------- *" );
-
+    printf ("Will try to write 8 characters to '%d'\n", JUNK);
+    result = write(JUNK, buffer, 8);
+    verify ( result == -1 );
+  }
+  end ( "* -------------------- press enter ---------------------- *" );
 
   // msg ( "* ------------------ read file test --------------------- *" );
   // {

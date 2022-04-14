@@ -43,11 +43,11 @@ value_t map_find(struct map *m, key_t k)
 {
   if (check_within_bounds(k))
   {
-    printf("ERROR map_find: Key out of bounds!\n");
     return m->content[k];
   } 
   else 
   {
+    printf("\nERROR map_find: Key out of bounds!\n");
     return NULL;
   }
 
@@ -84,7 +84,7 @@ key_t map_contains_value(struct map *m, value_t target)
   {
     if (m->content[i] == target)
     {
-      printf("Currently comparing %d == %d", m->content[i], target);
+      //printf("Currently comparing %d == %d", m->content[i], target);
       return i;
     }
   }

@@ -68,7 +68,9 @@ syscall_handler (struct intr_frame *f)
       printf("__EXIT STATUS = %d\n", *(esp+1));
       thread_exit();
       break;
-    } 
+    }
+
+
     case SYS_HALT:
     {
       puts("++INSIDE SYS_HALT\n");
@@ -76,23 +78,43 @@ syscall_handler (struct intr_frame *f)
       break;
       
     }
-    case SYS_WRITE:
+
+
+    case SYS_WRITE: /* int fd, void *buffer, unsigned lenght */
     {
+      struct thread* current_thread = thread_current();
       int fd = esp[1];
       char* buffer = (char*)esp[2];
       int buffer_length = esp[3];
-      if(fd != STDOUT_FILENO) 
+      //printf("\n------ FD = %d \n", fd);
+
+      if(fd == STDIN_FILENO) 
       {
-	printf("ERROR SYS_WRITE: fd not STDOUT_FILENO\n");
+	      printf("ERROR SYS_WRITE: fd not STDOUT_FILENO\n");
         f->eax = -1;
+
       }
       else if (fd == STDOUT_FILENO)
       {
         putbuf(buffer, buffer_length); 
       }
-      f->eax = buffer_length;
+      else 
+      {
+
+        struct file *file_ptr = map_find(&current_thread->container, fd);
+        if (file_ptr)
+        {
+          // write from buffer to file_ptr
+          f->eax = file_write(file_ptr, buffer, esp[3]);
+        } else
+        {
+          f->eax = -1;
+        }
+      }
       break;
     }
+
+
     case SYS_READ:
     {
       int fd = esp[1];
@@ -103,7 +125,7 @@ syscall_handler (struct intr_frame *f)
       }
       else if(fd == STDIN_FILENO) 
       {
-	unsigned buffer_length = esp[3];
+	      unsigned buffer_length = esp[3];
         char* buffer = (char*)esp[2];
         for(unsigned i = 0; i < buffer_length; i++)
         {
@@ -119,11 +141,15 @@ syscall_handler (struct intr_frame *f)
       }
       break;
     }
+
+
     case SYS_CREATE:
     {
       f->eax = filesys_create((char*)esp[1], esp[2]);
       break;
     }
+
+
     case SYS_OPEN:
     {
       struct thread* current_thread = thread_current();
@@ -147,26 +173,36 @@ syscall_handler (struct intr_frame *f)
       }
       break;
     }
+
+
     case SYS_CLOSE:
     {
       puts("------- INSIDE SYS_CLOSE");
       break;
     }
+
+
     case SYS_REMOVE:
     {
       puts("------- INSIDE SYS_REMOVE");
       break;
     }
+
+
     case SYS_SEEK:
     {
       puts("------- INSIDE SYS_SEEK");
       break;
     }
+
+
     case SYS_TELL:
     {
       puts("------- INSIDE SYS_TELL");
       break;
     }
+
+
     default:
     {
       printf ("______Executed an unknown system call!\n");
