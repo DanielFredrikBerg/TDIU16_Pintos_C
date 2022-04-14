@@ -100,7 +100,6 @@ syscall_handler (struct intr_frame *f)
       }
       else 
       {
-
         struct file *file_ptr = map_find(&current_thread->container, fd);
         if (file_ptr)
         {
@@ -117,7 +116,11 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_READ:
     {
+      struct thread* current_thread = thread_current();
       int fd = esp[1];
+      char* buffer = (char*)esp[2];
+      unsigned buffer_length = esp[3];
+
       if(fd == STDOUT_FILENO) 
       {
         f->eax = -1;
@@ -125,8 +128,7 @@ syscall_handler (struct intr_frame *f)
       }
       else if(fd == STDIN_FILENO) 
       {
-	      unsigned buffer_length = esp[3];
-        char* buffer = (char*)esp[2];
+
         for(unsigned i = 0; i < buffer_length; i++)
         {
           char c = (char)input_getc();
@@ -138,6 +140,20 @@ syscall_handler (struct intr_frame *f)
           putbuf(buffer+i, 1);          
         }
         f->eax = esp[3];
+      } 
+      else
+      {
+        struct file *file_ptr = map_find(&current_thread->container, fd);
+        
+        if(file_ptr)
+        {
+          f->eax = file_read(file_ptr, buffer, buffer_length);
+        }
+        else 
+        {
+          f->eax = -1;
+        }
+
       }
       break;
     }

@@ -163,41 +163,41 @@ int main(int argc, char* argv[])
   }
   end ( "* -------------------- press enter ---------------------- *" );
 
-  // msg ( "* ------------------ read file test --------------------- *" );
-  // {
-  //   char buffer[8];
-  //   char verify_buffer[8];
-  //   int result = JUNK;
-  //   bool success = true;
+  msg ( "* ------------------ read file test --------------------- *" );
+  {
+    char buffer[8];
+    char verify_buffer[8];
+    int result = JUNK;
+    bool success = true;
 
-  //   init_buffer(buffer, 8);
-  //   init_buffer(verify_buffer, 8);
+    init_buffer(buffer, 8);
+    init_buffer(verify_buffer, 8);
 
-  //   printf ("Will try to reopen 'test.txt'\n");
-  //   close(id);
-  //   id = open("test.txt");
+    printf ("Will try to reopen 'test.txt'\n");
+    close(id);
+    id = open("test.txt");
 
-  //   printf ("Will try to read a sequence from '%d'\n", id);
-  //   for ( i = 0; i < 16; ++i)
-  //   {
-  //     for ( j = 0; j < 16; ++j)
-  //     {
-  //       snprintf(verify_buffer, 8, "%4d", i*16+j);
-  //       result = read(id, buffer, 4);
-  //       success = success && (result == 4);
-  //       result = write(STDOUT_FILENO, buffer, 4);
+    printf ("Will try to read a sequence from '%d'\n", id);
+    for ( i = 0; i < 16; ++i)
+    {
+      for ( j = 0; j < 16; ++j)
+      {
+        snprintf(verify_buffer, 8, "%4d", i*16+j);
+        result = read(id, buffer, 4);
+        success = success && (result == 4);
+        result = write(STDOUT_FILENO, buffer, 4);
 
-  //       success = success && (memcmp(buffer, verify_buffer, 4) == 0);
-  //     }
-  //     result = write(STDOUT_FILENO, "\n", 1);
-  //   }
-  //   verify ( success );
+        success = success && (memcmp(buffer, verify_buffer, 4) == 0);
+      }
+      result = write(STDOUT_FILENO, "\n", 1);
+    }
+    verify ( success );
 
-  //   printf ("Will try to read 8 characters from '%d'\n", JUNK);
-  //   result = read(JUNK, buffer, 8);
-  //   verify ( result == -1 );
-  // }
-  // end ( "* -------------------- press enter ---------------------- *" );
+    printf ("Will try to read 8 characters from '%d'\n", JUNK);
+    result = read(JUNK, buffer, 8);
+    verify ( result == -1 );
+  }
+  end ( "* -------------------- press enter ---------------------- *" );
 
 
   // msg ( "* ------------------ close file test -------------------- *" );
