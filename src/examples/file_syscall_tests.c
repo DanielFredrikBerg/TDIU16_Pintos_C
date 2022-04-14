@@ -200,36 +200,36 @@ int main(int argc, char* argv[])
   end ( "* -------------------- press enter ---------------------- *" );
 
 
-  // msg ( "* ------------------ close file test -------------------- *" );
-  // {
-  //   char buffer[128];
-  //   int result = JUNK;
+  msg ( "* ------------------ close file test -------------------- *" );
+  {
+    char buffer[128];
+    int result = JUNK;
 
-  //   init_buffer(buffer, 128);
+    init_buffer(buffer, 128);
 
-  //   printf ("Will try to close 'STDIN_FILENO' and then read from it.\n");
-  //   printf ("Write some input please: ");
-  //   close(STDIN_FILENO);
-  //   result = get_line(buffer, 128);
-  //   verify ( result < 128 && result == (int)strlen(buffer) );
+    printf ("Will try to close 'STDIN_FILENO' and then read from it.\n");
+    printf ("Write some input please: ");
+    close(STDIN_FILENO);
+    result = get_line(buffer, 128);
+    verify ( result < 128 && result == (int)strlen(buffer) );
 
-  //   printf ("Will try to close 'STDOUT_FILENO' and then write to it.\n");
-  //   close(STDOUT_FILENO);
-  //   result = write(STDOUT_FILENO, buffer, strlen(buffer));
-  //   printf ("\n");
-  //   verify ( result == (int)strlen(buffer) );
+    printf ("Will try to close 'STDOUT_FILENO' and then write to it.\n");
+    close(STDOUT_FILENO);
+    result = write(STDOUT_FILENO, buffer, strlen(buffer));
+    printf ("\n");
+    verify ( result == (int)strlen(buffer) );
 
-  //   printf ("Will try to close id '%d' and then read from it\n", id);
-  //   close(id);
-  //   result = read(id, buffer, 128);
-  //   verify ( result == -1 );
+    printf ("Will try to close id '%d' and then read from it\n", id);
+    close(id);
+    result = read(id, buffer, 128);
+    verify ( result == -1 );
 
-  //   printf ("Will try to close id '%d' and then read from it\n", id);
-  //   close(JUNK);
-  //   result = read(JUNK, buffer, 128);
-  //   verify ( result == -1 );
-  // }
-  // end ( "* -------------------- press enter ---------------------- *" );
+    printf ("Will try to close id '%d' and then read from it\n", id);
+    close(JUNK);
+    result = read(JUNK, buffer, 128);
+    verify ( result == -1 );
+  }
+  end ( "* -------------------- press enter ---------------------- *" );
 
 
   // msg ( "* ------------------ remove file test ------------------- *" );

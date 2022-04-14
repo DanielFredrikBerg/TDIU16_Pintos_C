@@ -54,6 +54,8 @@ syscall_handler (struct intr_frame *f)
 {
   int32_t* esp = (int32_t*)f->esp;
   int32_t syscall_num = *(esp);
+  int fd = esp[1];
+
   /*
    * sys_call_id = esp[0]
    * fd = esp[1]
@@ -83,7 +85,6 @@ syscall_handler (struct intr_frame *f)
     case SYS_WRITE: /* int fd, void *buffer, unsigned lenght */
     {
       struct thread* current_thread = thread_current();
-      int fd = esp[1];
       char* buffer = (char*)esp[2];
       int buffer_length = esp[3];
       //printf("\n------ FD = %d \n", fd);
@@ -117,7 +118,6 @@ syscall_handler (struct intr_frame *f)
     case SYS_READ:
     {
       struct thread* current_thread = thread_current();
-      int fd = esp[1];
       char* buffer = (char*)esp[2];
       unsigned buffer_length = esp[3];
 
@@ -153,7 +153,6 @@ syscall_handler (struct intr_frame *f)
         {
           f->eax = -1;
         }
-
       }
       break;
     }
@@ -194,6 +193,14 @@ syscall_handler (struct intr_frame *f)
     case SYS_CLOSE:
     {
       puts("------- INSIDE SYS_CLOSE");
+      struct thread* current_thread = thread_current();
+      struct file *file_ptr = map_find(&current_thread->container, fd);
+
+      if(file_ptr != NULL)
+      {
+        map_remove(&current_thread->container, fd);
+        file_close(file_ptr);
+      }
       break;
     }
 
