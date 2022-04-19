@@ -22,7 +22,12 @@ key_t map_insert(struct map *m, value_t v)
     counter++;
   }
   *walker = v;
-  return counter;
+  if(!check_within_bounds(counter))
+  {
+    printf("Error map_insert: map is full!");
+    return -1;
+  }
+  return counter; // fixa ogiltig fd (out of bounds)
 }
 
 void map_print(struct map *m)

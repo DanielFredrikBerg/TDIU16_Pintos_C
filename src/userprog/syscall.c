@@ -123,12 +123,11 @@ int syscall_open(struct thread* thread, const char* file_name)
   struct file* file_ptr = filesys_open(file_name);
   if (file_ptr)
   {
-    // if fd is not open, -1 is returned. else the fd is returned
-    int fd = map_contains_value(&thread->container, file_ptr);
+    // Process opens file.
+    int fd = map_insert(&thread->container, file_ptr);
     if (fd == -1) {
-      // file exists but not opened
-      // add fd in process wide file table
-      fd = map_insert(&thread->container, file_ptr);
+      // max files open
+      file_close(file_ptr);
     }
     return fd;
   }
@@ -137,6 +136,8 @@ int syscall_open(struct thread* thread, const char* file_name)
     // file does not exist
     return -1;
   }
+  file_close(file_ptr);
+  return -1;
 }
 
 
@@ -217,6 +218,7 @@ syscall_handler (struct intr_frame *f)
   {
     case SYS_EXIT:
     {
+      //process exit(status koden)      
       thread_exit();
       break;
     }

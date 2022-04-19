@@ -23,6 +23,7 @@ struct running_thread {
 // Första funktionen som körs i nya trådar.
 void thread_main(struct running_thread *data) {
   data->result = do_work(data->param);
+  
 }
 
 // Starta en ny tråd som kör funktionen "do_work" med "param" som
@@ -35,6 +36,7 @@ struct running_thread *exec(int param) {
   data->param = param;
 
   // Skapa en ny tråd som kör "thread_main" och ge den tillgång till "data".
+
   thread_new(&thread_main, data);
 
   return data;
@@ -47,6 +49,7 @@ int wait(struct running_thread *data) {
   // Hämta resultatet, frigör minnet och returnera resultatet.
   int result = data->result;
   free(data);
+  //sema_down
   return result;
 }
 
@@ -75,6 +78,7 @@ int do_work(int param) {
 // "do_work" i main-tråden.
 int main(void) {
   struct running_thread *a = exec(10);
+  sema_up()
   struct running_thread *b = exec(100);
 
   int c = do_work(5);

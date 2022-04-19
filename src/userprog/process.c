@@ -37,7 +37,8 @@ void process_init(void)
  * instead. Note however that all cleanup after a process must be done
  * in process_cleanup, and that process_cleanup are already called
  * from thread_exit - do not call cleanup twice! */
-void process_exit(int status UNUSED)
+void process_exit(int status UNUSED) 
+// Meddela förälder vilken statuskod processen avslutades.
 {
 }
 
@@ -229,7 +230,7 @@ process_wait (int child_id)
 */
   
 void
-process_cleanup (void)
+process_cleanup (void) // nånstans här, stäng alla öppna filer.
 {
   struct thread  *cur = thread_current ();
   uint32_t       *pd  = cur->pagedir;
