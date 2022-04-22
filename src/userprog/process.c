@@ -89,11 +89,15 @@ process_execute (const char *command_line)
   /* SCHEDULES function `start_process' to run (LATER) */
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
+  // wait here until starp_rocess done
 
   process_id = thread_id;
 
+  process_wait(process_id);
+
+
   /* AVOID bad stuff by turning off. YOU will fix this! */
-  power_off();
+  //power_off();
   
   
   /* WHICH thread may still be using this right now? */
@@ -181,6 +185,7 @@ start_process (struct parameters_to_start_process* parameters)
   */
   if ( ! success )
   {
+     debug("-------------------thread exited unsucessfully");
     thread_exit ();
   }
   
