@@ -52,6 +52,7 @@ void process_print_list()
 struct parameters_to_start_process
 {
   char* command_line;
+  struct semaphore sema;
 };
 
 static void
@@ -74,6 +75,9 @@ process_execute (const char *command_line)
   /* LOCAL variable will cease existence when function return! */
   struct parameters_to_start_process arguments;
 
+  sema_init(&(arguments.sema), 0);
+
+
   debug("%s#%d: process_execute(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
@@ -87,20 +91,33 @@ process_execute (const char *command_line)
   strlcpy_first_word (debug_name, command_line, 64);
   
   /* SCHEDULES function `start_process' to run (LATER) */
+  
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
-  // wait here until starp_rocess done
+  sema_down(&(arguments.sema));
+  // wait here until start_process done
+   process_id = thread_id;
+    debug("%s#%d: Before sema down:%d\n",
+        thread_current()->name,
+        thread_current()->tid,
+        process_id);
+        
+  
+  
 
-  process_id = thread_id;
-
-  process_wait(process_id);
-
+  //process_wait(process_id);
+debug("%s#%d: After sema down\n",
+        thread_current()->name,
+        thread_current()->tid);
 
   /* AVOID bad stuff by turning off. YOU will fix this! */
   //power_off();
   
-  
+  // Kommando för att exekvera testprogrammet
+  //pintos -p ../examples/sumargv -a sumargv -v -k --fs-disk=2 -- -f -q run 'sumargv 1 2 3'
+
   /* WHICH thread may still be using this right now? */
+  // Måste ske efter printen i start_process.
   free(arguments.command_line);
 
   debug("%s#%d: process_execute(\"%s\") RETURNS %d\n",
@@ -120,6 +137,7 @@ void *setup_main_stack_asm(const char *command_line, void *esp);
 static void
 start_process (struct parameters_to_start_process* parameters)
 {
+  debug("start_process");
   /* The last argument passed to thread_create is received here... */
   struct intr_frame if_;
   bool success;
@@ -168,7 +186,7 @@ start_process (struct parameters_to_start_process* parameters)
        for debug purposes. Disable the dump when it works. */
     
 //    dump_stack ( PHYS_BASE + 15, PHYS_BASE - if_.esp + 16 );
-
+    sema_up(&(parameters->sema));
   }
 
   debug("%s#%d: start_process(\"%s\") DONE\n",
@@ -186,6 +204,7 @@ start_process (struct parameters_to_start_process* parameters)
   if ( ! success )
   {
      debug("-------------------thread exited unsucessfully");
+     sema_up(&(parameters->sema));
     thread_exit ();
   }
   

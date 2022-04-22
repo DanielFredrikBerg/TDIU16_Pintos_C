@@ -195,7 +195,7 @@ thread_create (const char *name, int priority,
   tid_t tid;
 
   /* NO! I do not think there's any reason to modify this function. */
-  
+  puts("prbably");
   ASSERT (function != NULL);
 
   /* Allows to simulate a failure in palloc_get_page below. */
