@@ -51,8 +51,10 @@ void process_print_list()
 
 struct parameters_to_start_process
 {
+  bool is_success;
   char* command_line;
   struct semaphore sema;
+  //int return_value; <- Might need later? (From lab08)
 };
 
 static void
@@ -78,7 +80,7 @@ process_execute (const char *command_line)
   sema_init(&(arguments.sema), 0);
 
 
-  debug("%s#%d: process_execute(\"%s\") ENTERED\n",
+  debug(" FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
         command_line);
@@ -91,24 +93,45 @@ process_execute (const char *command_line)
   strlcpy_first_word (debug_name, command_line, 64);
   
   /* SCHEDULES function `start_process' to run (LATER) */
-  
+  // Do we get thread_id as soon as process has been started or only
+  // after the thread has completed some of its work?
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
-  sema_down(&(arguments.sema));
+  
   // wait here until start_process done
-   process_id = thread_id;
-    debug("%s#%d: Before sema down:%d\n",
+  
+    debug("%s#%d: Before sema down, thread_id=%d\n",
         thread_current()->name,
         thread_current()->tid,
-        process_id);
-        
+        thread_id);
+   
+  // Hack -> ask for approval!
+  if (thread_id == -1)
+  {
+    sema_up(&(arguments.sema));
+  }
+
+   sema_down(&(arguments.sema));
   
   
 
+  if(arguments.is_success)
+  {
+    process_id = thread_id;
+  }
+  else 
+  {
+    process_id = -1;
+  }
+  
+
   //process_wait(process_id);
-debug("%s#%d: After sema down\n",
+debug("%s#%d: After sema down -> sema is %d AND Process_id is |%d|\n",
         thread_current()->name,
-        thread_current()->tid);
+        thread_current()->tid,
+        arguments.sema.value,
+        process_id
+      );
 
   /* AVOID bad stuff by turning off. YOU will fix this! */
   //power_off();
@@ -120,7 +143,7 @@ debug("%s#%d: After sema down\n",
   // Måste ske efter printen i start_process.
   free(arguments.command_line);
 
-  debug("%s#%d: process_execute(\"%s\") RETURNS %d\n",
+  debug("LAST %s#%d: process_execute(\"%s\") RETURNS %d\n",
         thread_current()->name,
         thread_current()->tid,
         command_line, process_id);
@@ -145,7 +168,7 @@ start_process (struct parameters_to_start_process* parameters)
   char file_name[64];
   strlcpy_first_word (file_name, parameters->command_line, 64);
   
-  debug("%s#%d: start_process(\"%s\") ENTERED\n",
+  debug("SECOND %s#%d: start_process(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
         parameters->command_line);
@@ -186,15 +209,19 @@ start_process (struct parameters_to_start_process* parameters)
        for debug purposes. Disable the dump when it works. */
     
 //    dump_stack ( PHYS_BASE + 15, PHYS_BASE - if_.esp + 16 );
-    sema_up(&(parameters->sema));
+   parameters->is_success = true;
+   
+   
   }
 
+  
   debug("%s#%d: start_process(\"%s\") DONE\n",
         thread_current()->name,
         thread_current()->tid,
         parameters->command_line);
-  
-  
+   debug("Sema Up\n");
+  sema_up(&(parameters->sema));
+
   /* If load fail, quit. Load may fail for several reasons.
      Some simple examples:
      - File doeas not exist
@@ -203,8 +230,10 @@ start_process (struct parameters_to_start_process* parameters)
   */
   if ( ! success )
   {
-     debug("-------------------thread exited unsucessfully");
-     sema_up(&(parameters->sema));
+     debug("$$$$$$$$$$$$$$ load failed, exiting thread.");
+     parameters->is_success = false;
+    
+
     thread_exit ();
   }
   
