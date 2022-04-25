@@ -95,17 +95,43 @@ process_execute (const char *command_line)
   /* SCHEDULES function `start_process' to run (LATER) */
   // Do we get thread_id as soon as process has been started or only
   // after the thread has completed some of its work?
+  
+  //lab09 Innan thread_create:
+  //1. Addera processen här innan den nya skapats gör att föräldern har ansvar: NEJ.
+  //2. Ja, Förälderns process id direkt tillgängligt.
+  //3. Ja direkt(?)
+  //4. Ja processen kommer alltid läggas till i processlistan före process_cleanup.
+  //5. Ja, absolut. Tankegång -> process måste existera innan den kan börja exekvera.
+  //   Process cleanup har alltid något att städa om något går fel.
+
+  // lab09 Within thread_create:
+  // 1. Yes, but the function shouldn't be changed.
+  // 2. Förälderns process id kan lätt ordnas.
+  // 3. assld.
+  
+  // lab09 Add process within start_process
+  // 1. Ja då det är i skapelsen av sin egen tråd.
+  // 2. Ja det går att ordna via struct parameters_to_process
+  // 3. ja direkt då den skapas där.
+  // 4. Vi tror process_cleanup kan köra innan tråden och processen startats vid ex fel.
+  // 5. Ja, all data som kan behövas finns tillgänglig.
+
+  // lab09 After thread_create
+  // 1. Nej det gör förälder tråden.
+  // 2. Ja, förälderns process id är tillgängligt direkt.
+  // 3. Ja, eftersom thread och process inte är kopplade.
+  // 4. Nej
+  // 5. Ja? men processen läggs till i process_listan när processen redan startat/är klar?
+       
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
-  
-  // wait here until start_process done
   
     debug("%s#%d: Before sema down, thread_id=%d\n",
         thread_current()->name,
         thread_current()->tid,
         thread_id);
    
-  // Hack -> ask for approval!
+    // Hack -> ask for approval!
   if (thread_id == -1)
   {
     sema_up(&(arguments.sema));
@@ -188,6 +214,9 @@ start_process (struct parameters_to_start_process* parameters)
   
   if (success)
   {
+ 
+    
+    
     /* We managed to load the new program to a process, and have
        allocated memory for a process stack. The stack top is in
        if_.esp, now we must prepare and place the arguments to main on
@@ -209,6 +238,9 @@ start_process (struct parameters_to_start_process* parameters)
        for debug purposes. Disable the dump when it works. */
     
 //    dump_stack ( PHYS_BASE + 15, PHYS_BASE - if_.esp + 16 );
+
+    // Stoppa in skapelse av processen här.
+    // exec(&parameters); <- implementera!
    parameters->is_success = true;
    
    
@@ -220,6 +252,10 @@ start_process (struct parameters_to_start_process* parameters)
         thread_current()->tid,
         parameters->command_line);
    debug("Sema Up\n");
+   if(!success)
+     { 
+       parameters->is_success = false;
+     }
   sema_up(&(parameters->sema));
 
   /* If load fail, quit. Load may fail for several reasons.
@@ -231,7 +267,7 @@ start_process (struct parameters_to_start_process* parameters)
   if ( ! success )
   {
      debug("$$$$$$$$$$$$$$ load failed, exiting thread.");
-     parameters->is_success = false;
+     
     
 
     thread_exit ();

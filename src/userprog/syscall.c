@@ -17,6 +17,8 @@
 
 #define DBG(format, ...) printf(format "\n", ##__VA_ARGS__)
 
+typedef int pid_t;
+
 static void syscall_handler (struct intr_frame *);
 struct map* file_table;
 
@@ -46,6 +48,12 @@ const int argc[] = {
   /* extended, you may need to change the order of these two (plist, sleep) */
   0, 1
 };
+
+static
+pid_t syscall_exec(const char* command_line)
+{
+  return process_execute(command_line);
+}
 
 
 static
@@ -228,6 +236,13 @@ syscall_handler (struct intr_frame *f)
       power_off();
       break;
       
+    }
+
+    case SYS_EXEC:
+    {
+      //TODO: implement syscall_exec
+      f->eax = syscall_exec((char*)esp[1]);
+      break;
     }
 
     case SYS_WRITE: /* int fd, void *buffer, unsigned lenght */
