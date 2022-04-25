@@ -300,6 +300,18 @@ syscall_handler (struct intr_frame *f)
       break;
     }
 
+    case SYS_PLIST:
+    {
+      syscall_plist(void); // TODO: implement!
+      break;
+    }
+
+    case SYS_SLEEP:
+    {
+      syscall_sleep(esp[1]); // Är esp[1] verkligen millis?
+      break;
+    }
+
     default:
     {
       printf ("______Executed an unknown system call!\n");
