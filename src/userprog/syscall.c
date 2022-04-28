@@ -14,6 +14,7 @@
 #include "userprog/pagedir.h"
 #include "userprog/process.h"
 #include "devices/input.h"
+#include "devices/timer.h" // new import
 
 #define DBG(format, ...) printf(format "\n", ##__VA_ARGS__)
 
@@ -213,6 +214,18 @@ int syscall_filesize(struct thread* thread, int fd)
   }
 }
 
+static
+void syscall_plist(void)
+{
+  //TODO: print the process list here.
+  print_process_list(); // should probably be implemented in process?
+}
+
+static
+void syscall_sleep(int millis)
+{
+  timer_msleep(millis);
+}
 
 static void
 syscall_handler (struct intr_frame *f)
@@ -240,8 +253,8 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_EXEC:
     {
-      //TODO: implement syscall_exec
-      f->eax = syscall_exec((char*)esp[1]);
+      //TODO: implement syscall_exec - DONE.
+      f->eax = process_execute((char*)esp[1]);
       break;
     }
 
@@ -302,13 +315,14 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_PLIST:
     {
-      syscall_plist(void); // TODO: implement!
+      syscall_plist(); // TODO: implement!
       break;
     }
 
     case SYS_SLEEP:
     {
-      syscall_sleep(esp[1]); // Är esp[1] verkligen millis?
+      int milliseconds = esp[1];
+      syscall_sleep(milliseconds); // Är esp[1] verkligen millis? - Ja
       break;
     }
 
