@@ -48,6 +48,7 @@ void process_exit(int status UNUSED)
  * relevant debug information in a clean, readable format. */
 void process_print_list()
 {
+  plist_print(&process_map);
 }
 
 
@@ -254,11 +255,11 @@ start_process (struct parameters_to_start_process* parameters)
         thread_current()->name,
         thread_current()->tid,
         parameters->command_line);
-   debug("Sema Up\n");
-   if(!success)
-     { 
-       parameters->is_success = false;
-     }
+  debug("Sema Up\n");
+  if(!success)
+    { 
+      parameters->is_success = false;
+    }
   sema_up(&(parameters->sema));
 
   /* If load fail, quit. Load may fail for several reasons.

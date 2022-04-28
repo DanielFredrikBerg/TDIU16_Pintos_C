@@ -15,6 +15,7 @@
 #include "userprog/process.h"
 #include "devices/input.h"
 #include "devices/timer.h" // new import
+#include "plist.h"
 
 #define DBG(format, ...) printf(format "\n", ##__VA_ARGS__)
 
@@ -217,8 +218,7 @@ int syscall_filesize(struct thread* thread, int fd)
 static
 void syscall_plist(void)
 {
-  //TODO: print the process list here.
-  print_process_list(); // should probably be implemented in process?
+  process_print_list(); 
 }
 
 static
