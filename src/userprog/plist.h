@@ -1,8 +1,16 @@
 #ifndef _PLIST_H_
 #define _PLIST_H_
+#include "flist.h"
 
 typedef int key_t;
-typedef struct process_info* value_t;
+typedef struct p_info* value_p;
+
+struct p_list
+{
+  value_p content[MAP_SIZE];
+};
+
+
 /* Place functions to handle a running process here (process list).
    
    plist.h : Your function declarations and documentation.
@@ -10,12 +18,15 @@ typedef struct process_info* value_t;
 
    The following is strongly recommended:
 */
+
+void plist_init(struct p_list* m);
+
 /*
    - A function that given process inforamtion (up to you to create)
      inserts this in a list of running processes and return an integer
      that can be used to find the information later on.
 */
-key_t add_running_process(struct process_map* m, value_t pi_t);
+key_t plist_add_process(struct p_list* m, value_p pi_t);
 /*
    - A function that given an integer (obtained from above function)
      FIND the process information in the list. Should return some
@@ -23,18 +34,19 @@ key_t add_running_process(struct process_map* m, value_t pi_t);
      Or, optionally, several functions to access any information of a
      particular process that you currently need.
 */
-value_t find_running_process(struct process_map* m, key_t process_id);
+value_p plist_find_process(struct p_list* m, key_t process_id);
 /*
    - A function that given an integer REMOVE the process information
      from the list. Should only remove the information when no process
      or thread need it anymore, but must guarantee it is always
      removed EVENTUALLY.
 */
+value_p plist_remove_process(struct p_list* m, key_t process_id);
 //TODO
 
 /*- A function that print the entire content of the list in a nice,
      clean, readable format.*/
-void print_process_list(struct process_map* m);
+void plist_print(struct p_list* m);
 
 
 #endif

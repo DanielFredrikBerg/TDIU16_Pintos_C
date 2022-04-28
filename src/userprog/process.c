@@ -24,12 +24,14 @@
 
 /* HACK defines code you must remove and implement in a proper way */
 #define HACK
+struct p_list process_map;
 
 
 /* This function is called at boot time (threads/init.c) to initialize
  * the process subsystem. */
 void process_init(void)
 {
+  plist_init(&process_map);
 }
 
 /* This function is currently never called. As thread_exit does not
@@ -66,32 +68,7 @@ start_process(struct parameters_to_start_process* parameters) NO_RETURN;
    be scheduled (and may even exit) before process_execute() returns.
    Returns the new process's thread id, or TID_ERROR if the thread
    cannot be created. */
-int
-process_execute (const char *command_line) 
-{
-  char debug_name[64];
-  int command_line_size = strlen(command_line) + 1;
-  tid_t thread_id = -1;
-  int  process_id = -1;
 
-  /* LOCAL variable will cease existence when function return! */
-  struct parameters_to_start_process arguments;
-
-  sema_init(&(arguments.sema), 0);
-
-
-  debug(" FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
-        thread_current()->name,
-        thread_current()->tid,
-        command_line);
-
-  /* COPY command line out of parent process memory */
-  arguments.command_line = malloc(command_line_size);
-  strlcpy(arguments.command_line, command_line, command_line_size);
-
-
-  strlcpy_first_word (debug_name, command_line, 64);
-  
   /* SCHEDULES function `start_process' to run (LATER) */
   // Do we get thread_id as soon as process has been started or only
   // after the thread has completed some of its work?
@@ -122,6 +99,32 @@ process_execute (const char *command_line)
   // 3. Ja, eftersom thread och process inte är kopplade.
   // 4. Nej
   // 5. Ja? men processen läggs till i process_listan när processen redan startat/är klar?
+int
+process_execute (const char *command_line) 
+{
+  char debug_name[64];
+  int command_line_size = strlen(command_line) + 1;
+  tid_t thread_id = -1;
+  int  process_id = -1;
+
+  /* LOCAL variable will cease existence when function return! */
+  struct parameters_to_start_process arguments;
+
+  sema_init(&(arguments.sema), 0);
+
+
+  debug(" FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
+        thread_current()->name,
+        thread_current()->tid,
+        command_line);
+
+  /* COPY command line out of parent process memory */
+  arguments.command_line = malloc(command_line_size);
+  strlcpy(arguments.command_line, command_line, command_line_size);
+
+
+  strlcpy_first_word (debug_name, command_line, 64);
+  
        
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
