@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "../userprog/flist.h"
+#include "../userprog/plist.h"
 
 
 
@@ -100,6 +101,7 @@ struct thread
 
    struct map container;
     /* YES! You may want to add stuff. But make note of point 2 above. */
+   struct p_info process_info;
    // malloc map_container
    // free map on thread_exit()
    // char* dst = (char*)malloc(len);

@@ -57,6 +57,7 @@ struct parameters_to_start_process
   bool is_success;
   char* command_line;
   struct semaphore sema;
+  int parent_id;
   //int return_value; <- Might need later? (From lab08)
 };
 
@@ -123,6 +124,8 @@ process_execute (const char *command_line)
   arguments.command_line = malloc(command_line_size);
   strlcpy(arguments.command_line, command_line, command_line_size);
 
+  // Current threads process id becomes parent id for child process here.
+  arguments.parent_id = thread_current()->process_info.id;
 
   strlcpy_first_word (debug_name, command_line, 64);
   
@@ -243,10 +246,17 @@ start_process (struct parameters_to_start_process* parameters)
     
 //    dump_stack ( PHYS_BASE + 15, PHYS_BASE - if_.esp + 16 );
 
+  int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
     // Stoppa in skapelse av processen här.
-    // exec(&parameters); <- implementera!
+    thread_current()->process_info.id=process_id;
+    thread_current()->process_info.status=-1;
+    thread_current()->process_info.is_alive=true;
+    thread_current()->process_info.parent_id=parameters->parent_id;
+    thread_current()->process_info.status_needed=true;
+    
    parameters->is_success = true;
    
+  
    
   }
 
@@ -355,6 +365,7 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer.
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }  
+    plist_remove_process(&process_map, thread_current()->process_info.id );
   debug("%s#%d: process_cleanup() DONE with status %d\n",
         cur->name, cur->tid, status);
 }

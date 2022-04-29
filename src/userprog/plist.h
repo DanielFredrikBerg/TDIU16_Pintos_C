@@ -10,6 +10,14 @@ struct p_list
   value_p content[MAP_SIZE];
 };
 
+struct p_info
+{
+  int id;
+  int status;
+  bool is_alive;
+  int parent_id;
+  bool status_needed;
+};
 
 /* Place functions to handle a running process here (process list).
    

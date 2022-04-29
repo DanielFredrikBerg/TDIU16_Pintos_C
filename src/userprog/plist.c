@@ -2,14 +2,7 @@
 
 #include "plist.h"
 
-struct p_info
-{
-  int id;
-  int status;
-  bool is_alive;
-  int parent_id;
-  bool status_needed;
-};
+
 
 
 void plist_init(struct p_list* m)
