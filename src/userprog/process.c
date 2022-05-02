@@ -101,7 +101,7 @@ process_execute (const char *command_line)
 
   // Current threads process id becomes parent id for child process here.
   arguments.parent_id = thread_current()->process_info.id;
-
+  
   strlcpy_first_word (debug_name, command_line, 64);
   
        
@@ -118,11 +118,10 @@ process_execute (const char *command_line)
   {
     sema_up(&(arguments.sema));
   }
-
+ 
    sema_down(&(arguments.sema));
   
   
-
   if(arguments.is_success)
   {
     process_id = arguments.child_id;
@@ -221,10 +220,9 @@ start_process (struct parameters_to_start_process* parameters)
     
 //    dump_stack ( PHYS_BASE + 15, PHYS_BASE - if_.esp + 16 );
 
-  int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
-  printf("########################Process_id:%d\n", process_id);
+  
     // Stoppa in skapelse av processen här.
-    thread_current()->process_info.id=process_id;
+    
     thread_current()->process_info.status=-1;
     thread_current()->process_info.is_alive=true;
     thread_current()->process_info.parent_id=parameters->parent_id;
@@ -232,9 +230,15 @@ start_process (struct parameters_to_start_process* parameters)
     sema_init(&(thread_current()->process_info.sema), 0);
    parameters->is_success = true;
 
-   parameters->child_id = process_id;
-  
    
+   
+   // flytta add hit
+   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
+   printf("########################Process_id:%d\n", process_id);
+   thread_current()->process_info.id=process_id;
+   parameters->child_id = process_id;
+
+   // ta hand om 0 processen efter wait.
   }
 
   
@@ -304,7 +308,7 @@ process_wait (int child_id)
    mostly in case of some unrecoverable error in a thread.
 
    In such case it may happen that some data is not yet available, or
-   initialized. You must make sure that nay data needed IS available
+   initialized. You must make sure that any data needed IS available
    or initialized to something sane, or else that any such situation
    is detected.
 */

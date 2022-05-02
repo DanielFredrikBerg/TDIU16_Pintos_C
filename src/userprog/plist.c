@@ -61,7 +61,6 @@ value_p plist_remove_process(struct p_list* m, key_t k)
     {
       value_p ret = m->content[k];
       m->content[k] = NULL;
-      plist_print(m);
       return ret;
     }
     else
@@ -72,7 +71,7 @@ value_p plist_remove_process(struct p_list* m, key_t k)
   }
 }
 
-//TODO daniel will provide 
+//TODO daniel has provided
 void plist_print(struct p_list* m)
 {
   int counter = 0;
