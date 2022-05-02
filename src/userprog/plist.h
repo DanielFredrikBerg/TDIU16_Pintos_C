@@ -1,6 +1,7 @@
 #ifndef _PLIST_H_
 #define _PLIST_H_
 #include "flist.h"
+#include "threads/synch.h"
 
 typedef int key_t;
 typedef struct p_info* value_p;
@@ -17,6 +18,7 @@ struct p_info
   bool is_alive;
   int parent_id;
   bool status_needed;
+  struct semaphore sema;
 };
 
 /* Place functions to handle a running process here (process list).

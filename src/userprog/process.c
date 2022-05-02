@@ -253,7 +253,7 @@ start_process (struct parameters_to_start_process* parameters)
     thread_current()->process_info.is_alive=true;
     thread_current()->process_info.parent_id=parameters->parent_id;
     thread_current()->process_info.status_needed=true;
-    
+    sema_init(&(thread_current()->process_info.sema), 0);
    parameters->is_success = true;
    
   
