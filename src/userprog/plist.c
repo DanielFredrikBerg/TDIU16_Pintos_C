@@ -83,12 +83,12 @@ void plist_print(struct p_list* m)
   {
     if (m->content[counter] != NULL)
     {
-        printf("%2d%8d%10d%11d%15d", 
+        printf("%2d%8d%10d%11d%15d\n", 
         m->content[counter]->id, m->content[counter]->status,
         m->content[counter]->is_alive, m->content[counter]->parent_id,
         m->content[counter]->status_needed);
     }
   counter++;
   }
-  puts("\n------------------------------------------------");
+  puts("------------------------------------------------");
 }
