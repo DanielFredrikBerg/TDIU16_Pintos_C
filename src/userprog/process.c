@@ -58,6 +58,7 @@ struct parameters_to_start_process
   char* command_line;
   struct semaphore sema;
   int parent_id;
+  int child_id;
   //int return_value; <- Might need later? (From lab08)
 };
 
@@ -74,33 +75,7 @@ start_process(struct parameters_to_start_process* parameters) NO_RETURN;
   /* SCHEDULES function `start_process' to run (LATER) */
   // Do we get thread_id as soon as process has been started or only
   // after the thread has completed some of its work?
-  
-  //lab09 Innan thread_create:
-  //1. Addera processen här innan den nya skapats gör att föräldern har ansvar: NEJ.
-  //2. Ja, Förälderns process id direkt tillgängligt.
-  //3. Ja direkt(?)
-  //4. Ja processen kommer alltid läggas till i processlistan före process_cleanup.
-  //5. Ja, absolut. Tankegång -> process måste existera innan den kan börja exekvera.
-  //   Process cleanup har alltid något att städa om något går fel.
 
-  // lab09 Within thread_create:
-  // 1. Yes, but the function shouldn't be changed.
-  // 2. Förälderns process id kan lätt ordnas.
-  // 3. assld.
-  
-  // lab09 Add process within start_process
-  // 1. Ja då det är i skapelsen av sin egen tråd.
-  // 2. Ja det går att ordna via struct parameters_to_process
-  // 3. ja direkt då den skapas där.
-  // 4. Vi tror process_cleanup kan köra innan tråden och processen startats vid ex fel.
-  // 5. Ja, all data som kan behövas finns tillgänglig.
-
-  // lab09 After thread_create
-  // 1. Nej det gör förälder tråden.
-  // 2. Ja, förälderns process id är tillgängligt direkt.
-  // 3. Ja, eftersom thread och process inte är kopplade.
-  // 4. Nej
-  // 5. Ja? men processen läggs till i process_listan när processen redan startat/är klar?
 int
 process_execute (const char *command_line) 
 {
@@ -150,7 +125,7 @@ process_execute (const char *command_line)
 
   if(arguments.is_success)
   {
-    process_id = thread_id;
+    process_id = arguments.child_id;
   }
   else 
   {
@@ -247,6 +222,7 @@ start_process (struct parameters_to_start_process* parameters)
 //    dump_stack ( PHYS_BASE + 15, PHYS_BASE - if_.esp + 16 );
 
   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
+  printf("########################Process_id:%d\n", process_id);
     // Stoppa in skapelse av processen här.
     thread_current()->process_info.id=process_id;
     thread_current()->process_info.status=-1;
@@ -255,7 +231,8 @@ start_process (struct parameters_to_start_process* parameters)
     thread_current()->process_info.status_needed=true;
     sema_init(&(thread_current()->process_info.sema), 0);
    parameters->is_success = true;
-   
+
+   parameters->child_id = process_id;
   
    
   }
