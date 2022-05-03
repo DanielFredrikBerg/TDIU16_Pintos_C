@@ -17,7 +17,7 @@ struct p_info
   int status;
   bool is_alive;
   int parent_id;
-  bool status_needed;
+  bool status_needed; // false if parent_alive == false || waited_on == true
   struct semaphore sema;
 };
 

@@ -29,7 +29,7 @@ key_t plist_add_process(struct p_list* m, value_p pi_t)
     printf("\nError plist_insert: map is full!\n");
     return -1;
   }
-  plist_print(m);
+  
   return counter; // fixa ogiltig fd (out of bounds)
 }
 

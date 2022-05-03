@@ -32,6 +32,22 @@ struct p_list process_map;
 void process_init(void)
 {
   plist_init(&process_map);
+
+// Andreis try
+    thread_current()->process_info.status=-1;
+    thread_current()->process_info.is_alive=true;
+    thread_current()->process_info.parent_id=-1;
+    thread_current()->process_info.status_needed=true;
+    sema_init(&(thread_current()->process_info.sema), 0);
+
+   
+   
+   // flytta add hit
+   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
+   
+  debug("!!!!!!!!!!!!!!!!!!!!!!!!!!Process_id:%d\n", process_id);
+   thread_current()->process_info.id=process_id;
+
 }
 
 /* This function is currently never called. As thread_exit does not
@@ -193,6 +209,23 @@ start_process (struct parameters_to_start_process* parameters)
         thread_current()->tid,
         success);
   
+  thread_current()->process_info.status=-1;
+    thread_current()->process_info.is_alive=true;
+    thread_current()->process_info.parent_id=parameters->parent_id;
+    thread_current()->process_info.status_needed=true;
+    sema_init(&(thread_current()->process_info.sema), 0);
+   parameters->is_success = true;
+
+   
+   
+   // flytta add hit
+   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
+   printf("########################Process_id:%d\n", process_id);
+   thread_current()->process_info.id=process_id;
+
+  parameters->child_id = process_id;
+  plist_print(&process_map);
+
   if (success)
   {
  
@@ -223,20 +256,7 @@ start_process (struct parameters_to_start_process* parameters)
   
     // Stoppa in skapelse av processen här.
     
-    thread_current()->process_info.status=-1;
-    thread_current()->process_info.is_alive=true;
-    thread_current()->process_info.parent_id=parameters->parent_id;
-    thread_current()->process_info.status_needed=true;
-    sema_init(&(thread_current()->process_info.sema), 0);
-   parameters->is_success = true;
-
-   
-   
-   // flytta add hit
-   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
-   printf("########################Process_id:%d\n", process_id);
-   thread_current()->process_info.id=process_id;
-   parameters->child_id = process_id;
+    
 
    // ta hand om 0 processen efter wait.
   }
