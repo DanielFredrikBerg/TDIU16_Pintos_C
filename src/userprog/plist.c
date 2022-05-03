@@ -26,7 +26,7 @@ key_t plist_add_process(struct p_list* m, value_p pi_t)
   *walker = pi_t;
   if(!check_within_bounds(counter))
   {
-    printf("\nError plist_insert: map is full!\n");
+    printf("# \nError plist_insert: map is full!\n");
     return -1;
   }
   
@@ -42,7 +42,7 @@ value_p plist_find_process(struct p_list* m, key_t k)
   } 
   else 
   {
-    printf("\nERROR plist_find: Key out of bounds!\n");
+    printf("# \nERROR plist_find: Key out of bounds!\n");
     return NULL;
   }
 }
@@ -52,7 +52,7 @@ value_p plist_remove_process(struct p_list* m, key_t k)
 {
   if (!check_within_bounds(k))
   {
-    printf("\nERROR plist_remove: Key out of bounds!\n");
+    printf("# \nERROR plist_remove: Key out of bounds!\n");
     return NULL;
   }
   else
@@ -75,19 +75,19 @@ value_p plist_remove_process(struct p_list* m, key_t k)
 void plist_print(struct p_list* m)
 {
   int counter = 0;
-  puts("------------------------------------------------");
-  puts("--- Process info table -------------------------");
-  puts("ID  STATUS  IS_ALIVE  PARENT_ID  STATUS_NEEDED");
+  puts("# -----------------------------------------------");
+  puts("# --- Process info table -------------------------");
+  puts("# ID  STATUS  IS_ALIVE  PARENT_ID  STATUS_NEEDED");
   while (counter < MAP_SIZE)
   {
     if (m->content[counter] != NULL)
     {
-        printf("%2d%8d%10d%11d%15d\n", 
+        printf("# %2d%8d%10d%11d%15d\n", 
         m->content[counter]->id, m->content[counter]->status,
         m->content[counter]->is_alive, m->content[counter]->parent_id,
         m->content[counter]->status_needed);
     }
   counter++;
   }
-  puts("------------------------------------------------");
+  puts("# ------------------------------------------------");
 }

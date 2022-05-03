@@ -33,6 +33,8 @@ void process_init(void)
 {
   plist_init(&process_map);
 
+   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
+
 // Andreis try
     thread_current()->process_info.status=-1;
     thread_current()->process_info.is_alive=true;
@@ -42,10 +44,9 @@ void process_init(void)
 
    
    
-   // flytta add hit
-   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
    
-  debug("!!!!!!!!!!!!!!!!!!!!!!!!!!Process_id:%d\n", process_id);
+   
+  debug("# !!!!!!!!!!!!!!!!!!!!!!!!!!Process_id:%d\n", process_id);
    thread_current()->process_info.id=process_id;
 
 }
@@ -106,7 +107,7 @@ process_execute (const char *command_line)
   sema_init(&(arguments.sema), 0);
 
 
-  debug(" FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
+  debug("# FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
         command_line);
@@ -124,7 +125,7 @@ process_execute (const char *command_line)
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
   
-    debug("%s#%d: Before sema down, thread_id=%d\n",
+    debug("# %s#%d: Before sema down, thread_id=%d\n",
         thread_current()->name,
         thread_current()->tid,
         thread_id);
@@ -149,7 +150,7 @@ process_execute (const char *command_line)
   
 
   //process_wait(process_id);
-debug("%s#%d: After sema down -> sema is %d AND Process_id is |%d|\n",
+debug("# %s#%d: After sema down -> sema is %d AND Process_id is |%d|\n",
         thread_current()->name,
         thread_current()->tid,
         arguments.sema.value,
@@ -166,7 +167,7 @@ debug("%s#%d: After sema down -> sema is %d AND Process_id is |%d|\n",
   // Måste ske efter printen i start_process.
   free(arguments.command_line);
 
-  debug("LAST %s#%d: process_execute(\"%s\") RETURNS %d\n",
+  debug("# LAST %s#%d: process_execute(\"%s\") RETURNS %d\n",
         thread_current()->name,
         thread_current()->tid,
         command_line, process_id);
@@ -183,7 +184,7 @@ void *setup_main_stack_asm(const char *command_line, void *esp);
 static void
 start_process (struct parameters_to_start_process* parameters)
 {
-  debug("start_process");
+  debug("# start_process");
   /* The last argument passed to thread_create is received here... */
   struct intr_frame if_;
   bool success;
@@ -191,7 +192,7 @@ start_process (struct parameters_to_start_process* parameters)
   char file_name[64];
   strlcpy_first_word (file_name, parameters->command_line, 64);
   
-  debug("SECOND %s#%d: start_process(\"%s\") ENTERED\n",
+  debug("# SECOND %s#%d: start_process(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
         parameters->command_line);
@@ -204,7 +205,7 @@ start_process (struct parameters_to_start_process* parameters)
 
   success = load (file_name, &if_.eip, &if_.esp);
 
-  debug("%s#%d: start_process(...): load returned %d\n",
+  debug("# %s#%d: start_process(...): load returned %d\n",
         thread_current()->name,
         thread_current()->tid,
         success);
@@ -266,7 +267,7 @@ start_process (struct parameters_to_start_process* parameters)
         thread_current()->name,
         thread_current()->tid,
         parameters->command_line);
-  debug("Sema Up\n");
+  debug("# Sema Up\n");
   if(!success)
     { 
       parameters->is_success = false;
@@ -281,7 +282,7 @@ start_process (struct parameters_to_start_process* parameters)
   */
   if ( ! success )
   {
-     debug("$$$$$$$$$$$$$$ load failed, exiting thread.");
+     debug("# $$$$$$$$$$$$$$ load failed, exiting thread.");
      
     
 

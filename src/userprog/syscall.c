@@ -315,6 +315,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_PLIST:
     {
+      puts("#¤¤¤¤¤¤¤¤¤¤¤ INSIDE SYS_PLIST!");
       syscall_plist(); // TODO: implement!
       break;
     }
@@ -322,7 +323,7 @@ syscall_handler (struct intr_frame *f)
     case SYS_SLEEP:
     {
       int milliseconds = esp[1];
-      syscall_sleep(milliseconds); // Är esp[1] verkligen millis? - Ja
+      syscall_sleep(milliseconds); 
       break;
     }
 
