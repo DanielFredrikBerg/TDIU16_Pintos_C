@@ -41,10 +41,6 @@ void process_init(void)
     thread_current()->process_info.parent_id=-1;
     thread_current()->process_info.status_needed=true;
     sema_init(&(thread_current()->process_info.sema), 0);
-
-   
-   
-   
    
   debug("# !!!!!!!!!!!!!!!!!!!!!!!!!!Process_id:%d\n", process_id);
    thread_current()->process_info.id=process_id;
@@ -56,9 +52,11 @@ void process_init(void)
  * instead. Note however that all cleanup after a process must be done
  * in process_cleanup, and that process_cleanup are already called
  * from thread_exit - do not call cleanup twice! */
-void process_exit(int status UNUSED) 
+void process_exit(int status) 
 // Meddela förälder vilken statuskod processen avslutades.
 {
+  thread_current()->process_info.status = status;
+  debug("# ---------------- PROCESS EXIT");
 }
 
 /* Print a list of all running processes. The list shall include all
@@ -211,21 +209,17 @@ start_process (struct parameters_to_start_process* parameters)
         success);
   
   thread_current()->process_info.status=-1;
-    thread_current()->process_info.is_alive=true;
-    thread_current()->process_info.parent_id=parameters->parent_id;
-    thread_current()->process_info.status_needed=true;
-    sema_init(&(thread_current()->process_info.sema), 0);
-   parameters->is_success = true;
-
+  thread_current()->process_info.is_alive=true;
+  thread_current()->process_info.parent_id=parameters->parent_id;
+  thread_current()->process_info.status_needed=true;
+  sema_init(&(thread_current()->process_info.sema), 0);
+  parameters->is_success = true;
    
-   
-   // flytta add hit
-   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
-   printf("########################Process_id:%d\n", process_id);
-   thread_current()->process_info.id=process_id;
+  int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
+  printf("########################Process_id:%d\n", process_id);
+  thread_current()->process_info.id=process_id;
 
   parameters->child_id = process_id;
-  plist_print(&process_map);
 
   if (success)
   {
@@ -367,7 +361,7 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer.
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }  
-    plist_remove_process(&process_map, thread_current()->process_info.id );
+  plist_remove_process(&process_map, thread_current()->process_info.id );
   debug("%s#%d: process_cleanup() DONE with status %d\n",
         cur->name, cur->tid, status);
 }

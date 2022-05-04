@@ -1,6 +1,6 @@
 /* klaar@ida
 
-   pintos -v -k --fs-disk=2 --qemu -p ../examples/longrun_nowait -a nowait -p ../examples/generic_parent -a generic_parent -p ../examples/busy -a dummy -- -f -q run 'nowait 10 50'
+   debugpintos -v -k --fs-disk=2 --qemu -p ../examples/longrun_nowait -a nowait -p ../examples/generic_parent -a generic_parent -p ../examples/busy -a dummy -- -f -q run 'nowait 10 50'
 
    Start a lot of processes and let them finish to test if we
    eventually run out of process slots.
@@ -64,32 +64,36 @@ int main(int argc, char* argv[])
            "simultaneos processes.\n", MAX_SIMULTANEOUS);
     return -1;
   }
-  
+
   if (repeat > MAX_REPEAT)
   {
     printf("This test program is compiled with a limitation to max %d \n"
            "repetitions.\n", MAX_REPEAT);
     return -1;
   }
-  
+
   printf("Will try to start a total of %d processes in groups of %d\n",
          simul * repeat, simul);
-  
+
   for (j = 0; j < repeat; ++j)
   {
     /* you may have to increase the multiple to more than 5 */
     int ticks = 10 * 1000 * 1000 * j / repeat;
-    
+
     snprintf(cmd, BUF_SIZE, "generic_parent %s %i %i", "dummy", j*simul, simul);
-    
+
     exec(cmd);
-    
-//    plist();
+
+    puts("# !!!!! Calling plist in longrun_nowait()");
+    plist();
 
     /* since we do not have the wait systemcall yet */
     printf("Now entering busy-loop to let some processes finish\n");
     while (ticks--)
       ;
+
   }
+  sleep(9000);
+  plist();
   return 0;
 }

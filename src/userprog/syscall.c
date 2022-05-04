@@ -239,7 +239,8 @@ syscall_handler (struct intr_frame *f)
   {
     case SYS_EXIT:
     {
-      //process exit(status koden)      
+      //process exit(status koden)
+      process_exit(esp[1]);      
       thread_exit();
       break;
     }
