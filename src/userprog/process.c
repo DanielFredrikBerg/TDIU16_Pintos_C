@@ -31,6 +31,7 @@ struct p_list process_map;
  * the process subsystem. */
 void process_init(void)
 {
+  // Borde denna vara här eller i thread_init? Varje trår borde ha sin egen process_map?
   plist_init(&process_map);
 
    int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
@@ -333,7 +334,8 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer.
 {
   struct thread  *cur = thread_current ();
   uint32_t       *pd  = cur->pagedir;
-  int status = -1;
+  // Current status of process in here becomes exit_status.
+  int exit_status = cur->process_info.status;
   
   debug("%s#%d: process_cleanup() ENTERED\n", cur->name, cur->tid);
   
@@ -344,7 +346,7 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer.
    * that may sometimes poweroff as soon as process_wait() returns,
    * possibly before the printf is completed.)
    */
-  printf("%s: exit(%d)\n", thread_name(), status);
+  printf("%s: exit(%d)\n", thread_name(), exit_status);
   
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
@@ -363,7 +365,7 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer.
     }  
   plist_remove_process(&process_map, thread_current()->process_info.id );
   debug("%s#%d: process_cleanup() DONE with status %d\n",
-        cur->name, cur->tid, status);
+        cur->name, cur->tid, exit_status);
 }
 
 /* Sets up the CPU for running user code in the current
