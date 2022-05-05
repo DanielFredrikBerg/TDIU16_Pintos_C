@@ -17,6 +17,7 @@ struct p_info
   int status;
   bool is_alive;
   int parent_id;
+  bool parent_alive;
   bool status_needed; // false if parent_alive == false || waited_on == true
   struct semaphore sema;
 };
@@ -52,7 +53,6 @@ value_p plist_find_process(struct p_list* m, key_t process_id);
      removed EVENTUALLY.
 */
 value_p plist_remove_process(struct p_list* m, key_t process_id);
-//TODO
 
 /*- A function that print the entire content of the list in a nice,
      clean, readable format.*/

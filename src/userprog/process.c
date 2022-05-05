@@ -40,6 +40,7 @@ void process_init(void)
     thread_current()->process_info.status=-1;
     thread_current()->process_info.is_alive=true;
     thread_current()->process_info.parent_id=-1;
+    thread_current()->process_info.parent_alive=true; // Should this start as true?
     thread_current()->process_info.status_needed=true;
     sema_init(&(thread_current()->process_info.sema), 0);
    
@@ -363,7 +364,43 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer.
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }  
-  plist_remove_process(&process_map, thread_current()->process_info.id );
+  /* WHAT NEEDS TO BE DONE HERE:
+  *  1. Need to close all files related to current process. TODO
+  *  2. Need to remove this process (id) from the process list if it's in there. DONE
+  *  3. Need to set this process status as exited in the process table. MAYBE DONE
+  *  4. May not remove process if parent is alive. DONE
+  *  5. When parent process exits -> set parent_alive to false on all child processes. TODO
+  *  6. Status needed = false när parent_alive=false || waited=true. HELP
+  */
+  // Get process id for this process.
+  int this_PID = cur->process_info.id;
+
+  // Get pointer to current process info.
+  struct p_info *this_process = plist_find_process(&process_map, this_PID);
+
+  // Check if process was found in process table.
+  if( this_process != NULL )
+  {
+    // If found -> set process as exited
+    this_process->status = 0; // Should 0 represent process being exited? 
+
+    // Set parent_alive=false on all children of this process. 
+    // TODO: Implement forEach function in plist.c
+    // TODO: Implement Helper function to set parent_alive for forEach function above?
+
+    // Remove this_process if parent_alive=false? <- Andrei I forgot the rules for status_needed again :(
+      // What about status_needed? 
+    if( this_process->parent_alive == false )
+    {
+      plist_remove_process(&process_map, this_PID);
+    }
+    else
+    {
+      // What to do here? Ask assistant!
+    }
+
+  }
+  
   debug("%s#%d: process_cleanup() DONE with status %d\n",
         cur->name, cur->tid, exit_status);
 }
