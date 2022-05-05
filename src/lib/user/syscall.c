@@ -190,12 +190,10 @@ void
 plist(void)
 {
   syscall0 (SYS_PLIST);
-  NOT_REACHED ();
 }
 
 void
 sleep(int millis)
 {
   syscall1(SYS_SLEEP, millis);
-  NOT_REACHED ();
 }

@@ -85,6 +85,7 @@ int main(int argc, char* argv[])
     exec(cmd);
 
     puts("# !!!!! Calling plist in longrun_nowait()");
+    
     plist();
 
     /* since we do not have the wait systemcall yet */
@@ -93,7 +94,6 @@ int main(int argc, char* argv[])
       ;
 
   }
-  sleep(9000);
-  plist();
+  
   return 0;
 }

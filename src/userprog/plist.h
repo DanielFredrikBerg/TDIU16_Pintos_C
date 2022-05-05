@@ -17,8 +17,7 @@ struct p_info
   int status;
   bool is_alive;
   int parent_id;
-  bool parent_alive;
-  bool status_needed; // false if parent_alive == false || waited_on == true
+  bool status_needed; // false if parent_alive == false || waited_on == true //Daniel
   struct semaphore sema;
 };
 
@@ -58,5 +57,10 @@ value_p plist_remove_process(struct p_list* m, key_t process_id);
      clean, readable format.*/
 void plist_print(struct p_list* m);
 
+
+/* Anropa exec för varje association i p_list.
+ * aux skickas med som inparameter till funktionen *exec representerar.
+ */
+void plist_orphan_my_children(struct p_list* m, key_t parent_id);
 
 #endif
