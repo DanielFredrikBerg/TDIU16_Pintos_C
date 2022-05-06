@@ -239,8 +239,8 @@ syscall_handler (struct intr_frame *f)
   {
     case SYS_EXIT:
     {
-      //process exit(status koden)
-      process_exit(esp[1]);
+      int exit_status = esp[1];
+      process_exit(exit_status);
       thread_exit();
       break;
     }
@@ -316,8 +316,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_PLIST:
     {
-      puts("#¤¤¤¤¤¤¤¤¤¤¤ INSIDE SYS_PLIST!");
-      syscall_plist(); // TODO: implement!
+      syscall_plist(); 
       break;
     }
 
@@ -325,6 +324,13 @@ syscall_handler (struct intr_frame *f)
     {
       int milliseconds = esp[1];
       syscall_sleep(milliseconds); 
+      break;
+    }
+
+    case SYS_WAIT:
+    {
+      int wait_on_child_id = esp[1];
+      process_wait(wait_on_child_id);
       break;
     }
 

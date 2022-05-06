@@ -30,7 +30,7 @@ key_t plist_add_process(struct p_list* m, value_p pi_t)
     return -1;
   }
   
-  return counter; // fixa ogiltig fd (out of bounds)
+  return counter; 
 }
 
 
@@ -65,7 +65,7 @@ value_p plist_remove_process(struct p_list* m, key_t k)
     }
     else
     {
-      puts("\nValue for key not allocated\n");
+      puts("#\nValue for key not allocated\n");
       return NULL;
     }
   }

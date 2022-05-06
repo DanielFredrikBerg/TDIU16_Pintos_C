@@ -9,7 +9,7 @@
 
 
 // !!! Remove/comment this line when you have implemented sleep() !!!
-#define NO_SLEEP_YET
+//#define NO_SLEEP_YET
 
 
 // If we don't have sleep yet, provide a small macro that prevents compilation errors.

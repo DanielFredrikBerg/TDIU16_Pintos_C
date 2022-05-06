@@ -5,7 +5,7 @@
 
 void map_init(struct map *m)
 {
-  printf("Map size: %d\n", (int)sizeof(m->content) / 8);
+  //printf("# Map size: %d\n", (int)sizeof(m->content) / 8);
   for (unsigned i = BEGIN; i < MAP_SIZE; i++)
   {
     m->content[i] = NULL;

@@ -310,6 +310,28 @@ process_wait (int child_id)
   debug("%s#%d: process_wait(%d) ENTERED\n",
         cur->name, cur->tid, child_id);
   /* Yes! You need to do something good here ! */
+
+  // Find child process.
+  value_p child_process = plist_find_process(&process_map, child_id);
+
+  // 1. Barn måste finnas för att kunna väntas på.
+  if(child_process == NULL)
+  {
+    printf("# [[[[[[]]]]]] ERROR: Child of process:%d not found!\n", cur->process_info.id);
+    return -1;
+  }
+
+  // 2. Förälderns ID (nuvarande process ID) måste överensstämma med barnets parent_id
+  if(cur->process_info.id != child_process->id)
+  {
+    printf("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", cur->process_info.id, child_process->id);
+    return -1;
+  }
+
+  sema_down(&child_process->sema);
+  // Returnera barnprocessens exit status.
+  status = child_process->status;
+
   debug("%s#%d: process_wait(%d) RETURNS %d\n",
         cur->name, cur->tid, child_id, status);
   
@@ -329,7 +351,7 @@ process_wait (int child_id)
 */
   
 void
-process_cleanup (void) // nånstans här, stäng alla öppna filer.
+process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
 {
   struct thread  *cur = thread_current ();
   uint32_t       *pd  = cur->pagedir;
@@ -365,48 +387,41 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer.
   /* WHAT NEEDS TO BE DONE HERE:
   *  1. Need to close all files related to current process. DONE
   *  2. Need to remove this process (id) from the process list if it's in there. DONE
-  *  3. Need to set this process status as exited in the process table. MAYBE DONE
+  *  3. Need to set this process status to false as it exits in the process table. MAYBE DONE
   *  4. May not remove process if parent is alive. DONE
   *  5. When parent process exits -> set parent_alive to false on all child processes. DONE
   *  6. Status needed = false när föräldern inte lever eller när den egna processen
-  *     måste stänga men föräldern lever (waited=true)
+  *     måste stänga men föräldern lever (waited_on=true)
   *  7. Om barn vill avsluta innan förälder så måste status_needed sättas
   *     till false så att processen tas bort när föräldern tas bort.
   */
   // Get process id for this process.
   int this_PID = cur->process_info.id;
 
-  // Get pointer to current process info.
+  // Get pointer to current process info in process table.
   struct p_info *this_process = plist_find_process(&process_map, this_PID);
 
   // Check if process was found in process table.
   if( this_process != NULL )
   {
-    // If found -> set status_needed as exited.
-    
+    // If found -> set status_needed to false.
+    this_process->status_needed = false; // Used in removal?
+
     // Close all related files to process. I.e. process file table to null. Don't know that it works.
     map_init(&thread_current()->container);
 
     // Set status_needed=false on all children of this_process. 
-    plist_orphan_my_children(&process_map, this_process->id);
+    plist_orphan_my_children( &process_map, this_process->id );
+    
+    // Remove this_process if parent of this process is not alive.
+    struct p_info *this_parent_process = plist_find_process(&process_map, this_process->parent_id);
+    if( this_parent_process == NULL ) // && this_process->status_needed == false ) <- In which cases can 
+    {
       plist_remove_process(&process_map, this_PID);
+    }
 
-  //   // Remove this_process if status_needed=false?
-  //   if( this_process->status_needed == false )
-  //   {
-  //     plist_remove_process(&process_map, this_PID);
-
-  //   }
-  //   else
-  //   {
-
-  //     // What to do here? Ask assistant!
-  //     puts("#WWWWWWWWWWWWWWWWWWWWW#");
-  //     puts("#WWWWWWWWWWWWWWWWWWWWW#");
-  //     puts("#WWWWWWWWWWWWWWWWWWWWW#");
-  //     puts("#WWWWWWWWWWWWWWWWWWWWW#");
-  //     puts("#WWWWWWWWWWWWWWWWWWWWW#");
-  //   }
+    // Since we're removing process -> do something with semaphore?
+    
 
   }
   
