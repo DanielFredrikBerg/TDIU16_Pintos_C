@@ -56,7 +56,7 @@ void process_exit(int status)
 // Meddela förälder vilken statuskod processen avslutades.
 {
   thread_current()->process_info.status = status;
-  debug("# ---------------- PROCESS EXIT");
+  debug("# ---------------- PROCESS EXIT with STATUS: %d", status);
 }
 
 /* Print a list of all running processes. The list shall include all
@@ -213,7 +213,7 @@ start_process (struct parameters_to_start_process* parameters)
   thread_current()->process_info.parent_id=parameters->parent_id;
   thread_current()->process_info.status_needed=true;
   sema_init(&(thread_current()->process_info.sema), 0);
-  parameters->is_success = true;
+  
    
   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
   printf("########################Process_id:%d\n", process_id);
@@ -254,6 +254,7 @@ start_process (struct parameters_to_start_process* parameters)
     
 
    // ta hand om 0 processen efter wait.
+   parameters->is_success = true;
   }
 
   
