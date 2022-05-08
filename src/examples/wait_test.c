@@ -30,8 +30,12 @@ int main(void)
   int result = wait(pid);
   if (result != 10)
   {
+    plist();
     printf("ERROR: Expected 10 from wait, but got: %d\n", result);
     return -1;
+  } else 
+  {
+    puts("## OK TEST 1");
   }
 
   printf("Seems OK, starting the slow child...\n");
@@ -44,6 +48,9 @@ int main(void)
   {
     printf("ERROR: Expected 20 from wait, but got: %d\n", result);
     return -1;
+  } else 
+  {
+    puts("## OK TEST 2");
   }
 
   printf("Your implementation looks OK for simple cases, now try 'longrun'!\n");

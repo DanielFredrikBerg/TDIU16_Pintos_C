@@ -34,16 +34,16 @@ void process_init(void)
   // Borde denna vara här eller i thread_init? Varje trår borde ha sin egen process_map?
   plist_init(&process_map);
 
-   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
+  int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
 
-    thread_current()->process_info.status=-1;
-    thread_current()->process_info.is_alive=true;
-    thread_current()->process_info.parent_id=-1;
-    thread_current()->process_info.status_needed=true;
-    sema_init(&(thread_current()->process_info.sema), 0);
-   
+  thread_current()->process_info.status=-1;
+  thread_current()->process_info.is_alive=true;
+  thread_current()->process_info.parent_id=-1;
+  thread_current()->process_info.status_needed=true;
+  sema_init(&(thread_current()->process_info.sema), 0);
+  
   debug("# !!!!!!!!!!!!!!!!!!!!!!!!!!Process_id:%d\n", process_id);
-   thread_current()->process_info.id=process_id;
+  thread_current()->process_info.id=process_id;
 
 }
 
@@ -56,7 +56,7 @@ void process_exit(int status)
 // Meddela förälder vilken statuskod processen avslutades.
 {
   thread_current()->process_info.status = status;
-  debug("# ---------------- PROCESS EXIT with STATUS: %d", status);
+  debug("# ---------------- PROCESS %d EXIT with STATUS: %d", thread_current()->process_info.id, status);
 }
 
 /* Print a list of all running processes. The list shall include all
@@ -218,14 +218,11 @@ start_process (struct parameters_to_start_process* parameters)
   int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
   printf("########################Process_id:%d\n", process_id);
   thread_current()->process_info.id=process_id;
-
   parameters->child_id = process_id;
-
+  process_print_list();
+  
   if (success)
   {
- 
-    
-    
     /* We managed to load the new program to a process, and have
        allocated memory for a process stack. The stack top is in
        if_.esp, now we must prepare and place the arguments to main on
@@ -250,9 +247,6 @@ start_process (struct parameters_to_start_process* parameters)
 
   
     // Stoppa in skapelse av processen här.
-    
-    
-
    // ta hand om 0 processen efter wait.
    parameters->is_success = true;
   }
@@ -316,6 +310,7 @@ process_wait (int child_id)
   value_p child_process = plist_find_process(&process_map, child_id);
 
   // 1. Barn måste finnas för att kunna väntas på.
+  process_print_list();
   if(child_process == NULL)
   {
     printf("# [[[[[[]]]]]] ERROR: Child of process:%d not found!\n", cur->process_info.id);
@@ -323,7 +318,7 @@ process_wait (int child_id)
   }
 
   // 2. Förälderns ID (nuvarande process ID) måste överensstämma med barnets parent_id
-  if(cur->process_info.id != child_process->id)
+  if(cur->process_info.id != child_process->parent_id)
   {
     printf("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", cur->process_info.id, child_process->id);
     return -1;
@@ -419,15 +414,17 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
     if( this_parent_process == NULL ) // && this_process->status_needed == false ) <- In which cases can 
     {
       plist_remove_process(&process_map, this_PID);
+    } else {
+      sema_up(&this_process->sema);
+      plist_remove_process(&process_map, this_PID);
     }
 
-    // Since we're removing process -> do something with semaphore?
-    
 
   }
   
   debug("%s#%d: process_cleanup() DONE with status %d\n",
         cur->name, cur->tid, status);
+  debug("# %d", this_process->id);
 }
 
 /* Sets up the CPU for running user code in the current
