@@ -1,6 +1,7 @@
 /* filst@ida
 
    pintos -v -k --fs-disk=2 --qemu -p ../examples/wait_test -a wait -p ../examples/dummy -a fast -p ../examples/slow_child -a slow -- -f -q run 'wait'
+   debugpintos -v -k --fs-disk=2 --qemu -p ../examples/wait_test -a wait -p ../examples/dummy -a fast -p ../examples/slow_child -a slow -- -f -q run 'wait'
 
    Simple tests for the system call wait.
 
@@ -55,7 +56,6 @@ int main(void)
 
   printf("Your implementation looks OK for simple cases, now try 'longrun'!\n");
   // You might want to print the process list here:
-  // plist();
-
+  plist();
   return 0;
 }

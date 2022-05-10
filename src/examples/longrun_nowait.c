@@ -1,6 +1,6 @@
 /* klaar@ida
 
-   debugpintos -v -k --fs-disk=2 --qemu -p ../examples/longrun_nowait -a nowait -p ../examples/generic_parent -a generic_parent -p ../examples/busy -a dummy -- -f -q run 'nowait 10 50'
+   pintos -v -k --fs-disk=2 --qemu -p ../examples/longrun_nowait -a nowait -p ../examples/generic_parent -a generic_parent -p ../examples/busy -a dummy -- -f -q run 'nowait 10 50'
 
    Start a lot of processes and let them finish to test if we
    eventually run out of process slots.

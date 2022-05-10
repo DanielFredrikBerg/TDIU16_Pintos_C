@@ -34,16 +34,19 @@ void process_init(void)
   // Borde denna vara här eller i thread_init? Varje trår borde ha sin egen process_map?
   plist_init(&process_map);
 
-  int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
 
-  thread_current()->process_info.status=-1;
-  thread_current()->process_info.is_alive=true;
-  thread_current()->process_info.parent_id=-1;
-  thread_current()->process_info.status_needed=true;
-  sema_init(&(thread_current()->process_info.sema), 0);
+  debug("\n# get reckt nub");
+  struct p_info *process_info = malloc(sizeof(struct p_info));
+  int process_id = plist_add_process(&process_map, process_info);
+
+  process_info->status=-1;
+  process_info->is_alive=true;
+  process_info->parent_id=-1;
+  process_info->status_needed=true;
+  sema_init(&(process_info->sema), 0);
   
   debug("# !!!!!!!!!!!!!!!!!!!!!!!!!!Process_id:%d\n", process_id);
-  thread_current()->process_info.id=process_id;
+  process_info->id=process_id;
 
 }
 
@@ -55,8 +58,16 @@ void process_init(void)
 void process_exit(int status) 
 // Meddela förälder vilken statuskod processen avslutades.
 {
-  thread_current()->process_info.status = status;
-  debug("# ---------------- PROCESS %d EXIT with STATUS: %d", thread_current()->process_info.id, status);
+  int id = thread_current()->process_info->id;
+  struct p_info *process_info = plist_find_process(&process_map, id);
+  process_info->status = status;
+  process_info->is_alive = false;
+  // int id = thread_current()->process_info.id;
+  // struct p_info *process_info = plist_find_process(&process_map, id);
+  // process_info->status = status;
+  // process_info->is_alive = false;
+
+  debug("# ---------------- PROCESS %d EXIT with STATUS: %d", process_info->id, status);
 }
 
 /* Print a list of all running processes. The list shall include all
@@ -115,7 +126,7 @@ process_execute (const char *command_line)
   strlcpy(arguments.command_line, command_line, command_line_size);
 
   // Current threads process id becomes parent id for child process here.
-  arguments.parent_id = thread_current()->process_info.id;
+  arguments.parent_id = thread_current()->process_info->id;
   
   strlcpy_first_word (debug_name, command_line, 64);
   
@@ -123,6 +134,7 @@ process_execute (const char *command_line)
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
   
+
     debug("# %s#%d: Before sema down, thread_id=%d\n",
         thread_current()->name,
         thread_current()->tid,
@@ -145,6 +157,8 @@ process_execute (const char *command_line)
   {
     process_id = -1;
   }
+
+
   
 
   //process_wait(process_id);
@@ -207,17 +221,19 @@ start_process (struct parameters_to_start_process* parameters)
         thread_current()->name,
         thread_current()->tid,
         success);
-  
-  thread_current()->process_info.status=-1;
-  thread_current()->process_info.is_alive=true;
-  thread_current()->process_info.parent_id=parameters->parent_id;
-  thread_current()->process_info.status_needed=true;
-  sema_init(&(thread_current()->process_info.sema), 0);
+        
+  // malloc i start_process
+  struct p_info *process_info = (struct p_info*)malloc(sizeof(struct p_info));
+  process_info->status=-1;
+  process_info->is_alive=true;
+  process_info->parent_id=parameters->parent_id;
+  process_info->status_needed=true;
+  sema_init(&(process_info->sema), 0);
   
    
-  int process_id = plist_add_process(&process_map, &(thread_current()->process_info));
+  int process_id = plist_add_process(&process_map, process_info);
   printf("########################Process_id:%d\n", process_id);
-  thread_current()->process_info.id=process_id;
+  process_info->id=process_id;
   parameters->child_id = process_id;
   process_print_list();
   
@@ -313,18 +329,21 @@ process_wait (int child_id)
   process_print_list();
   if(child_process == NULL)
   {
-    printf("# [[[[[[]]]]]] ERROR: Child of process:%d not found!\n", cur->process_info.id);
+    printf("# [[[[[[]]]]]] ERROR: Child of process:%d not found!\n", cur->process_info->id);
     return -1;
   }
 
   // 2. Förälderns ID (nuvarande process ID) måste överensstämma med barnets parent_id
-  if(cur->process_info.id != child_process->parent_id)
+  if(cur->process_info->id != child_process->parent_id)
   {
-    printf("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", cur->process_info.id, child_process->id);
+    printf("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", cur->process_info->id, child_process->id);
     return -1;
   }
 
   sema_down(&child_process->sema);
+
+  child_process->status_needed = false;
+  // delete child here 
   // Returnera barnprocessens exit status.
   status = child_process->status;
 
@@ -349,10 +368,11 @@ process_wait (int child_id)
 void
 process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
 {
+
   struct thread  *cur = thread_current ();
   uint32_t       *pd  = cur->pagedir;
   // Current status of process in here becomes exit_status.
-  int status = cur->process_info.status;
+  int status = cur->process_info->status;
   
   debug("%s#%d: process_cleanup() ENTERED\n", cur->name, cur->tid);
   
@@ -392,7 +412,7 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
   *     till false så att processen tas bort när föräldern tas bort.
   */
   // Get process id for this process.
-  int this_PID = cur->process_info.id;
+  int this_PID = cur->process_info->id;
 
   // Get pointer to current process info in process table.
   struct p_info *this_process = plist_find_process(&process_map, this_PID);
@@ -400,31 +420,33 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
   // Check if process was found in process table.
   if( this_process != NULL )
   {
-    // If found -> set status_needed to false.
-    this_process->status_needed = false; // Used in removal?
-
     // Close all related files to process. I.e. process file table to null. Don't know that it works.
     map_init(&thread_current()->container);
 
-    // Set status_needed=false on all children of this_process. 
+    // Set status_needed=false on all children of this_process.
+    // status_need false
+    // ta bort barnet
     plist_orphan_my_children( &process_map, this_process->id );
-    
-    // Remove this_process if parent of this process is not alive.
-    struct p_info *this_parent_process = plist_find_process(&process_map, this_process->parent_id);
-    if( this_parent_process == NULL ) // && this_process->status_needed == false ) <- In which cases can 
+    //plist_remove_my_children( &process_map, this_process->id );
+
+    // remove process if parent is dead or status_needed is false
+    if( this_process->status_needed == false) 
     {
       plist_remove_process(&process_map, this_PID);
     } else {
       sema_up(&this_process->sema);
-      plist_remove_process(&process_map, this_PID);
     }
-
-
   }
   
   debug("%s#%d: process_cleanup() DONE with status %d\n",
         cur->name, cur->tid, status);
   debug("# %d", this_process->id);
+
+  if(this_process->id == 2)
+  {
+    debug("# Process 2 has finished cleanup it should still be in the list");
+    process_print_list();
+  }
 }
 
 /* Sets up the CPU for running user code in the current

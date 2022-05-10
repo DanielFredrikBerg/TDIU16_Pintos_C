@@ -104,3 +104,16 @@ void plist_orphan_my_children(struct p_list* m, key_t parent_id)
     }
   }
 }
+
+
+void plist_remove_my_children(struct p_list* m, key_t parent_id)
+{
+  value_p process_list = m->content;
+  for(int i=0; i<MAP_SIZE-1; i++)
+  {
+    if(process_list[i].parent_id == parent_id)
+    {
+      plist_remove_process(m, process_list[i].id);
+    }
+  }
+}

@@ -6,6 +6,7 @@
 typedef int key_t;
 typedef struct p_info* value_p;
 
+
 struct p_list
 {
   value_p content[MAP_SIZE];
@@ -62,5 +63,8 @@ void plist_print(struct p_list* m);
  * aux skickas med som inparameter till funktionen *exec representerar.
  */
 void plist_orphan_my_children(struct p_list* m, key_t parent_id);
+
+void plist_remove_my_children(struct p_list* m, key_t parent_id);
+
 
 #endif
