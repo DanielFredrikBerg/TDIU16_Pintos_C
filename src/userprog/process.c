@@ -34,9 +34,8 @@ void process_init(void)
   // Borde denna vara här eller i thread_init? Varje trår borde ha sin egen process_map?
   plist_init(&process_map);
 
-
-  debug("\n# get reckt nub");
   struct p_info *process_info = malloc(sizeof(struct p_info));
+
   int process_id = plist_add_process(&process_map, process_info);
 
   process_info->status=-1;
@@ -224,6 +223,9 @@ start_process (struct parameters_to_start_process* parameters)
         
   // malloc i start_process
   struct p_info *process_info = (struct p_info*)malloc(sizeof(struct p_info));
+  int process_id = plist_add_process(&process_map, process_info);
+
+
   process_info->status=-1;
   process_info->is_alive=true;
   process_info->parent_id=parameters->parent_id;
@@ -231,7 +233,6 @@ start_process (struct parameters_to_start_process* parameters)
   sema_init(&(process_info->sema), 0);
   
    
-  int process_id = plist_add_process(&process_map, process_info);
   printf("########################Process_id:%d\n", process_id);
   process_info->id=process_id;
   parameters->child_id = process_id;
