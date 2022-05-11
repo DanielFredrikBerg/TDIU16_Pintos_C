@@ -330,7 +330,7 @@ syscall_handler (struct intr_frame *f)
     case SYS_WAIT:
     {
       int wait_on_child_id = esp[1];
-      process_wait(wait_on_child_id);
+      f->eax = process_wait(wait_on_child_id);
       break;
     }
 
