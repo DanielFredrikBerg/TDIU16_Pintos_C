@@ -57,7 +57,7 @@ void process_init(void)
 void process_exit(int status) 
 // Meddela förälder vilken statuskod processen avslutades.
 {
-  int id = thread_current()->process_info->id;
+  int id = thread_current()->process_info.id;
   struct p_info *process_info = plist_find_process(&process_map, id);
   process_info->status = status;
   process_info->is_alive = false;
@@ -125,7 +125,7 @@ process_execute (const char *command_line)
   strlcpy(arguments.command_line, command_line, command_line_size);
 
   // Current threads process id becomes parent id for child process here.
-  arguments.parent_id = thread_current()->process_info->id;
+  arguments.parent_id = thread_current()->process_info.id;
   
   strlcpy_first_word (debug_name, command_line, 64);
   
@@ -221,22 +221,6 @@ start_process (struct parameters_to_start_process* parameters)
         thread_current()->tid,
         success);
         
-  // malloc i start_process
-  struct p_info *process_info = (struct p_info*)malloc(sizeof(struct p_info));
-  int process_id = plist_add_process(&process_map, process_info);
-
-
-  process_info->status=-1;
-  process_info->is_alive=true;
-  process_info->parent_id=parameters->parent_id;
-  process_info->status_needed=true;
-  sema_init(&(process_info->sema), 0);
-  
-   
-  printf("########################Process_id:%d\n", process_id);
-  process_info->id=process_id;
-  parameters->child_id = process_id;
-  process_print_list();
   
   if (success)
   {
@@ -262,6 +246,21 @@ start_process (struct parameters_to_start_process* parameters)
     
 //    dump_stack ( PHYS_BASE + 15, PHYS_BASE - if_.esp + 16 );
 
+  struct p_info *process_info = (struct p_info*)malloc(sizeof(struct p_info));
+  int process_id = plist_add_process(&process_map, process_info);
+
+
+  process_info->status=-1;
+  process_info->is_alive=true;
+  process_info->parent_id=parameters->parent_id;
+  process_info->status_needed=true;
+  sema_init(&(process_info->sema), 0);
+  
+   
+  printf("########################Process_id:%d\n", process_id);
+  process_info->id=process_id;
+  parameters->child_id = process_id;
+  process_print_list();
   
     // Stoppa in skapelse av processen här.
    // ta hand om 0 processen efter wait.
@@ -330,14 +329,14 @@ process_wait (int child_id)
   process_print_list();
   if(child_process == NULL)
   {
-    printf("# [[[[[[]]]]]] ERROR: Child of process:%d not found!\n", cur->process_info->id);
+    printf("# [[[[[[]]]]]] ERROR: Child of process:%d not found!\n", cur->process_info.id);
     return -1;
   }
 
   // 2. Förälderns ID (nuvarande process ID) måste överensstämma med barnets parent_id
-  if(cur->process_info->id != child_process->parent_id)
+  if(cur->process_info.id != child_process->parent_id)
   {
-    printf("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", cur->process_info->id, child_process->id);
+    printf("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", cur->process_info.id, child_process->id);
     return -1;
   }
 
@@ -373,7 +372,7 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
   struct thread  *cur = thread_current ();
   uint32_t       *pd  = cur->pagedir;
   // Current status of process in here becomes exit_status.
-  int status = cur->process_info->status;
+  int status = cur->process_info.status;
   
   debug("%s#%d: process_cleanup() ENTERED\n", cur->name, cur->tid);
   
@@ -413,7 +412,7 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
   *     till false så att processen tas bort när föräldern tas bort.
   */
   // Get process id for this process.
-  int this_PID = cur->process_info->id;
+  int this_PID = cur->process_info.id;
 
   // Get pointer to current process info in process table.
   struct p_info *this_process = plist_find_process(&process_map, this_PID);
