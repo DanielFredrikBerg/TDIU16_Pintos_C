@@ -249,7 +249,7 @@ start_process (struct parameters_to_start_process* parameters)
     process_info->id=process_id;
 
     thread_current()->id_in_process_map = process_id;    
-    printf("########################Process_id:%d\n", process_id);
+    debug("########################Process_id:%d\n", process_id);
     parameters->child_id = process_id;
       // Stoppa in skapelse av processen här.
     // ta hand om 0 processen efter wait.
@@ -318,16 +318,16 @@ process_wait (int child_id)
   // 1. Barn måste finnas för att kunna väntas på.
   if(child_process == NULL)
   {
-    printf("# [[[[[[]]]]]] ERROR: Child of process:%d not found!\n", process_info->id);
+    debug("# [[[[[[]]]]]] ERROR: Child of process:%d not found!\n", process_info->id);
     return -1;
   }
 
   // 2. Förälderns ID (nuvarande process ID) måste överensstämma med barnets parent_id
-  if(process_info->id != child_process->parent_id)
-  {
-    printf("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", process_info->id, child_process->id);
-    return -1;
-  }
+  // if(process_info->id != child_process->parent_id)
+  // {
+  //   debug("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", process_info->id, child_process->id);
+  //   return -1;
+  // }
   
   sema_down(&child_process->sema);
 
@@ -361,7 +361,7 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
   struct p_info *this_process = plist_find_process(&process_map, cur->id_in_process_map);
   int status = this_process->status;
   
-  debug("%s#%d: process_cleanup() ENTERED\n", cur->name, cur->tid);
+  debug("#%s#%d: process_cleanup() ENTERED\n", cur->name, cur->tid);
   
   /* Later tests DEPEND on this output to work correct. You will have
    * to find the actual exit status in your process list. It is

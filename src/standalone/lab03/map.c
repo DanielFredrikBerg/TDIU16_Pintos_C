@@ -31,11 +31,11 @@ void map_print(struct map *m)
   {
     if (m->content[counter] == NULL)
     {
-      puts("null");
+      debug("#null");
     }
     else
     {
-      printf("%s\n", m->content[counter]);
+      debug("#%s\n", m->content[counter]);
     }
     counter++;
   }
@@ -72,7 +72,7 @@ value_t map_remove(struct map *m, key_t k)
     }
     else
     {
-      puts("Value for key not allocated");
+      debug("#Value for key not allocated");
       return NULL;
     }
   }
@@ -113,7 +113,7 @@ bool check_within_bounds(key_t k)
   bool status = -1 < k && k < MAP_SIZE;
   if (!status)
   {
-    puts("Map key out of bounds");
+    debug("#Map key out of bounds");
   }
 
   
