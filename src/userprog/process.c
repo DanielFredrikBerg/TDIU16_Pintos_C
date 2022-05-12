@@ -109,7 +109,7 @@ process_execute (const char *command_line)
   sema_init(&(arguments.sema), 0);
 
 
-  debug("# FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
+  debug("FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
         command_line);
@@ -168,7 +168,7 @@ debug("# %s#%d: After sema down -> sema is %d AND Process_id is |%d|\n",
   // Måste ske efter printen i start_process.
   free(arguments.command_line);
 
-  debug("# LAST %s#%d: process_execute(\"%s\") RETURNS %d\n",
+  debug("LAST %s#%d: process_execute(\"%s\") RETURNS %d\n",
         thread_current()->name,
         thread_current()->tid,
         command_line, process_id);

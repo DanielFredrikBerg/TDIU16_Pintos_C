@@ -91,6 +91,9 @@ main (void)
   /* Initialize ourselves as a thread so we can use locks,
      then enable console locking. */
   thread_init ();
+#ifdef USERPROG
+  process_init ();
+#endif
 
   console_init ();  
   
@@ -102,9 +105,6 @@ main (void)
   malloc_init ();
   paging_init ();
 
-#ifdef USERPROG
-  process_init ();
-#endif
 
   /* Segmentation. */
 #ifdef USERPROG
