@@ -109,7 +109,7 @@ process_execute (const char *command_line)
   sema_init(&(arguments.sema), 0);
 
 
-  debug("FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
+  debug("%s#%d: process_execute(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
         command_line);
@@ -128,7 +128,7 @@ process_execute (const char *command_line)
                              (thread_func*)start_process, &arguments);
   
 
-    debug("# %s#%d: Before sema down, thread_id=%d\n",
+    debug("#%s#%d: Before sema down, thread_id=%d\n",
         thread_current()->name,
         thread_current()->tid,
         thread_id);
@@ -151,7 +151,7 @@ process_execute (const char *command_line)
     process_id = -1;
   }
 
-debug("# %s#%d: After sema down -> sema is %d AND Process_id is |%d|\n",
+debug("#%s#%d: After sema down -> sema is %d AND Process_id is |%d|\n",
         thread_current()->name,
         thread_current()->tid,
         arguments.sema.value,
@@ -168,7 +168,7 @@ debug("# %s#%d: After sema down -> sema is %d AND Process_id is |%d|\n",
   // Måste ske efter printen i start_process.
   free(arguments.command_line);
 
-  debug("LAST %s#%d: process_execute(\"%s\") RETURNS %d\n",
+  debug("%s#%d: process_execute(\"%s\") RETURNS %d\n",
         thread_current()->name,
         thread_current()->tid,
         command_line, process_id);
@@ -194,7 +194,7 @@ start_process (struct parameters_to_start_process* parameters)
   char file_name[64];
   strlcpy_first_word (file_name, parameters->command_line, 64);
   
-  debug("# SECOND %s#%d: start_process(\"%s\") ENTERED\n",
+  debug("%s#%d: start_process(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
         parameters->command_line);
@@ -207,7 +207,7 @@ start_process (struct parameters_to_start_process* parameters)
 
   success = load (file_name, &if_.eip, &if_.esp);
 
-  debug("# %s#%d: start_process(...): load returned %d\n",
+  debug("%s#%d: start_process(...): load returned %d\n",
         thread_current()->name,
         thread_current()->tid,
         success);
@@ -310,7 +310,6 @@ process_wait (int child_id)
 
   debug("%s#%d: process_wait(%d) ENTERED\n",
         cur->name, cur->tid, child_id);
-  /* Yes! You need to do something good here ! */
 
   // Find child process.
   value_p child_process = plist_find_process(&process_map, child_id);
@@ -323,11 +322,11 @@ process_wait (int child_id)
   }
 
   // 2. Förälderns ID (nuvarande process ID) måste överensstämma med barnets parent_id
-  // if(process_info->id != child_process->parent_id)
-  // {
-  //   debug("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", process_info->id, child_process->id);
-  //   return -1;
-  // }
+  if(process_info->id != child_process->parent_id)
+  {
+    debug("# [[[[[[]]]]]] ERROR: Process:%d does not have child:%d !\n", process_info->id, child_process->id);
+    return -1;
+  }
   
   sema_down(&child_process->sema);
 
@@ -336,6 +335,8 @@ process_wait (int child_id)
   plist_remove_process(&process_map, child_process->id);
   free(child_process);
 
+  debug("%s#%d: process_wait(%d) RETURNS %d\n",
+        cur->name, cur->tid, child_id, status);
   return status;
 }
 
@@ -421,6 +422,8 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
       sema_up(&this_process->sema);
     }
   }
+  debug("%s#%d: process_cleanup() DONE with status %d\n",
+        cur->name, cur->tid, status);
 }
 
 
