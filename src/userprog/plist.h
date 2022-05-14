@@ -5,11 +5,12 @@
 
 typedef int key_t;
 typedef struct p_info* value_p;
+#define PMAP_SIZE 128
 
 
 struct p_list
 {
-  value_p content[MAP_SIZE];
+  value_p content[PMAP_SIZE];
 };
 
 struct p_info

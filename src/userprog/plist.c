@@ -7,7 +7,7 @@
 
 void plist_init(struct p_list* m)
 {
-  for (unsigned i = 0; i < MAP_SIZE; i++)
+  for (unsigned i = 0; i < PMAP_SIZE; i++)
   {
     m->content[i] = NULL;
   }
@@ -42,7 +42,7 @@ value_p plist_find_process(struct p_list* m, key_t k)
   } 
   else 
   {
-    printf("# \nERROR plist_find: Key out of bounds!\n");
+    printf("# \nERROR plist_find: Key out of bounds!");
     return NULL;
   }
 }
@@ -52,20 +52,21 @@ value_p plist_remove_process(struct p_list* m, key_t k)
 {
   if (!check_within_bounds(k))
   {
-    printf("# \nERROR plist_remove: Key out of bounds!\n");
+    printf("# \nERROR plist_remove: Key out of bounds!");
     return NULL;
   }
   else
   {
     if (m->content[k] != NULL)
     {
+      if(k==1) puts("bam get reckt");
       value_p ret = m->content[k];
       m->content[k] = NULL;
       return ret;
     }
     else
     {
-      puts("#\nValue for key not allocated\n");
+      debug("#\nValue for key not allocated id %d", k);
       return NULL;
     }
   }
@@ -78,7 +79,7 @@ void plist_print(struct p_list* m)
   puts("# -----------------------------------------------");
   puts("# --- Process info table -------------------------");
   puts("# ID  STATUS  IS_ALIVE  PARENT_ID  STATUS_NEEDED");
-  while (counter < MAP_SIZE)
+  while (counter < PMAP_SIZE)
   {
     if (m->content[counter] != NULL)
     {
@@ -96,7 +97,7 @@ void plist_print(struct p_list* m)
 void plist_orphan_my_children(struct p_list* m, key_t parent_id)
 {
   value_p process_list = m->content;
-  for(int i=0; i<MAP_SIZE-1; i++)
+  for(int i=0; i<PMAP_SIZE-1; i++)
   {
     if(process_list[i].parent_id == parent_id)
     {
@@ -109,7 +110,7 @@ void plist_orphan_my_children(struct p_list* m, key_t parent_id)
 void plist_remove_my_children(struct p_list* m, key_t parent_id)
 {
   value_p process_list = m->content;
-  for(int i=0; i<MAP_SIZE-1; i++)
+  for(int i=0; i<PMAP_SIZE-1; i++)
   {
     if(process_list[i].parent_id == parent_id)
     {
@@ -117,3 +118,5 @@ void plist_remove_my_children(struct p_list* m, key_t parent_id)
     }
   }
 }
+
+

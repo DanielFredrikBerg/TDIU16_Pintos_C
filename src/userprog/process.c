@@ -332,8 +332,9 @@ process_wait (int child_id)
 
   // Returnera barnprocessens exit status.
   status = child_process->status;
-  plist_remove_process(&process_map, child_process->id);
-  free(child_process);
+  child_process->status_needed = false;
+  //plist_remove_process(&process_map, child_process->id);
+  //free(child_process);
 
   debug("%s#%d: process_wait(%d) RETURNS %d\n",
         cur->name, cur->tid, child_id, status);
@@ -351,7 +352,25 @@ process_wait (int child_id)
    or initialized to something sane, or else that any such situation
    is detected.
 */
-  
+
+void
+process_cull(void)
+{
+  debug("# ------------------");
+  for(int i=0; i<PMAP_SIZE-1; i++)
+  {
+    debug("# INDEX = %d", i);
+    struct p_info *cur_process = plist_find_process(&process_map, i);
+    //debug("#\n# ID %d, is_alive = %d, status_needed = %d",cur_process->id, cur_process->is_alive, cur_process->status_needed);
+    if(cur_process != NULL && cur_process->is_alive == false && cur_process->status_needed == false && cur_process->id != 0)
+    {
+      value_p ass1 = plist_remove_process(&process_map, cur_process->id);
+      free(ass1);
+    }
+  }
+}
+
+
 void
 process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
 {
@@ -421,6 +440,8 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
     } else {
       sema_up(&this_process->sema);
     }
+    //process_print_list();
+    //process_cull();
   }
   debug("%s#%d: process_cleanup() DONE with status %d\n",
         cur->name, cur->tid, status);
