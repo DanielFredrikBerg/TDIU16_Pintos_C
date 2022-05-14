@@ -312,6 +312,7 @@ void
 thread_exit (void) 
 {
   ASSERT (!intr_context ());
+
   DEBUG_thread_count_down();
 
 #ifdef USERPROG

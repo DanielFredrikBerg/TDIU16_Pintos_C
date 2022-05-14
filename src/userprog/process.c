@@ -109,7 +109,7 @@ process_execute (const char *command_line)
   sema_init(&(arguments.sema), 0);
 
 
-  debug("# FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
+  debug("# 1FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
         command_line);
@@ -127,19 +127,17 @@ process_execute (const char *command_line)
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
   
-
+  puts("# 11111111111111111111111111111111111111111x");
     debug("# %s#%d: Before sema down, thread_id=%d\n",
         thread_current()->name,
         thread_current()->tid,
         thread_id);
    
-    // Hack -> ask for approval!
   if (thread_id == -1)
   {
     sema_up(&(arguments.sema));
   }
- 
-   sema_down(&(arguments.sema));
+  sema_down(&(arguments.sema));
   
   
   if(arguments.is_success)
@@ -186,7 +184,7 @@ void *setup_main_stack_asm(const char *command_line, void *esp);
 static void
 start_process (struct parameters_to_start_process* parameters)
 {
-  debug("# start_process");
+  debug("# 22start_process");
   /* The last argument passed to thread_create is received here... */
   struct intr_frame if_;
   bool success;
@@ -211,7 +209,19 @@ start_process (struct parameters_to_start_process* parameters)
         thread_current()->name,
         thread_current()->tid,
         success);
-        
+
+  // Process information has to be declared here because if load fails
+  // thread_exit() will be called which calls in turn process_cleanup()
+  struct p_info *process_info = malloc(sizeof(struct p_info));
+  int process_id = plist_add_process(&process_map, process_info);
+  process_info->status=-1;
+  process_info->is_alive=true;
+  process_info->parent_id=parameters->parent_id;
+  process_info->status_needed=true;
+  sema_init(&(process_info->sema), 0);
+  process_info->id=process_id;
+  thread_current()->id_in_process_map = process_id;    
+  parameters->child_id = process_id; 
   
   if (success)
   {
@@ -237,28 +247,17 @@ start_process (struct parameters_to_start_process* parameters)
     
 //    dump_stack ( PHYS_BASE + 15, PHYS_BASE - if_.esp + 16 );
 
-    struct p_info *process_info = malloc(sizeof(struct p_info));
-    int process_id = plist_add_process(&process_map, process_info);
 
-
-    process_info->status=-1;
-    process_info->is_alive=true;
-    process_info->parent_id=parameters->parent_id;
-    process_info->status_needed=true;
-    sema_init(&(process_info->sema), 0);
-    process_info->id=process_id;
-    thread_current()->id_in_process_map = process_id;    
-    parameters->child_id = process_id;
       // Stoppa in skapelse av processen här.
     // ta hand om 0 processen efter wait.
     parameters->is_success = true;
   }
 
-  
   debug("%s#%d: start_process(\"%s\") DONE\n",
         thread_current()->name,
         thread_current()->tid,
         parameters->command_line);
+
   if(!success)
     { 
       parameters->is_success = false;
@@ -273,6 +272,7 @@ start_process (struct parameters_to_start_process* parameters)
   */
   if ( ! success )
   {
+    parameters->is_success = false;
     thread_exit ();
   }
   
