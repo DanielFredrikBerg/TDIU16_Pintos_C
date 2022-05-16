@@ -109,7 +109,7 @@ process_execute (const char *command_line)
   sema_init(&(arguments.sema), 0);
 
 
-  debug("# 1FIRST %s#%d: process_execute(\"%s\") ENTERED\n",
+  debug("#%s#%d: process_execute(\"%s\") ENTERED\n",
         thread_current()->name,
         thread_current()->tid,
         command_line);
@@ -126,12 +126,6 @@ process_execute (const char *command_line)
        
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
-  
-  puts("# 11111111111111111111111111111111111111111x");
-    debug("# %s#%d: Before sema down, thread_id=%d\n",
-        thread_current()->name,
-        thread_current()->tid,
-        thread_id);
    
   if (thread_id == -1)
   {
@@ -184,7 +178,6 @@ void *setup_main_stack_asm(const char *command_line, void *esp);
 static void
 start_process (struct parameters_to_start_process* parameters)
 {
-  debug("# 22start_process");
   /* The last argument passed to thread_create is received here... */
   struct intr_frame if_;
   bool success;
@@ -348,7 +341,7 @@ process_cull(void)
   {
     struct p_info *cur_process = plist_find_process(&process_map, i);
     if(cur_process != NULL && cur_process->is_alive == false 
-       && cur_process->status_needed == false && cur_process->id != 0)
+       && cur_process->status_needed == false)
     {
       value_p ass1 = plist_remove_process(&process_map, cur_process->id);
       free(ass1);
@@ -406,18 +399,6 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }  
-  /* WHAT NEEDS TO BE DONE HERE:
-  *  1. Need to close all files related to current process. DONE
-  *  2. Need to remove this process (id) from the process list if it's in there. DONE
-  *  3. Need to set this process status to false as it exits in the process table. MAYBE DONE
-  *  4. May not remove process if parent is alive. DONE
-  *  5. When parent process exits -> set parent_alive to false on all child processes. DONE
-  *  6. Status needed = false när föräldern inte lever eller när den egna processen
-  *     måste stänga men föräldern lever (waited_on=true)
-  *  7. Om barn vill avsluta innan förälder så måste status_needed sättas
-  *     till false så att processen tas bort när föräldern tas bort.
-  */
-  // Get process id for this process.
 
   // Check if process was found in process table.
   if( this_process != NULL )
