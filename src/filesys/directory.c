@@ -7,7 +7,7 @@
 #include "threads/malloc.h"
 #include "threads/synch.h"
 
-struct lock dir_lock;
+static struct lock dir_lock;
 
 /* A directory. */
 struct dir 

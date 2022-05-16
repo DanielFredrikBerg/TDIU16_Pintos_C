@@ -8,32 +8,90 @@
 #include "filesys/directory.h"
 #include "devices/disk.h"
 #include "threads/synch.h"
-/*
- * DONE 1. Katalogen är tom. Två processer lägger till filen ”kim.txt” samtidigt. Är det 
- * efteråt garanterat attkatalogen innehåller endast en fil ”kim.txt”? -- NEJ
- * -- directory.c --dir_add 
- * 
+
+/* dir_remove not thread safe??????????????????????
+ * lock inode_remove()? 
  *
+ * DONE 
+ * 1. Katalogen är tom. Två processer lägger till filen ”kim.txt” samtidigt. Är det 
+ * efteråt garanterat attkatalogen innehåller endast en fil ”kim.txt”? -- NEJ
+ * 
+ * -- directory.c --dir_add 
+ * ANSWER:
+ *  No, it is not guaranteed, two files could be created
+ * SOLUTION:
+ *  Add a lock, I am guessing global(DONE). Could it be possible to make it work with a local
+ * lock? In struct dir?
+ *
+ * 
+ * ?????????
  * 2. Katalogen innehåller en fil ”kim.txt”. Två processer tar bort ”kim.txt”, 
  * och en process lägger samtidigt till ”kam.txt”. Är det efteråt garanterat att 
- * katalogen innehåller endast fil ”kam.txt”? -- JA
+ * katalogen innehåller endast fil ”kam.txt”? -- JA ? NO?
+ * inode_remove("kim.txt")
+ * inode_remove("kim.txt")
+ * inode_open("kam.txt")
+ * 
+ * ANSWER:
+ *  Yes there would only be one kam.txt however it would not be a terrible idea to lock
+ *  inode_remove.
  * 
  * 
+ * DONE
  * 3. Systemets globala inode-lista är tom. Tre processer öppnar samtidigt filen ”kim.txt”. 
  * Är det garanterat att inode-listan sedan innehåller endast en cachad referens 
  * till filen, med open_cnt lika med 3? -- NEJ
  * 
- * 
+ * inode.c
+ * open_inodes = global list of inode references
+ * inode_open() 3 times at the same time
+ * ANSWER:
+ *  No it is not guaranteed that the that open_inodes will contain only one reference to
+ *  kim.txt. If the three processes call inode_open() at the same time it could result in three
+ *  different references to kim.txt in open_inodes.
+ * SOLUTION:
+ *  Lock the open_inodes array that way we can look through, add inodes as we please knowing
+ *  that no other threads can access this list. If the inode already exists release the lock
+ *  and call inode_reopen(). Inode_reopen has a critical variable in open count. Here we 
+ *  use the local lock of the inode to protect it while making changes to the count.
+ *  If the inode is not already opened read from disk and create the inode, release the lock.
+ *
+ *  
+ * DONE
  * 4. Systemets globala inode-lista innehåller en referens till ”kim.txt” med open_cnt 
  * lika med 1. En process stänger filen samtidigt som en annan process öppnar filen. 
  * Är det garanterat att inode-listan efteråt innehåller samma information? -- NEJ
  * 
+ * open_inodes(["kim.txt"])
+ * inode_open("kim.txt")
+ * inode_close("kim.txt")
  * 
+ * ANSWER:
+ *  No, if inode_close() start first it will realise the open_couter is zero so it will delete
+ *  the inode. Meanwhile inode_open who just got a reference to the file will try to increase
+ *  the open_counter in inode_reopen() because it thinks the file is already opened
+ *  resulting in a segmentaion fault because the inode has already been freed.
+ * 
+ * SOLUTION:
+ *  Lock in inode_reopen() protecting open_counter. This lock should be local to the current 
+ *  inode as to not tank performance.
+ *  Lock also in inode_close, protect open_couter. Unsure about list_remove (&inode->elem)??????? 
+ * 
+ * 
+ * DONE
  * 5. Free-map innehåller två sekvenser med 5 lediga block. Två processer skapar 
  * samtidigt två filer som behöver 5 lediga block. Är det efteråt garanterat att 
  * filerna har fått var sin sekvens lediga block?
- * -- NEJ If the processes are created simultaneously it's not guaranteed the each process
+ * 
+ * *free_map_file
+ * free_map_allocate()
+ * free_map_allocate()
+ * 
+ * ANSWER:
+ *  NO, If the processes are created simultaneously it's not guaranteed the each process
  * will allocate 2x5 continous blocks for its own files.
+ * SOLUTION:
+ *  Lock the free_map_file so that each process can allocate continious blocks.
  * 
  * 
  * 6. Katalogen innehåller en fil ”kim.txt”. Systemets globala inode-lista innehåller 

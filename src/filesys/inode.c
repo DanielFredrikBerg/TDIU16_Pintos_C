@@ -8,7 +8,7 @@
 #include "threads/malloc.h"
 #include "threads/synch.h"
 
-struct lock inode_global_lock;
+static struct lock inode_global_lock;
 struct condition cond;
 
 /* Identifies an inode. */
@@ -131,8 +131,8 @@ inode_open (disk_sector_t sector)
       inode = list_entry (e, struct inode, elem);
       if (inode->sector == sector) 
         {
-          inode_reopen (inode);
           lock_release(&inode_global_lock);
+          inode_reopen (inode);
           return inode; 
         }
     }
@@ -195,6 +195,7 @@ inode_close (struct inode *inode)
   if (--inode->open_cnt == 0)
     {
       /* Remove from inode list. */
+      // what does this do? remove from inode_open list?
       list_remove (&inode->elem);
       
       // no need for this because free() will delete it?
@@ -222,7 +223,9 @@ void
 inode_remove (struct inode *inode) 
 {
   ASSERT (inode != NULL);
+  lock_acquire(&inode->local_lock);
   inode->removed = true;
+  lock_release(&inode->local_lock);
 }
 
 /* Reads SIZE bytes from INODE into BUFFER, starting at position OFFSET.
