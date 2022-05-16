@@ -88,15 +88,17 @@ void init_locks(void)
  * dessa funktioner. Det kan dock vara intressant att modifiera koden nedan för
  * att kunna testa bättre.
  */
-
+struct semaphore data_sema;
 
 void thread_main(int *file_id) {
   struct data_file *f = data_open(*file_id);
   printf("Data: %s\n", f->data);
   data_close(f);
+  sema_up(&data_sema);
 }
 
 int main(void) {
+  sema_init(&data_sema, 0);
   data_init();
   init_locks();
 
@@ -106,6 +108,10 @@ int main(void) {
   thread_new(&thread_main, &one);
 
   thread_main(&zero);
+
+  // Wait for other threads to be done.
+  for (int i = 0; i < 3; i++)
+    sema_down(&data_sema);
 
   return 0;
 }
