@@ -9,6 +9,7 @@
 #include "threads/synch.h"
 
 struct lock inode_global_lock;
+struct condition cond;
 
 /* Identifies an inode. */
 #define INODE_MAGIC 0x494e4f44
@@ -68,6 +69,7 @@ inode_init (void)
 
   lock_init(&inode_global_lock);
   list_init (&open_inodes);
+  cond_init(&cond);
 }
 
 /* Initializes an inode with LENGTH bytes of data and
@@ -120,6 +122,7 @@ inode_open (disk_sector_t sector)
   struct list_elem *e;
   struct inode *inode;
 
+  // crash here after a while
   lock_acquire(&inode_global_lock);
   /* Check whether this inode is already open. */
   for (e = list_begin (&open_inodes); e != list_end (&open_inodes);
@@ -129,6 +132,7 @@ inode_open (disk_sector_t sector)
       if (inode->sector == sector) 
         {
           inode_reopen (inode);
+          lock_release(&inode_global_lock);
           return inode; 
         }
     }
@@ -137,6 +141,7 @@ inode_open (disk_sector_t sector)
   inode = malloc (sizeof *inode);
   if (inode == NULL)
   {
+    lock_release(&inode_global_lock);
     return NULL;
   }
   
