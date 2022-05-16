@@ -100,8 +100,20 @@
  * stänger filen ”kim.txt”. Är det efteråt garanterat att inode-listan är tom, att 
  * free-map har 5 nya lediga block, och att katalogen är tom?
  * 
- * NEJ -  Utan en koordinerad ordning är det inte garanterat att alla aktioner alltid
- * sker i en viss ordning.
+ * dir = kim.txt
+ * open_inodes = kim.txt(open_count = 1)
+ * free_map_file(5 blocks marked taken by kim.txt)
+ * ????dir_remove(kim.txt) / inode_remove(kim.txt)
+ * ????inode_close(kim.txt)
+ * 
+ * ?????ANSWER:
+ *  No, seeing as dir_remove() could run paralell to inode_close() the inode could be freed
+ *  in dir_remove() causing inode_close() to give an error when doing --.
+ * Solution:
+ *  Sync dir_remove() protect the dir which in turn protects the inode.
+ * Old Solution:
+ *  NEJ -  Utan en koordinerad ordning är det inte garanterat att alla aktioner alltid
+ *  sker i en viss ordning.
  * 
  * 7. Katalogen innehåller en fil ”kim.txt”. En process försöker öppna filen samtidigt 
  * som en annan process tar bort filen ”kim.txt” och skapar sedan en ny fil ”kam.txt”. 

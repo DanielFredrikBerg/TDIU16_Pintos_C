@@ -196,6 +196,7 @@ dir_remove (struct dir *dir, const char *name)
   bool success = false;
   off_t ofs;
 
+  lock_acquire(&dir_lock);
   ASSERT (dir != NULL);
   ASSERT (name != NULL);
 
@@ -219,6 +220,7 @@ dir_remove (struct dir *dir, const char *name)
 
  done:
   inode_close (inode);
+  lock_release(&dir_lock);
   return success;
 }
 
