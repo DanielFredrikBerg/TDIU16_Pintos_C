@@ -9,9 +9,9 @@
 #include "devices/disk.h"
 #include "threads/synch.h"
 /*
- * 1. Katalogen är tom. Två processer lägger till filen ”kim.txt” samtidigt. Är det 
+ * DONE 1. Katalogen är tom. Två processer lägger till filen ”kim.txt” samtidigt. Är det 
  * efteråt garanterat attkatalogen innehåller endast en fil ”kim.txt”? -- NEJ
- * -- directory.c --dir_add
+ * -- directory.c --dir_add 
  * 
  *
  * 2. Katalogen innehåller en fil ”kim.txt”. Två processer tar bort ”kim.txt”, 
@@ -21,7 +21,41 @@
  * 
  * 3. Systemets globala inode-lista är tom. Tre processer öppnar samtidigt filen ”kim.txt”. 
  * Är det garanterat att inode-listan sedan innehåller endast en cachad referens 
- * till filen, med open_cnt lika med 3?
+ * till filen, med open_cnt lika med 3? -- NEJ
+ * 
+ * 
+ * 4. Systemets globala inode-lista innehåller en referens till ”kim.txt” med open_cnt 
+ * lika med 1. En process stänger filen samtidigt som en annan process öppnar filen. 
+ * Är det garanterat att inode-listan efteråt innehåller samma information? -- NEJ
+ * 
+ * 
+ * 5. Free-map innehåller två sekvenser med 5 lediga block. Två processer skapar 
+ * samtidigt två filer som behöver 5 lediga block. Är det efteråt garanterat att 
+ * filerna har fått var sin sekvens lediga block?
+ * -- NEJ If the processes are created simultaneously it's not guaranteed the each process
+ * will allocate 2x5 continous blocks for its own files.
+ * 
+ * 
+ * 6. Katalogen innehåller en fil ”kim.txt”. Systemets globala inode-lista innehåller 
+ * en referens till samma fil med open_cnt lika med 1. Free-map har 5 block markerade 
+ * som upptagna. En process tar bort filen ”kim.txt” samtidigt som en annan process 
+ * stänger filen ”kim.txt”. Är det efteråt garanterat att inode-listan är tom, att 
+ * free-map har 5 nya lediga block, och att katalogen är tom?
+ * 
+ * NEJ -  Utan en koordinerad ordning är det inte garanterat att alla aktioner alltid
+ * sker i en viss ordning.
+ * 
+ * 7. Katalogen innehåller en fil ”kim.txt”. En process försöker öppna filen samtidigt 
+ * som en annan process tar bort filen ”kim.txt” och skapar sedan en ny fil ”kam.txt”. 
+ * Är det efteråt garanterat att den första processen antingen lyckades öppna filen 
+ * ”kim.txt”, eller att den misslyckades? Eller kan det bli så att den råkar 
+ * öppna ”kam.txt” i stället?
+ * 
+ * 
+ * 8. Liknande frågor skall du själv ställa dig i relation till din process-lista 
+ * och till din(a) fil-list(or).
+ * 
+ * 
  * 
  */ 
 
