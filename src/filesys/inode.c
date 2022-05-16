@@ -8,6 +8,7 @@
 #include "threads/malloc.h"
 #include "threads/synch.h"
 
+struct lock inode_global_lock;
 
 /* Identifies an inode. */
 #define INODE_MAGIC 0x494e4f44
@@ -38,6 +39,7 @@ struct inode
     int open_cnt;                       /* Number of openers. */
     bool removed;                       /* True if deleted, false otherwise. */
     struct inode_disk data;             /* Inode content. */
+    struct lock local_lock;
   };
 
 
@@ -63,6 +65,8 @@ static struct list open_inodes;
 void
 inode_init (void) 
 {
+
+  lock_init(&inode_global_lock);
   list_init (&open_inodes);
 }
 
@@ -116,7 +120,7 @@ inode_open (disk_sector_t sector)
   struct list_elem *e;
   struct inode *inode;
 
-  
+  lock_acquire(&inode_global_lock);
   /* Check whether this inode is already open. */
   for (e = list_begin (&open_inodes); e != list_end (&open_inodes);
        e = list_next (e)) 
@@ -142,9 +146,11 @@ inode_open (disk_sector_t sector)
   inode->sector = sector;
   inode->open_cnt = 1;
   inode->removed = false;
+  lock_init(&inode->local_lock);
   
   disk_read (filesys_disk, inode->sector, &inode->data);
-  
+  lock_release(&inode_global_lock);
+
   return inode;
 }
 
@@ -154,7 +160,9 @@ inode_reopen (struct inode *inode)
 {
   if (inode != NULL)
   {
+    lock_acquire(&inode->local_lock);
     inode->open_cnt++;
+    lock_release(&inode->local_lock);
   }
   return inode;
 }
@@ -175,6 +183,7 @@ inode_close (struct inode *inode)
   /* Ignore null pointer. */
   if (inode == NULL)
     return;
+  lock_acquire(&inode->local_lock);
 
     
   /* Release resources if this was the last opener. */
@@ -183,7 +192,9 @@ inode_close (struct inode *inode)
       /* Remove from inode list. */
       list_remove (&inode->elem);
       
- 
+      // no need for this because free() will delete it?
+      lock_release(&inode->local_lock);
+
       /* Deallocate blocks if the file is marked as removed. */
       if (inode->removed) 
         {
@@ -193,8 +204,11 @@ inode_close (struct inode *inode)
         }
 
       free (inode);
+
       return;
     }
+    lock_release(&inode->local_lock);
+    
 }
 
 /* Marks INODE to be deleted when it is closed by the last caller who
