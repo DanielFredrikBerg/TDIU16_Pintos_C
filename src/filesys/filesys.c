@@ -8,6 +8,22 @@
 #include "filesys/directory.h"
 #include "devices/disk.h"
 #include "threads/synch.h"
+/*
+ * 1. Katalogen är tom. Två processer lägger till filen ”kim.txt” samtidigt. Är det 
+ * efteråt garanterat attkatalogen innehåller endast en fil ”kim.txt”? -- NEJ
+ * -- directory.c --dir_add
+ * 
+ *
+ * 2. Katalogen innehåller en fil ”kim.txt”. Två processer tar bort ”kim.txt”, 
+ * och en process lägger samtidigt till ”kam.txt”. Är det efteråt garanterat att 
+ * katalogen innehåller endast fil ”kam.txt”? -- JA
+ * 
+ * 
+ * 3. Systemets globala inode-lista är tom. Tre processer öppnar samtidigt filen ”kim.txt”. 
+ * Är det garanterat att inode-listan sedan innehåller endast en cachad referens 
+ * till filen, med open_cnt lika med 3?
+ * 
+ */ 
 
 /* The disk that contains the file system. */
 struct disk *filesys_disk;
