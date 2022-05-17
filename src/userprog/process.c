@@ -337,17 +337,22 @@ process_wait (int child_id)
  */
 static void
 process_cull(void)
-{
+{ 
+  // lock because compilator may think this is a single 
+  // thread program and compile out free
+  lock_acquire(&process_map_lock);
   for(int i=0; i<MAP_SIZE-1; i++)
   {
     struct p_info *cur_process = plist_find_process(&process_map, i);
     if(cur_process != NULL && cur_process->is_alive == false 
        && cur_process->status_needed == false)
     {
-      value_p ass1 = plist_remove_process(&process_map, cur_process->id);
-      free(ass1);
+      value_p process = plist_remove_process(&process_map, cur_process->id);
+      free(process);
     }
   }
+  lock_release(&process_map_lock);
+
 }
 
 
@@ -421,6 +426,7 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
     process_cull();
   }
 }
+
 
 
 /* Sets up the CPU for running user code in the current
