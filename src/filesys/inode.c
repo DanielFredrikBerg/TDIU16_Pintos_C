@@ -131,8 +131,8 @@ inode_open (disk_sector_t sector)
       inode = list_entry (e, struct inode, elem);
       if (inode->sector == sector) 
         {
-          lock_release(&inode_global_lock);
           inode_reopen (inode);
+          lock_release(&inode_global_lock);
           return inode; 
         }
     }
@@ -188,6 +188,8 @@ inode_close (struct inode *inode)
   /* Ignore null pointer. */
   if (inode == NULL)
     return;
+    // get rid of global_lock 2x release with bool should remove inode.
+  lock_acquire(&inode_global_lock);
   lock_acquire(&inode->local_lock);
 
     
@@ -200,6 +202,8 @@ inode_close (struct inode *inode)
       
       // no need for this because free() will delete it?
       lock_release(&inode->local_lock);
+      lock_release(&inode_global_lock);
+
 
       /* Deallocate blocks if the file is marked as removed. */
       if (inode->removed) 
@@ -214,6 +218,7 @@ inode_close (struct inode *inode)
       return;
     }
     lock_release(&inode->local_lock);
+    lock_release(&inode_global_lock);
     
 }
 
@@ -223,6 +228,7 @@ void
 inode_remove (struct inode *inode) 
 {
   ASSERT (inode != NULL);
+  // not sure if this is actually needed? can't hurt
   lock_acquire(&inode->local_lock);
   inode->removed = true;
   lock_release(&inode->local_lock);

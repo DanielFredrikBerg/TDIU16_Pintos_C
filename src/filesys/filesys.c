@@ -94,6 +94,7 @@
  *  Lock the free_map_file so that each process can allocate continious blocks.
  * 
  * 
+ * DONE
  * 6. Katalogen innehåller en fil ”kim.txt”. Systemets globala inode-lista innehåller 
  * en referens till samma fil med open_cnt lika med 1. Free-map har 5 block markerade 
  * som upptagna. En process tar bort filen ”kim.txt” samtidigt som en annan process 
@@ -115,6 +116,8 @@
  *  NEJ -  Utan en koordinerad ordning är det inte garanterat att alla aktioner alltid
  *  sker i en viss ordning.
  * 
+ * 
+ * 
  * 7. Katalogen innehåller en fil ”kim.txt”. En process försöker öppna filen samtidigt 
  * som en annan process tar bort filen ”kim.txt” och skapar sedan en ny fil ”kam.txt”. 
  * Är det efteråt garanterat att den första processen antingen lyckades öppna filen 
@@ -122,9 +125,15 @@
  * öppna ”kam.txt” i stället?
  * 
  * 
+ * open_inodes["kim.txt(1)"]
+ * inode_open("kim.txt")
+ * inode_close("kim.txt")
+ * inode_open("kam.txt")
+ * 
  * 8. Liknande frågor skall du själv ställa dig i relation till din process-lista 
  * och till din(a) fil-list(or).
- * 
+ * // global process_map lock?
+ * // local per process lock?
  * 
  * 
  */ 

@@ -34,6 +34,8 @@ free_map_allocate (size_t cnt, disk_sector_t *sectorp)
 {
   disk_sector_t sector;
   
+  // bitmap_scan_and_flip, bitmap_wirte, bitmap_set_multile atomic
+  // but because they are used one afther the other they need to be synced.
   lock_acquire(&free_map_lock);
   sector = bitmap_scan_and_flip (free_map, 0, cnt, false);
   if (sector != BITMAP_ERROR
@@ -54,20 +56,24 @@ free_map_allocate (size_t cnt, disk_sector_t *sectorp)
 void
 free_map_release (disk_sector_t sector, size_t cnt)
 {
+  lock_acquire(&free_map_lock);
   ASSERT (bitmap_all (free_map, sector, cnt));
   bitmap_set_multiple (free_map, sector, cnt, false);
   bitmap_write (free_map, free_map_file);
+  lock_release(&free_map_lock);
 }
 
 /* Opens the free map file and reads it from disk. */
 void
 free_map_open (void) 
 {
+  // no lock because init
   free_map_file = file_open (inode_open (FREE_MAP_SECTOR));
   if (free_map_file == NULL)
     PANIC ("can't open free map");
   if (!bitmap_read (free_map, free_map_file))
     PANIC ("can't read free map");
+
 }
 
 /* Writes the free map to disk and closes the free map file. */

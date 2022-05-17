@@ -25,6 +25,7 @@
 /* HACK defines code you must remove and implement in a proper way */
 #define HACK
 struct p_list process_map;
+struct lock process_map_lock;
 
 
 /* This function is called at boot time (threads/init.c) to initialize
@@ -33,20 +34,9 @@ void process_init(void)
 {
   // Borde denna vara här eller i thread_init? Varje trår borde ha sin egen process_map?
   plist_init(&process_map);
-
-  // struct p_info *process_info = malloc(sizeof(struct p_info));
-
-  // int process_id = plist_add_process(&process_map, process_info);
-
-  // process_info->status=-1;
-  // process_info->is_alive=true;
-  // process_info->parent_id=-1;
-  // process_info->status_needed=true;
-  // sema_init(&(process_info->sema), 0);
-  
-  // debug("# !!!!!!!!!!!!!!!!!!!!!!!!!!Process_id:%d\n", process_id);
-  // process_info->id=process_id;
+  lock_init(&process_map_lock);
 }
+
 
 /* This function is currently never called. As thread_exit does not
  * have an exit status parameter, this could be used to handle that
@@ -54,14 +44,18 @@ void process_init(void)
  * in process_cleanup, and that process_cleanup are already called
  * from thread_exit - do not call cleanup twice! */
 void process_exit(int status) 
-// Meddela förälder vilken statuskod processen avslutades.
 {
   int id = thread_current()->id_in_process_map;
+  // no need to lock map here because there is no risk for the prcoess to 
+  // dissapear from the process map.
+  // 1. process can be removed only after this function is called
+  // 2. parent cant directly remove this from the process_map, it can only set the
+  // status_needed to false.
   struct p_info *process_info = plist_find_process(&process_map, id);
   process_info->status = status;
   process_info->is_alive = false;
-  debug("# ---------------- PROCESS %d EXIT with STATUS: %d", process_info->id, status);
 }
+
 
 /* Print a list of all running processes. The list shall include all
  * relevant debug information in a clean, readable format. */
@@ -78,7 +72,6 @@ struct parameters_to_start_process
   struct semaphore sema;
   int parent_id;
   int child_id;
-  //int return_value; <- Might need later? (From lab08)
 };
 
 static void
@@ -205,8 +198,17 @@ start_process (struct parameters_to_start_process* parameters)
 
   // Process information has to be declared here because if load fails
   // thread_exit() will be called which calls in turn process_cleanup()
+
   struct p_info *process_info = malloc(sizeof(struct p_info));
+  // process_map has to be locked here because if current process A gets preempted
+  // inside plist_add_process when it found a place to add a new proces.
+  // and another new process B gets to run plist_add_process(). When it will be 
+  // A's turn to run it will think that the spot it previousy found is still empty
+  // which is not, and it will write over.
+  lock_acquire(&process_map_lock);
   int process_id = plist_add_process(&process_map, process_info);
+  lock_release(&process_map_lock);
+
   process_info->status=-1;
   process_info->is_alive=true;
   process_info->parent_id=parameters->parent_id;
@@ -317,8 +319,7 @@ process_wait (int child_id)
 
   // Returnera barnprocessens exit status.
   status = child_process->status;
-  value_p process = plist_remove_process(&process_map, child_process->id);
-  free(process);
+  child_process->status_needed = false;
 
   return status;
 }
@@ -413,11 +414,8 @@ process_cleanup (void) // nånstans här, stäng alla öppna filer. DONE
     plist_orphan_my_children( &process_map, this_process->id );
 
     // remove process if parent is dead or status_needed is false
-    if( this_process->status_needed == false) 
+    if( !this_process->status_needed == false) 
     {
-      value_p process = plist_remove_process(&process_map, this_process->id);
-      free(process);
-    } else {
       sema_up(&this_process->sema);
     }
     process_cull();

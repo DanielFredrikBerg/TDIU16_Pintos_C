@@ -1,6 +1,6 @@
 cd build && make check
 make[1]: Entering directory '/home/and/tdiu16-labs/src/userprog/build'
-gcc -m32 -c ../../filesys/filesys.c -o filesys/filesys.o -std=gnu99 -ggdb -msoft-float -fno-omit-frame-pointer -ffreestanding -fno-inline -fno-pic -O -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers -DPINTOS -DUSERPROG -DFILESYS -MMD -MF filesys/filesys.d
+gcc -m32 -c ../../userprog/process.c -o userprog/process.o -std=gnu99 -ggdb -msoft-float -fno-omit-frame-pointer -ffreestanding -fno-inline -fno-pic -O -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers -DPINTOS -DUSERPROG -DFILESYS -MMD -MF userprog/process.d
 ld -melf_i386 -T threads/kernel.lds.s -o kernel.o threads/init.o threads/thread.o threads/switch.o threads/interrupt.o threads/intr-stubs.o threads/synch.o threads/palloc.o threads/malloc.o threads/start.o threads/boundedbuffer.o threads/synchlist.o devices/timer.o devices/kbd.o devices/vga.o devices/serial.o devices/disk.o devices/input.o devices/intq.o lib/debug.o lib/random.o lib/stdio.o lib/stdlib.o lib/string.o lib/arithmetic.o lib/kernel/debug.o lib/kernel/list.o lib/kernel/bitmap.o lib/kernel/hash.o lib/kernel/console.o lib/kernel/slist.o userprog/process.o userprog/load.o userprog/pagedir.o userprog/exception.o userprog/syscall.o userprog/gdt.o userprog/tss.o userprog/flist.o userprog/plist.o userprog/main-stack.o filesys/filesys.o filesys/free-map.o filesys/file.o filesys/directory.o filesys/inode.o filesys/fsutil.o
 objcopy -O binary -R .note -R .note.* -R .comment -S kernel.o kernel.bin.tmp
 dd if=kernel.bin.tmp of=kernel.bin bs=4096 conv=sync
@@ -88,9 +88,11 @@ pintos -v -k -T 300 --qemu  --fs-disk=2 -p tests/filesys/base/syn-read -a syn-re
 pintos -v -k -T 60 --qemu  --fs-disk=2 -p tests/filesys/base/syn-remove -a syn-remove -- -q  -F=10000  -f run syn-remove < /dev/null 2> tests/filesys/base/syn-remove.errors > tests/filesys/base/syn-remove.allput
 pintos -v -k -T 60 --qemu  --fs-disk=2 -p tests/filesys/base/syn-write -a syn-write -p tests/filesys/base/child-syn-wrt -a child-syn-wrt -- -q  -F=10000  -f run syn-write < /dev/null 2> tests/filesys/base/syn-write.errors > tests/filesys/base/syn-write.allput
 perl -I../.. ../../tests/klaar/read-bad-buf.ck tests/klaar/read-bad-buf tests/klaar/read-bad-buf.result
+perl -I../.. ../../tests/klaar/low-mem.ck tests/klaar/low-mem tests/klaar/low-mem.result
 FAIL tests/klaar/read-bad-buf
 run: should not have survived read(): FAILED
-perl -I../.. ../../tests/klaar/low-mem.ck tests/klaar/low-mem tests/klaar/low-mem.result
+perl -I../.. ../../tests/klaar/exec-corrupt.ck tests/klaar/exec-corrupt tests/klaar/exec-corrupt.result
+perl -I../.. ../../tests/klaar/pfs.ck tests/klaar/pfs tests/klaar/pfs.result
 FAIL tests/klaar/low-mem
 Test output failed to match any acceptable form.
 
@@ -102,25 +104,34 @@ Acceptable output:
 Differences in `diff -u' format:
   (low-mem) begin
 - (low-mem) exec("child-simple"): -1
-+ (low-mem) exec("child-simple"): -1072661636
++ (low-mem) exec("child-simple"): 10
   (low-mem) end
   low-mem: exit(0)
-perl -I../.. ../../tests/klaar/exec-corrupt.ck tests/klaar/exec-corrupt tests/klaar/exec-corrupt.result
+perl -I../.. ../../tests/filst/sc-bad-write.ck tests/filst/sc-bad-write tests/filst/sc-bad-write.result
 pass tests/klaar/exec-corrupt
-perl -I../.. ../../tests/klaar/pfs.ck tests/klaar/pfs tests/klaar/pfs.result
+perl -I../.. ../../tests/filst/sc-bad-close.ck tests/filst/sc-bad-close tests/filst/sc-bad-close.result
+perl -I../.. ../../tests/filst/sc-bad-nr-1.ck tests/filst/sc-bad-nr-1 tests/filst/sc-bad-nr-1.result
 FAIL tests/klaar/pfs
 run: inconsistency: FAILED
-perl -I../.. ../../tests/filst/sc-bad-write.ck tests/filst/sc-bad-write tests/filst/sc-bad-write.result
+perl -I../.. ../../tests/filst/sc-bad-nr-2.ck tests/filst/sc-bad-nr-2 tests/filst/sc-bad-nr-2.result
 FAIL tests/filst/sc-bad-write
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-perl -I../.. ../../tests/filst/sc-bad-close.ck tests/filst/sc-bad-close tests/filst/sc-bad-close.result
+perl -I../.. ../../tests/filst/sc-bad-nr-3.ck tests/filst/sc-bad-nr-3 tests/filst/sc-bad-nr-3.result
 FAIL tests/filst/sc-bad-close
-Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-perl -I../.. ../../tests/filst/sc-bad-nr-1.ck tests/filst/sc-bad-nr-1 tests/filst/sc-bad-nr-1.result
-perl -I../.. ../../tests/filst/sc-bad-nr-2.ck tests/filst/sc-bad-nr-2 tests/filst/sc-bad-nr-2.result
+Run started 'sc-bad-close' but it never finished
+perl -I../.. ../../tests/filst/sc-bad-align.ck tests/filst/sc-bad-align tests/filst/sc-bad-align.result
 FAIL tests/filst/sc-bad-nr-1
 Test output failed to match any acceptable form.
 
+Acceptable output:
+  (sc-bad-nr-1) begin
+  sc-bad-nr-1: exit(-1)
+Differences in `diff -u' format:
+  (sc-bad-nr-1) begin
++ ______Executed an unknown system call!
++ ___Stack top + 0: 20
++ ___Stack top + 1: 0
+  sc-bad-nr-1: exit(-1)
 Acceptable output:
   (sc-bad-nr-1) begin
   Executed an unknown system call!
@@ -151,44 +162,6 @@ Differences in `diff -u' format:
 + ___Stack top + 0: 20
 + ___Stack top + 1: 0
   sc-bad-nr-1: exit(-1)
-Acceptable output:
-  (sc-bad-nr-1) begin
-  sc-bad-nr-1: exit(-1)
-Differences in `diff -u' format:
-  (sc-bad-nr-1) begin
-+ ______Executed an unknown system call!
-+ ___Stack top + 0: 20
-+ ___Stack top + 1: 0
-  sc-bad-nr-1: exit(-1)
-perl -I../.. ../../tests/filst/sc-bad-nr-3.ck tests/filst/sc-bad-nr-3 tests/filst/sc-bad-nr-3.result
-perl -I../.. ../../tests/filst/sc-bad-align.ck tests/filst/sc-bad-align tests/filst/sc-bad-align.result
-FAIL tests/filst/sc-bad-nr-3
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (sc-bad-nr-3) begin
-  Executed an unknown system call!
-  Stack top + 0: -1
-  Stack top + 1: 0
-  sc-bad-nr-3: exit(-1)
-Differences in `diff -u' format:
-  (sc-bad-nr-3) begin
-- Executed an unknown system call!
-- Stack top + 0: -1
-- Stack top + 1: 0
-+ ______Executed an unknown system call!
-+ ___Stack top + 0: -1
-+ ___Stack top + 1: 0
-  sc-bad-nr-3: exit(-1)
-Acceptable output:
-  (sc-bad-nr-3) begin
-  sc-bad-nr-3: exit(-1)
-Differences in `diff -u' format:
-  (sc-bad-nr-3) begin
-+ ______Executed an unknown system call!
-+ ___Stack top + 0: -1
-+ ___Stack top + 1: 0
-  sc-bad-nr-3: exit(-1)
 perl -I../.. ../../tests/filst/sc-bad-exit.ck tests/filst/sc-bad-exit tests/filst/sc-bad-exit.result
 FAIL tests/filst/sc-bad-nr-2
 Test output failed to match any acceptable form.
@@ -221,23 +194,49 @@ perl -I../.. ../../tests/userprog/args-none.ck tests/userprog/args-none tests/us
 FAIL tests/filst/sc-bad-align
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
 perl -I../.. ../../tests/userprog/args-single.ck tests/userprog/args-single tests/userprog/args-single.result
+FAIL tests/filst/sc-bad-nr-3
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (sc-bad-nr-3) begin
+  Executed an unknown system call!
+  Stack top + 0: -1
+  Stack top + 1: 0
+  sc-bad-nr-3: exit(-1)
+Differences in `diff -u' format:
+  (sc-bad-nr-3) begin
+- Executed an unknown system call!
+- Stack top + 0: -1
+- Stack top + 1: 0
++ ______Executed an unknown system call!
++ ___Stack top + 0: -1
++ ___Stack top + 1: 0
+  sc-bad-nr-3: exit(-1)
+Acceptable output:
+  (sc-bad-nr-3) begin
+  sc-bad-nr-3: exit(-1)
+Differences in `diff -u' format:
+  (sc-bad-nr-3) begin
++ ______Executed an unknown system call!
++ ___Stack top + 0: -1
++ ___Stack top + 1: 0
+  sc-bad-nr-3: exit(-1)
+perl -I../.. ../../tests/userprog/args-multiple.ck tests/userprog/args-multiple tests/userprog/args-multiple.result
 FAIL tests/filst/sc-bad-exit
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-perl -I../.. ../../tests/userprog/args-multiple.ck tests/userprog/args-multiple tests/userprog/args-multiple.result
 perl -I../.. ../../tests/userprog/args-many.ck tests/userprog/args-many tests/userprog/args-many.result
 pass tests/userprog/args-none
 perl -I../.. ../../tests/userprog/args-dbl-space.ck tests/userprog/args-dbl-space tests/userprog/args-dbl-space.result
+pass tests/userprog/args-many
 pass tests/userprog/args-multiple
 perl -I../.. ../../tests/userprog/sc-bad-sp.ck tests/userprog/sc-bad-sp tests/userprog/sc-bad-sp.result
-pass tests/userprog/args-single
 perl -I../.. ../../tests/userprog/sc-bad-arg.ck tests/userprog/sc-bad-arg tests/userprog/sc-bad-arg.result
-pass tests/userprog/args-dbl-space
+pass tests/userprog/args-single
 perl -I../.. ../../tests/userprog/sc-boundary.ck tests/userprog/sc-boundary tests/userprog/sc-boundary.result
-pass tests/userprog/args-many
+pass tests/userprog/args-dbl-space
 perl -I../.. ../../tests/userprog/sc-boundary-2.ck tests/userprog/sc-boundary-2 tests/userprog/sc-boundary-2.result
 FAIL tests/userprog/sc-bad-sp
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-perl -I../.. ../../tests/userprog/halt.ck tests/userprog/halt tests/userprog/halt.result
 FAIL tests/userprog/sc-bad-arg
 Test output failed to match any acceptable form.
 
@@ -248,71 +247,59 @@ Differences in `diff -u' format:
   (sc-bad-arg) begin
 - sc-bad-arg: exit(-1)
 + sc-bad-arg: exit(-268370093)
+perl -I../.. ../../tests/userprog/halt.ck tests/userprog/halt tests/userprog/halt.result
 perl -I../.. ../../tests/userprog/exit.ck tests/userprog/exit tests/userprog/exit.result
-pass tests/userprog/sc-boundary-2
-perl -I../.. ../../tests/userprog/create-normal.ck tests/userprog/create-normal tests/userprog/create-normal.result
-pass tests/userprog/halt
-perl -I../.. ../../tests/userprog/create-empty.ck tests/userprog/create-empty tests/userprog/create-empty.result
-pass tests/userprog/exit
-perl -I../.. ../../tests/userprog/create-null.ck tests/userprog/create-null tests/userprog/create-null.result
 pass tests/userprog/sc-boundary
+perl -I../.. ../../tests/userprog/create-normal.ck tests/userprog/create-normal tests/userprog/create-normal.result
+pass tests/userprog/sc-boundary-2
+perl -I../.. ../../tests/userprog/create-empty.ck tests/userprog/create-empty tests/userprog/create-empty.result
+pass tests/userprog/halt
+perl -I../.. ../../tests/userprog/create-null.ck tests/userprog/create-null tests/userprog/create-null.result
+pass tests/userprog/exit
 perl -I../.. ../../tests/userprog/create-bad-ptr.ck tests/userprog/create-bad-ptr tests/userprog/create-bad-ptr.result
-pass tests/userprog/create-empty
-perl -I../.. ../../tests/userprog/create-long.ck tests/userprog/create-long tests/userprog/create-long.result
-FAIL tests/userprog/create-null
-Run started 'create-null' but it never finished
-perl -I../.. ../../tests/userprog/create-exists.ck tests/userprog/create-exists tests/userprog/create-exists.result
 pass tests/userprog/create-normal
-perl -I../.. ../../tests/userprog/create-bound.ck tests/userprog/create-bound tests/userprog/create-bound.result
+perl -I../.. ../../tests/userprog/create-long.ck tests/userprog/create-long tests/userprog/create-long.result
+pass tests/userprog/create-empty
+perl -I../.. ../../tests/userprog/create-exists.ck tests/userprog/create-exists tests/userprog/create-exists.result
 FAIL tests/userprog/create-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
+perl -I../.. ../../tests/userprog/create-bound.ck tests/userprog/create-bound tests/userprog/create-bound.result
+FAIL tests/userprog/create-null
+Run started 'create-null' but it never finished
 perl -I../.. ../../tests/userprog/open-normal.ck tests/userprog/open-normal tests/userprog/open-normal.result
+pass tests/userprog/create-exists
 perl -I../.. ../../tests/userprog/open-missing.ck tests/userprog/open-missing tests/userprog/open-missing.result
 pass tests/userprog/create-long
 perl -I../.. ../../tests/userprog/open-boundary.ck tests/userprog/open-boundary tests/userprog/open-boundary.result
-pass tests/userprog/create-exists
-perl -I../.. ../../tests/userprog/open-empty.ck tests/userprog/open-empty tests/userprog/open-empty.result
 pass tests/userprog/create-bound
+perl -I../.. ../../tests/userprog/open-empty.ck tests/userprog/open-empty tests/userprog/open-empty.result
+pass tests/userprog/open-normal
 perl -I../.. ../../tests/userprog/open-null.ck tests/userprog/open-null tests/userprog/open-null.result
 pass tests/userprog/open-missing
-pass tests/userprog/open-normal
 perl -I../.. ../../tests/userprog/open-bad-ptr.ck tests/userprog/open-bad-ptr tests/userprog/open-bad-ptr.result
-perl -I../.. ../../tests/userprog/open-twice.ck tests/userprog/open-twice tests/userprog/open-twice.result
 pass tests/userprog/open-boundary
-perl -I../.. ../../tests/userprog/close-normal.ck tests/userprog/close-normal tests/userprog/close-normal.result
+perl -I../.. ../../tests/userprog/open-twice.ck tests/userprog/open-twice tests/userprog/open-twice.result
 pass tests/userprog/open-empty
+perl -I../.. ../../tests/userprog/close-normal.ck tests/userprog/close-normal tests/userprog/close-normal.result
 FAIL tests/userprog/open-null
 Kernel panic in run: PANIC at ../../filesys/directory.c:129 in dir_lookup(): assertion `name != NULL' failed.
 perl -I../.. ../../tests/userprog/close-twice.ck tests/userprog/close-twice tests/userprog/close-twice.result
-perl -I../.. ../../tests/userprog/close-stdin.ck tests/userprog/close-stdin tests/userprog/close-stdin.result
-perl -I../.. ../../tests/userprog/close-stdout.ck tests/userprog/close-stdout tests/userprog/close-stdout.result
-pass tests/userprog/open-twice
-perl -I../.. ../../tests/userprog/close-bad-fd.ck tests/userprog/close-bad-fd tests/userprog/close-bad-fd.result
 FAIL tests/userprog/open-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-perl -I../.. ../../tests/userprog/read-normal.ck tests/userprog/read-normal tests/userprog/read-normal.result
+perl -I../.. ../../tests/userprog/close-stdin.ck tests/userprog/close-stdin tests/userprog/close-stdin.result
+pass tests/userprog/open-twice
+perl -I../.. ../../tests/userprog/close-stdout.ck tests/userprog/close-stdout tests/userprog/close-stdout.result
 pass tests/userprog/close-normal
-perl -I../.. ../../tests/userprog/read-bad-ptr.ck tests/userprog/read-bad-ptr tests/userprog/read-bad-ptr.result
+perl -I../.. ../../tests/userprog/close-bad-fd.ck tests/userprog/close-bad-fd tests/userprog/close-bad-fd.result
 pass tests/userprog/close-stdin
 pass tests/userprog/close-twice
-perl -I../.. ../../tests/userprog/read-boundary.ck tests/userprog/read-boundary tests/userprog/read-boundary.result
-perl -I../.. ../../tests/userprog/read-zero.ck tests/userprog/read-zero tests/userprog/read-zero.result
+perl -I../.. ../../tests/userprog/read-normal.ck tests/userprog/read-normal tests/userprog/read-normal.result
+perl -I../.. ../../tests/userprog/read-bad-ptr.ck tests/userprog/read-bad-ptr tests/userprog/read-bad-ptr.result
 pass tests/userprog/close-stdout
-perl -I../.. ../../tests/userprog/read-stdout.ck tests/userprog/read-stdout tests/userprog/read-stdout.result
+perl -I../.. ../../tests/userprog/read-boundary.ck tests/userprog/read-boundary tests/userprog/read-boundary.result
 FAIL tests/userprog/close-bad-fd
 Test output failed to match any acceptable form.
 
-Acceptable output:
-  (close-bad-fd) begin
-  (close-bad-fd) end
-  close-bad-fd: exit(0)
-Differences in `diff -u' format:
-  (close-bad-fd) begin
-+ Map key out of bounds
-+ 
-+ ERROR map_find: Key out of bounds!
-  (close-bad-fd) end
-  close-bad-fd: exit(0)
 Acceptable output:
   (close-bad-fd) begin
   close-bad-fd: exit(-1)
@@ -324,18 +311,35 @@ Differences in `diff -u' format:
 + ERROR map_find: Key out of bounds!
 + (close-bad-fd) end
 + close-bad-fd: exit(0)
+Acceptable output:
+  (close-bad-fd) begin
+  (close-bad-fd) end
+  close-bad-fd: exit(0)
+Differences in `diff -u' format:
+  (close-bad-fd) begin
++ Map key out of bounds
++ 
++ ERROR map_find: Key out of bounds!
+  (close-bad-fd) end
+  close-bad-fd: exit(0)
+perl -I../.. ../../tests/userprog/read-zero.ck tests/userprog/read-zero tests/userprog/read-zero.result
 pass tests/userprog/read-normal
+perl -I../.. ../../tests/userprog/read-stdout.ck tests/userprog/read-stdout tests/userprog/read-stdout.result
+pass tests/userprog/read-zero
 perl -I../.. ../../tests/userprog/read-bad-fd.ck tests/userprog/read-bad-fd tests/userprog/read-bad-fd.result
-perl -I../.. ../../tests/userprog/write-normal.ck tests/userprog/write-normal tests/userprog/write-normal.result
 FAIL tests/userprog/read-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-perl -I../.. ../../tests/userprog/write-bad-ptr.ck tests/userprog/write-bad-ptr tests/userprog/write-bad-ptr.result
+perl -I../.. ../../tests/userprog/write-normal.ck tests/userprog/write-normal tests/userprog/write-normal.result
 pass tests/userprog/read-boundary
+perl -I../.. ../../tests/userprog/write-bad-ptr.ck tests/userprog/write-bad-ptr tests/userprog/write-bad-ptr.result
 perl -I../.. ../../tests/userprog/write-boundary.ck tests/userprog/write-boundary tests/userprog/write-boundary.result
-pass tests/userprog/read-stdout
+pass tests/userprog/write-normal
 perl -I../.. ../../tests/userprog/write-zero.ck tests/userprog/write-zero tests/userprog/write-zero.result
-pass tests/userprog/read-zero
+FAIL tests/userprog/write-bad-ptr
+Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
 perl -I../.. ../../tests/userprog/write-stdin.ck tests/userprog/write-stdin tests/userprog/write-stdin.result
+pass tests/userprog/read-stdout
+perl -I../.. ../../tests/userprog/write-bad-fd.ck tests/userprog/write-bad-fd tests/userprog/write-bad-fd.result
 FAIL tests/userprog/read-bad-fd
 Test output failed to match any acceptable form.
 
@@ -365,6 +369,9 @@ Differences in `diff -u' format:
 + ERROR map_find: Key out of bounds!
 + (read-bad-fd) end
 + read-bad-fd: exit(0)
++ #
++ Value for key not allocated
++ 
 Acceptable output:
   (read-bad-fd) begin
   (read-bad-fd) end
@@ -391,18 +398,21 @@ Differences in `diff -u' format:
 + ERROR map_find: Key out of bounds!
   (read-bad-fd) end
   read-bad-fd: exit(0)
-perl -I../.. ../../tests/userprog/write-bad-fd.ck tests/userprog/write-bad-fd tests/userprog/write-bad-fd.result
-pass tests/userprog/write-normal
++ #
++ Value for key not allocated
++ 
 perl -I../.. ../../tests/userprog/exec-once.ck tests/userprog/exec-once tests/userprog/exec-once.result
-FAIL tests/userprog/write-bad-ptr
-Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
+pass tests/userprog/write-boundary
 perl -I../.. ../../tests/userprog/exec-arg.ck tests/userprog/exec-arg tests/userprog/exec-arg.result
 pass tests/userprog/write-zero
-pass tests/userprog/write-boundary
 perl -I../.. ../../tests/userprog/exec-multiple.ck tests/userprog/exec-multiple tests/userprog/exec-multiple.result
-perl -I../.. ../../tests/userprog/exec-missing.ck tests/userprog/exec-missing tests/userprog/exec-missing.result
 pass tests/userprog/write-stdin
+perl -I../.. ../../tests/userprog/exec-missing.ck tests/userprog/exec-missing tests/userprog/exec-missing.result
+pass tests/userprog/exec-once
 perl -I../.. ../../tests/userprog/exec-bad-ptr.ck tests/userprog/exec-bad-ptr tests/userprog/exec-bad-ptr.result
+pass tests/userprog/exec-multiple
+perl -I../.. ../../tests/userprog/wait-simple.ck tests/userprog/wait-simple tests/userprog/wait-simple.result
+pass tests/userprog/exec-missing
 FAIL tests/userprog/write-bad-fd
 Test output failed to match any acceptable form.
 
@@ -458,17 +468,13 @@ Differences in `diff -u' format:
 + ERROR map_find: Key out of bounds!
   (write-bad-fd) end
   write-bad-fd: exit(0)
-perl -I../.. ../../tests/userprog/wait-simple.ck tests/userprog/wait-simple tests/userprog/wait-simple.result
-pass tests/userprog/exec-once
 perl -I../.. ../../tests/userprog/wait-twice.ck tests/userprog/wait-twice tests/userprog/wait-twice.result
-pass tests/userprog/exec-arg
 perl -I../.. ../../tests/userprog/wait-killed.ck tests/userprog/wait-killed tests/userprog/wait-killed.result
-pass tests/userprog/exec-multiple
+pass tests/userprog/exec-arg
 perl -I../.. ../../tests/userprog/wait-bad-pid.ck tests/userprog/wait-bad-pid tests/userprog/wait-bad-pid.result
-pass tests/userprog/exec-missing
-perl -I../.. ../../tests/userprog/multi-recurse.ck tests/userprog/multi-recurse tests/userprog/multi-recurse.result
 FAIL tests/userprog/exec-bad-ptr
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
+perl -I../.. ../../tests/userprog/multi-recurse.ck tests/userprog/multi-recurse tests/userprog/multi-recurse.result
 perl -I../.. ../../tests/userprog/multi-child-fd.ck tests/userprog/multi-child-fd tests/userprog/multi-child-fd.result
 pass tests/userprog/wait-simple
 perl -I../.. ../../tests/filesys/base/lg-create.ck tests/filesys/base/lg-create tests/filesys/base/lg-create.result
@@ -476,7 +482,6 @@ pass tests/userprog/wait-twice
 perl -I../.. ../../tests/filesys/base/lg-full.ck tests/filesys/base/lg-full tests/filesys/base/lg-full.result
 FAIL tests/userprog/wait-killed
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-perl -I../.. ../../tests/filesys/base/lg-random.ck tests/filesys/base/lg-random tests/filesys/base/lg-random.result
 FAIL tests/userprog/wait-bad-pid
 Test output failed to match any acceptable form.
 
@@ -500,85 +505,31 @@ Differences in `diff -u' format:
 + ERROR plist_find: Key out of bounds!
   (wait-bad-pid) end
   wait-bad-pid: exit(0)
+perl -I../.. ../../tests/filesys/base/lg-random.ck tests/filesys/base/lg-random tests/filesys/base/lg-random.result
 perl -I../.. ../../tests/filesys/base/lg-seq-block.ck tests/filesys/base/lg-seq-block tests/filesys/base/lg-seq-block.result
 pass tests/userprog/multi-recurse
-pass tests/userprog/multi-child-fd
 perl -I../.. ../../tests/filesys/base/lg-seq-random.ck tests/filesys/base/lg-seq-random tests/filesys/base/lg-seq-random.result
-pass tests/filesys/base/lg-create
+FAIL tests/userprog/multi-child-fd
+Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
 perl -I../.. ../../tests/filesys/base/sm-create.ck tests/filesys/base/sm-create tests/filesys/base/sm-create.result
+pass tests/filesys/base/lg-create
 perl -I../.. ../../tests/filesys/base/sm-full.ck tests/filesys/base/sm-full tests/filesys/base/sm-full.result
 pass tests/filesys/base/lg-full
 perl -I../.. ../../tests/filesys/base/sm-random.ck tests/filesys/base/sm-random tests/filesys/base/sm-random.result
 pass tests/filesys/base/lg-random
-perl -I../.. ../../tests/filesys/base/sm-seq-block.ck tests/filesys/base/sm-seq-block tests/filesys/base/sm-seq-block.result
 pass tests/filesys/base/lg-seq-block
-perl -I../.. ../../tests/filesys/base/sm-seq-random.ck tests/filesys/base/sm-seq-random tests/filesys/base/sm-seq-random.result
+perl -I../.. ../../tests/filesys/base/sm-seq-block.ck tests/filesys/base/sm-seq-block tests/filesys/base/sm-seq-block.result
 pass tests/filesys/base/lg-seq-random
+perl -I../.. ../../tests/filesys/base/sm-seq-random.ck tests/filesys/base/sm-seq-random tests/filesys/base/sm-seq-random.result
 perl -I../.. ../../tests/filesys/base/syn-remove.ck tests/filesys/base/syn-remove tests/filesys/base/syn-remove.result
 pass tests/filesys/base/sm-create
 pass tests/filesys/base/sm-full
-pass tests/filesys/base/sm-seq-block
 pass tests/filesys/base/sm-random
 pass tests/filesys/base/sm-seq-random
+pass tests/filesys/base/sm-seq-block
 pass tests/filesys/base/syn-remove
 perl -I../.. ../../tests/filesys/base/syn-write.ck tests/filesys/base/syn-write tests/filesys/base/syn-write.result
-FAIL tests/filesys/base/syn-write
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (syn-write) begin
-  (syn-write) create "stuff"
-  (syn-write) exec child 1 of 10: "child-syn-wrt 0"
-  (syn-write) exec child 2 of 10: "child-syn-wrt 1"
-  (syn-write) exec child 3 of 10: "child-syn-wrt 2"
-  (syn-write) exec child 4 of 10: "child-syn-wrt 3"
-  (syn-write) exec child 5 of 10: "child-syn-wrt 4"
-  (syn-write) exec child 6 of 10: "child-syn-wrt 5"
-  (syn-write) exec child 7 of 10: "child-syn-wrt 6"
-  (syn-write) exec child 8 of 10: "child-syn-wrt 7"
-  (syn-write) exec child 9 of 10: "child-syn-wrt 8"
-  (syn-write) exec child 10 of 10: "child-syn-wrt 9"
-  (syn-write) wait for child 1 of 10 returned 0 (expected 0)
-  (syn-write) wait for child 2 of 10 returned 1 (expected 1)
-  (syn-write) wait for child 3 of 10 returned 2 (expected 2)
-  (syn-write) wait for child 4 of 10 returned 3 (expected 3)
-  (syn-write) wait for child 5 of 10 returned 4 (expected 4)
-  (syn-write) wait for child 6 of 10 returned 5 (expected 5)
-  (syn-write) wait for child 7 of 10 returned 6 (expected 6)
-  (syn-write) wait for child 8 of 10 returned 7 (expected 7)
-  (syn-write) wait for child 9 of 10 returned 8 (expected 8)
-  (syn-write) wait for child 10 of 10 returned 9 (expected 9)
-  (syn-write) open "stuff"
-  (syn-write) read "stuff"
-  (syn-write) end
-Differences in `diff -u' format:
-  (syn-write) begin
-  (syn-write) create "stuff"
-  (syn-write) exec child 1 of 10: "child-syn-wrt 0"
-  (syn-write) exec child 2 of 10: "child-syn-wrt 1"
-  (syn-write) exec child 3 of 10: "child-syn-wrt 2"
-  (syn-write) exec child 4 of 10: "child-syn-wrt 3"
-  (syn-write) exec child 5 of 10: "child-syn-wrt 4"
-- (syn-write) exec child 6 of 10: "child-syn-wrt 5"
-- (syn-write) exec child 7 of 10: "child-syn-wrt 6"
-  (syn-write) exec child 8 of 10: "child-syn-wrt 7"
-  (syn-write) exec child 9 of 10: "child-syn-wrt 8"
-  (syn-write) exec child 10 of 10: "child-syn-wrt 9"
-  (syn-write) wait for child 1 of 10 returned 0 (expected 0)
-  (syn-write) wait for child 2 of 10 returned 1 (expected 1)
-  (syn-write) wait for child 3 of 10 returned 2 (expected 2)
-  (syn-write) wait for child 4 of 10 returned 3 (expected 3)
-  (syn-write) wait for child 5 of 10 returned 4 (expected 4)
-  (syn-write) wait for child 6 of 10 returned 5 (expected 5)
-  (syn-write) wait for child 7 of 10 returned 6 (expected 6)
-  (syn-write) wait for child 8 of 10 returned 7 (expected 7)
-  (syn-write) wait for child 9 of 10 returned 8 (expected 8)
-  (syn-write) wait for child 10 of 10 returned 9 (expected 9)
-  (syn-write) open "stuff"
-  (syn-write) read "stuff"
-  (syn-write) end
-
-(Process exit codes are excluded for matching purposes.)
+pass tests/filesys/base/syn-write
 perl -I../.. ../../tests/filesys/base/syn-read.ck tests/filesys/base/syn-read tests/filesys/base/syn-read.result
 pass tests/filesys/base/syn-read
 FAIL tests/klaar/read-bad-buf
@@ -644,7 +595,7 @@ pass tests/userprog/wait-twice
 FAIL tests/userprog/wait-killed
 FAIL tests/userprog/wait-bad-pid
 pass tests/userprog/multi-recurse
-pass tests/userprog/multi-child-fd
+FAIL tests/userprog/multi-child-fd
 pass tests/filesys/base/lg-create
 pass tests/filesys/base/lg-full
 pass tests/filesys/base/lg-random
@@ -657,6 +608,6 @@ pass tests/filesys/base/sm-seq-block
 pass tests/filesys/base/sm-seq-random
 pass tests/filesys/base/syn-read
 pass tests/filesys/base/syn-remove
-FAIL tests/filesys/base/syn-write
+pass tests/filesys/base/syn-write
 25 of 77 tests failed.
 make[1]: Leaving directory '/home/and/tdiu16-labs/src/userprog/build'
