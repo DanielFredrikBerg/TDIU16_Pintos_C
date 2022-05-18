@@ -41,6 +41,11 @@ struct inode
     bool removed;                       /* True if deleted, false otherwise. */
     struct inode_disk data;             /* Inode content. */
     struct lock local_lock;
+
+    int read_count;
+    struct lock count_lock;
+    struct lock write_lock; // could use local lock?
+    
   };
 
 
@@ -234,6 +239,43 @@ inode_remove (struct inode *inode)
   lock_release(&inode->local_lock);
 }
 
+
+static void 
+reading_lock(struct inode *cur_inode)
+{
+  // make sure no other thread can modify the read_count
+  // if one or more threads are reading, no thread can write
+  lock_acquire(&cur_inode->count_lock);
+  cur_inode->read_count++;
+  if(cur_inode->read_count == 1)
+    // first reader grabs the write lock
+    lock_acquire(&cur_inode->write_lock);
+  lock_release(&cur_inode->count_lock);  
+}
+
+
+static void
+reading_unlock(struct inode *cur_inode)
+{
+  lock_acquire(&cur_inode->count_lock);
+  cur_inode->read_count--;
+  if(cur_inode->read_count == 0)
+    // any thread can release the write lock as long as the count is 0
+    lock_release(&cur_inode->write_lock);
+  lock_release(&cur_inode->count_lock);
+}
+
+
+// writing_lock(struct inode *cur_inode)
+// {
+// }
+
+
+// writing_unlock(struct inode *cur_inode)
+// {
+// }
+
+
 /* Reads SIZE bytes from INODE into BUFFER, starting at position OFFSET.
    Returns the number of bytes actually read, which may be less
    than SIZE if an error occurs or end of file is reached. */
@@ -244,8 +286,10 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
   off_t bytes_read = 0;
   uint8_t *bounce = NULL;
   
+  //reading_lock(inode);
   while (size > 0) 
     {
+
       /* Disk sector to read, starting byte offset within sector. */
       disk_sector_t sector_idx = byte_to_sector (inode, offset);
       int sector_ofs = offset % DISK_SECTOR_SIZE;
@@ -286,8 +330,10 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
     }
   free (bounce);
 
+  //reading_unlock(inode);
   return bytes_read;
 }
+
 
 /* Writes SIZE bytes from BUFFER into INODE, starting at OFFSET.
    Returns the number of bytes actually written, which may be
@@ -302,7 +348,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   off_t bytes_written = 0;
   uint8_t *bounce = NULL;
 
-    
+  //lock_acquire(&inode->write_lock);
   while (size > 0) 
     {
       /* Sector to write, starting byte offset within sector. */
@@ -351,6 +397,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
       bytes_written += chunk_size;
     }
   free (bounce);
+  //lock_release(&inode->write_lock);
 
   return bytes_written;
 }
