@@ -157,6 +157,8 @@ inode_open (disk_sector_t sector)
   inode->open_cnt = 1;
   inode->removed = false;
   lock_init(&inode->local_lock);
+  lock_init(&inode->count_lock);
+  lock_init(&inode->write_lock);
   
   disk_read (filesys_disk, inode->sector, &inode->data);
   lock_release(&inode_global_lock);
@@ -286,7 +288,7 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
   off_t bytes_read = 0;
   uint8_t *bounce = NULL;
   
-  //reading_lock(inode);
+  reading_lock(inode);
   while (size > 0) 
     {
 
@@ -330,7 +332,7 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
     }
   free (bounce);
 
-  //reading_unlock(inode);
+  reading_unlock(inode);
   return bytes_read;
 }
 
@@ -348,7 +350,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   off_t bytes_written = 0;
   uint8_t *bounce = NULL;
 
-  //lock_acquire(&inode->write_lock);
+  lock_acquire(&inode->write_lock);
   while (size > 0) 
     {
       /* Sector to write, starting byte offset within sector. */
@@ -397,7 +399,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
       bytes_written += chunk_size;
     }
   free (bounce);
-  //lock_release(&inode->write_lock);
+  lock_release(&inode->write_lock);
 
   return bytes_written;
 }
