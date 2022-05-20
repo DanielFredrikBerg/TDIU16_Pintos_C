@@ -24,6 +24,85 @@ typedef int pid_t;
 static void syscall_handler (struct intr_frame *);
 struct map* file_table;
 
+static
+bool verify_fix_length(void* start, unsigned length)
+{
+  /*
+  Get the last address with the help of length.
+  Get the page for the last address.
+  Find out which page the first address resides in.
+  Check if the current page is valid.
+  Check if the first and last page are the same page.
+  If invalid return false.
+  Move forward to the next page and check if current page is valid until lastpage.
+  Return true.
+  */
+
+  int last_page_number = pg_no(start+length-1);
+  const void* walker = start;
+  
+  // Return true if the first_page_number == last_page_number and the
+  // page is valid.
+  if( (int) pg_no(walker) == last_page_number 
+      && pagedir_get_page(thread_current()->pagedir, walker) != NULL)
+  {
+    return true;
+  }
+
+  do
+  {
+    if( pagedir_get_page(thread_current()->pagedir, walker) == NULL )
+    {
+      return false;
+    }
+    walker = walker + PGSIZE;
+  } while ((int) pg_no(walker) <= last_page_number);
+  
+  return true;
+}
+
+
+static
+bool verify_variable_length(char* start)
+{
+  const char* walker = start;
+  unsigned starting_page = pg_no((const void*)start);
+  printf("Starting at : %d", starting_page);
+  //Check if first page is valid.
+  if (pagedir_get_page(thread_current()->pagedir, walker) == NULL) {
+    return false;
+  }
+
+  // If starting in the middle of a page we won't have
+  // to check if page is valid again, but somehow know
+  // when we go over to the next page.
+  unsigned current_page = pg_no((const char*)walker);
+  while(current_page == starting_page)
+  {
+    if(*walker == '\0')
+    {
+      return true;
+    }
+    walker++;
+    current_page = pg_no((const char*)walker);
+  }
+
+  // Statement run once every page.
+  // Return false if the new page is NULL.
+  while ( pagedir_get_page(thread_current()->pagedir, walker) != NULL )
+  {
+    // Check each address in page if its the end \0
+    for(int i=0; i<PGSIZE; i++)
+    {
+      if(is_end_of_string((char*)walker))
+      {
+        return true;
+      }
+      walker++;
+    }
+  } 
+}
+
 
 void syscall_init (void)
 {
@@ -50,12 +129,6 @@ const int argc[] = {
   /* extended, you may need to change the order of these two (plist, sleep) */
   0, 1
 };
-
-static
-pid_t syscall_exec(const char* command_line)
-{
-  return process_execute(command_line);
-}
 
 
 static
@@ -254,19 +327,26 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_EXEC:
     {
-      //TODO: implement syscall_exec - DONE.
       f->eax = process_execute((char*)esp[1]);
       break;
     }
 
     case SYS_WRITE: /* int fd, void *buffer, unsigned lenght */
     {
+      if(!verify_fix_length((char*)esp[2], esp[3]))
+      {
+        thread_exit();
+      }
       f->eax = syscall_write(current_thread, fd, (char*)esp[2], esp[3]);
       break;
     }
 
     case SYS_READ:
     {
+      if(!verify_fix_length((char*)esp[2], esp[3]))
+      {
+        thread_exit();
+      }
       f->eax = syscall_read(current_thread, fd, (char*)esp[2], esp[3]);
       break;
     }
@@ -279,6 +359,10 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_OPEN:
     {
+      // if(!verify_variable_length((char*)esp[1]))
+      // {
+      //   thread_exit();
+      // }
       f->eax = syscall_open(current_thread, (char*)esp[1]);
       break;
     }

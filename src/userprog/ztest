@@ -1,9 +1,9 @@
 cd build && make check
 make[1]: Entering directory '/home/and/tdiu16-labs/src/userprog/build'
-FAIL tests/klaar/read-bad-buf
+pass tests/klaar/read-bad-buf
 FAIL tests/klaar/low-mem
 pass tests/klaar/exec-corrupt
-FAIL tests/klaar/pfs
+pass tests/klaar/pfs
 FAIL tests/filst/sc-bad-write
 FAIL tests/filst/sc-bad-close
 FAIL tests/filst/sc-bad-nr-1
@@ -48,7 +48,7 @@ pass tests/userprog/read-zero
 pass tests/userprog/read-stdout
 FAIL tests/userprog/read-bad-fd
 pass tests/userprog/write-normal
-FAIL tests/userprog/write-bad-ptr
+pass tests/userprog/write-bad-ptr
 pass tests/userprog/write-boundary
 pass tests/userprog/write-zero
 pass tests/userprog/write-stdin
@@ -77,5 +77,5 @@ pass tests/filesys/base/sm-seq-random
 pass tests/filesys/base/syn-read
 pass tests/filesys/base/syn-remove
 pass tests/filesys/base/syn-write
-24 of 77 tests failed.
+21 of 77 tests failed.
 make[1]: Leaving directory '/home/and/tdiu16-labs/src/userprog/build'
