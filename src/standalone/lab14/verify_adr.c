@@ -65,8 +65,29 @@ bool verify_fix_length(void* start, unsigned length)
 bool verify_variable_length(char* start)
 {
   const void* walker = start;
+  unsigned starting_page = pg_no((const void*)start);
+  //Check if first page is valid.
+  if (pagedir_get_page(thread_current()->pagedir, walker) == NULL) {
+    return false;
+  }
+
+  // If starting in the middle of a page we won't have
+  // to check if page is valid again, but somehow know
+  // when we go over to the next page.
+  unsigned current_page = pg_no((const void*)walker);
+  while(current_page == starting_page)
+  {
+    if(is_end_of_string((char*) walker))
+    {
+      return true;
+    }
+    walker++;
+    current_page = pg_no((const void*)walker);
+  }
+
   // Statement run once every page.
-  while ( pagedir_get_page(thread_current()->pagedir, walker) == NULL )
+  // Return false if the new page is NULL.
+  while ( pagedir_get_page(thread_current()->pagedir, walker) != NULL )
   {
     // Check each address in page if its the end \0
     for(int i=0; i<PGSIZE; i++)
@@ -79,7 +100,6 @@ bool verify_variable_length(char* start)
     }
   } 
   return false;
-
 }
 
 /* Definition of test cases. */
