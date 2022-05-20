@@ -310,7 +310,8 @@ process_wait (int child_id)
   }
 
   //2. Förälderns ID (nuvarande process ID) måste överensstämma med barnets parent_id
-  if(process_info->id != child_process->parent_id)
+  // if status needed == false we have already waited on it
+  if(process_info->id != child_process->parent_id || child_process->status_needed == false)
   {
     return -1;
   }
