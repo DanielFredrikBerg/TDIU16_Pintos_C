@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include "pagedir.h"
 #include "thread.h"
+#include <stdio.h>
 
-/* verfy_*_lenght are intended to be used in a system call that accept
- * parameters containing suspisious (user mode) adresses. The
- * operating system (executng the system call in kernel mode) must not
+/* verfy_*_length are intended to be used in a system call that accept
+ * parameters containing suspicious (user mode) adresses. The
+ * operating system (executing the system call in kernel mode) must not
  * be fooled into using (reading or writing) addresses not available
  * to the user mode process performing the system call.
  *
@@ -18,13 +19,43 @@
  *
  *  gcc -Wall -Wextra -std=gnu99 -pedantic -m32 -g pagedir.o verify_adr.c
  */
-#error Read comment above and then remove this line.
 
 /* Verify all addresses from and including 'start' up to but excluding
  * (start+length). */
 bool verify_fix_length(void* start, unsigned length)
 {
-  // ADD YOUR CODE HERE
+  /*
+  Get the last address with the help of length.
+  Get the page for the last address.
+  Find out which page the first address resides in.
+  Check if the current page is valid.
+  Check if the first and last page are the same page.
+  If invalid return false.
+  Move forward to the next page and check if current page is valid until lastpage.
+  Return true.
+  */
+
+  int last_page_number = pg_no(start+length-1);
+  const void* walker = start;
+  
+  // Return true if the first_page_number == last_page_number and the
+  // page is valid.
+  if( (int) pg_no(walker) == last_page_number 
+      && pagedir_get_page(thread_current()->pagedir, walker) != NULL)
+  {
+    return true;
+  }
+
+  do
+  {
+    if( pagedir_get_page(thread_current()->pagedir, walker) == NULL )
+    {
+      return false;
+    }
+    walker = walker + PGSIZE;
+  } while ((int) pg_no(walker) <= last_page_number);
+  
+  return true;
 }
 
 /* Verify all addresses from and including 'start' up to and including
@@ -33,7 +64,22 @@ bool verify_fix_length(void* start, unsigned length)
  */
 bool verify_variable_length(char* start)
 {
-  // ADD YOUR CODE HERE
+  const void* walker = start;
+  // Statement run once every page.
+  while ( pagedir_get_page(thread_current()->pagedir, walker) == NULL )
+  {
+    // Check each address in page if its the end \0
+    for(int i=0; i<PGSIZE; i++)
+    {
+      if(is_end_of_string((char*)walker))
+      {
+        return true;
+      }
+      walker++;
+    }
+  } 
+  return false;
+
 }
 
 /* Definition of test cases. */
