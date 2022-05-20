@@ -26,7 +26,7 @@ key_t plist_add_process(struct p_list* m, value_p pi_t)
   *walker = pi_t;
   if(!check_within_bounds(counter))
   {
-    printf("# \nError plist_insert: map is full!\n");
+    debug("#Error plist_insert: map is full!\n");
     return -1;
   }
   
@@ -42,7 +42,7 @@ value_p plist_find_process(struct p_list* m, key_t k)
   } 
   else 
   {
-    printf("# \nERROR plist_find: Key out of bounds!\n");
+    debug("#ERROR plist_find: Key out of bounds!\n");
     return NULL;
   }
 }
@@ -52,7 +52,7 @@ value_p plist_remove_process(struct p_list* m, key_t k)
 {
   if (!check_within_bounds(k))
   {
-    printf("# \nERROR plist_remove: Key out of bounds!\n");
+    debug("#ERROR plist_remove: Key out of bounds!\n");
     return NULL;
   }
   else
@@ -65,7 +65,7 @@ value_p plist_remove_process(struct p_list* m, key_t k)
     }
     else
     {
-      puts("#\nValue for key not allocated\n");
+      debug("#Value for key not allocated\n");
       return NULL;
     }
   }

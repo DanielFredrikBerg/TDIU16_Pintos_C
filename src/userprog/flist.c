@@ -24,7 +24,7 @@ key_t map_insert(struct map *m, value_t v)
   *walker = v;
   if(!check_within_bounds(counter))
   {
-    printf("Error map_insert: map is full!");
+    debug("#Error map_insert: map is full!");
     return -1;
   }
   return counter; // fixa ogiltig fd (out of bounds)
@@ -37,7 +37,7 @@ void map_print(struct map *m)
   {
     if (m->content[counter] != NULL)
     {
-      printf("%d->%p\n", counter, m->content[counter]);
+      debug("%d->%p\n", counter, m->content[counter]);
     }
     counter++;
   }
@@ -52,7 +52,7 @@ value_t map_find(struct map *m, key_t k)
   } 
   else 
   {
-    printf("\nERROR map_find: Key out of bounds!\n");
+    debug("#ERROR map_find: Key out of bounds!\n");
     return NULL;
   }
 
@@ -63,7 +63,7 @@ value_t map_remove(struct map *m, key_t k)
 {
   if (!check_within_bounds(k))
   {
-    printf("ERROR map_remove: Key out of bounds!\n");
+    debug("#ERROR map_remove: Key out of bounds!\n");
     return NULL;
   }
   else
@@ -76,7 +76,7 @@ value_t map_remove(struct map *m, key_t k)
     }
     else
     {
-      puts("Value for key not allocated\n");
+      debug("#Value for key not allocated\n");
       return NULL;
     }
   }
@@ -124,14 +124,10 @@ void map_remove_if(struct map *m,
 
 bool check_within_bounds(key_t k)
 {
-  // Fix this  NULL comparison. 
-  // if(k != NULL)
-  // {
-    //printf("%s", (char*)k);
   bool status = -1 < k && k < MAP_SIZE;
   if (!status)
   {
-    puts("Map key out of bounds");
+    debug("#Map key out of bounds");
   }
 
   
