@@ -44,7 +44,8 @@ struct inode
 
     int read_count;
     struct lock count_lock;
-    struct lock write_lock; // could use local lock?
+    struct lock write_lock;
+    struct semaphore write_sema;
     
   };
 
@@ -159,6 +160,8 @@ inode_open (disk_sector_t sector)
   lock_init(&inode->local_lock);
   lock_init(&inode->count_lock);
   lock_init(&inode->write_lock);
+  sema_init(&inode->write_sema, 1);
+  inode->read_count = 0;
   
   disk_read (filesys_disk, inode->sector, &inode->data);
   lock_release(&inode_global_lock);
@@ -267,15 +270,31 @@ reading_unlock(struct inode *cur_inode)
   lock_release(&cur_inode->count_lock);
 }
 
+static void 
+reading_lock2(struct inode *cur_inode)
+{
+  // make sure no other thread can modify the read_count
+  // if one or more threads are reading, no thread can write
+  lock_acquire(&cur_inode->count_lock);
+  cur_inode->read_count++;
+  if(cur_inode->read_count == 1)
+    // first reader grabs the write lock
+    sema_down(&cur_inode->write_sema);
+  lock_release(&cur_inode->count_lock);  
+}
 
-// writing_lock(struct inode *cur_inode)
-// {
-// }
 
+static void
+reading_unlock2(struct inode *cur_inode)
+{
+  lock_acquire(&cur_inode->count_lock);
+  cur_inode->read_count--;
+  if(cur_inode->read_count == 0)
+    // any thread can release the write lock as long as the count is 0
+    sema_up(&cur_inode->write_sema);
+  lock_release(&cur_inode->count_lock);
+}
 
-// writing_unlock(struct inode *cur_inode)
-// {
-// }
 
 
 /* Reads SIZE bytes from INODE into BUFFER, starting at position OFFSET.
@@ -288,7 +307,7 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
   off_t bytes_read = 0;
   uint8_t *bounce = NULL;
   
-  reading_lock(inode);
+  reading_lock2(inode);
   while (size > 0) 
     {
 
@@ -330,9 +349,9 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
       offset += chunk_size;
       bytes_read += chunk_size;
     }
+  reading_unlock2(inode);
   free (bounce);
 
-  reading_unlock(inode);
   return bytes_read;
 }
 
@@ -350,7 +369,9 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   off_t bytes_written = 0;
   uint8_t *bounce = NULL;
 
-  lock_acquire(&inode->write_lock);
+  //lock_acquire(&inode->write_lock);
+  sema_down(&inode->write_sema);
+
   while (size > 0) 
     {
       /* Sector to write, starting byte offset within sector. */
@@ -399,7 +420,8 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
       bytes_written += chunk_size;
     }
   free (bounce);
-  lock_release(&inode->write_lock);
+  //lock_release(&inode->write_lock);
+  sema_up(&inode->write_sema);
 
   return bytes_written;
 }
