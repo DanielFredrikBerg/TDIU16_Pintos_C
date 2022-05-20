@@ -40,11 +40,7 @@ bool verify_fix_length(void* start, unsigned length)
   
   // Return true if the first_page_number == last_page_number and the
   // page is valid.
-  if( (int) pg_no(walker) == last_page_number 
-      && pagedir_get_page(thread_current()->pagedir, walker) != NULL)
-  {
-    return true;
-  }
+  
 
   do
   {

@@ -61,7 +61,6 @@ bool verify_fix_length(void* start, unsigned length)
   return true;
 }
 
-
 static
 bool verify_variable_length(char* start)
 {

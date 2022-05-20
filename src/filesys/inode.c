@@ -245,30 +245,6 @@ inode_remove (struct inode *inode)
 }
 
 
-static void 
-reading_lock(struct inode *cur_inode)
-{
-  // make sure no other thread can modify the read_count
-  // if one or more threads are reading, no thread can write
-  lock_acquire(&cur_inode->count_lock);
-  cur_inode->read_count++;
-  if(cur_inode->read_count == 1)
-    // first reader grabs the write lock
-    lock_acquire(&cur_inode->write_lock);
-  lock_release(&cur_inode->count_lock);  
-}
-
-
-static void
-reading_unlock(struct inode *cur_inode)
-{
-  lock_acquire(&cur_inode->count_lock);
-  cur_inode->read_count--;
-  if(cur_inode->read_count == 0)
-    // any thread can release the write lock as long as the count is 0
-    lock_release(&cur_inode->write_lock);
-  lock_release(&cur_inode->count_lock);
-}
 
 static void 
 reading_lock2(struct inode *cur_inode)
