@@ -67,7 +67,6 @@ bool verify_variable_length(char* start)
 {
   const char* walker = start;
   unsigned starting_page = pg_no((const void*)start);
-  printf("Starting at : %d", starting_page);
   //Check if first page is valid.
   if (pagedir_get_page(thread_current()->pagedir, walker) == NULL) {
     return false;
@@ -94,13 +93,14 @@ bool verify_variable_length(char* start)
     // Check each address in page if its the end \0
     for(int i=0; i<PGSIZE; i++)
     {
-      if(is_end_of_string((char*)walker))
+      if(*walker == '\0')
       {
         return true;
       }
       walker++;
     }
   } 
+  return false;
 }
 
 
@@ -359,10 +359,10 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_OPEN:
     {
-      // if(!verify_variable_length((char*)esp[1]))
-      // {
-      //   thread_exit();
-      // }
+      if(!verify_variable_length((char*)esp[1]))
+      {
+        thread_exit();
+      }
       f->eax = syscall_open(current_thread, (char*)esp[1]);
       break;
     }
