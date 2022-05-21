@@ -40,6 +40,10 @@ bool verify_fix_length(void* start, unsigned length)
 
   int last_page_number = pg_no(start+length-1);
   const void* walker = start;
+
+  if (is_kernel_vaddr(start))
+    return false;
+
   
   // Return true if the first_page_number == last_page_number and the
   // page is valid.
@@ -66,6 +70,7 @@ bool verify_variable_length(char* start)
 {
   const char* walker = start;
   unsigned starting_page = pg_no((const void*)start);
+
   //Check if first page is valid.
   if (pagedir_get_page(thread_current()->pagedir, walker) == NULL) {
     return false;
@@ -302,12 +307,29 @@ void syscall_sleep(int millis)
 static void
 syscall_handler (struct intr_frame *f)
 {
+
   int32_t* esp = (int32_t*)f->esp;
   int32_t syscall_num = *(esp);
   struct thread* current_thread = thread_current();
   int fd = esp[1];
 
-  switch (  syscall_num )
+  int esp_size = sizeof(*esp);
+  
+  // not needed?
+  if (!verify_fix_length((void*)esp, esp_size)) {
+    thread_exit();
+  }
+
+  if (esp[0] < 0 || esp[0] > SYS_NUMBER_OF_CALLS) {
+    thread_exit();
+  }
+
+  int argcSize = esp_size * argc[esp[0]];
+  if (!verify_fix_length((void*)&esp[1], argcSize)) {
+    thread_exit();
+  }
+
+  switch ( syscall_num )
   {
     case SYS_EXIT:
     {
@@ -321,11 +343,13 @@ syscall_handler (struct intr_frame *f)
     {
       power_off();
       break;
-      
     }
 
     case SYS_EXEC:
     {
+      if(!verify_variable_length((char*)esp[1]))
+        thread_exit();
+
       f->eax = process_execute((char*)esp[1]);
       break;
     }
@@ -333,9 +357,8 @@ syscall_handler (struct intr_frame *f)
     case SYS_WRITE: /* int fd, void *buffer, unsigned lenght */
     {
       if(!verify_fix_length((char*)esp[2], esp[3]))
-      {
         thread_exit();
-      }
+
       f->eax = syscall_write(current_thread, fd, (char*)esp[2], esp[3]);
       break;
     }
@@ -343,15 +366,17 @@ syscall_handler (struct intr_frame *f)
     case SYS_READ:
     {
       if(!verify_fix_length((char*)esp[2], esp[3]))
-      {
         thread_exit();
-      }
+
       f->eax = syscall_read(current_thread, fd, (char*)esp[2], esp[3]);
       break;
     }
 
     case SYS_CREATE:
     {
+      if(!verify_fix_length((char*)esp[1], esp[2]))
+        thread_exit();
+
       f->eax = filesys_create((char*)esp[1], esp[2]);
       break;
     }
@@ -374,8 +399,10 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_REMOVE:
     {
-      const char* file_name = (char*)esp[1];
-      f->eax = filesys_remove(file_name);
+      if(!verify_variable_length((char*)esp[1]))
+        thread_exit();
+
+      f->eax = filesys_remove((char*)esp[1]);
       break;
     }
 
@@ -419,9 +446,9 @@ syscall_handler (struct intr_frame *f)
 
     default:
     {
-      printf ("______Executed an unknown system call!\n");
-      printf ("___Stack top + 0: %d\n", esp[0]);
-      printf ("___Stack top + 1: %d\n", esp[1]);
+      printf ("Executed an unknown system call!\n");
+      printf ("Stack top + 0: %d\n", esp[0]);
+      printf ("Stack top + 1: %d\n", esp[1]);
       thread_exit ();
     }
   }
