@@ -443,13 +443,5 @@ syscall_handler (struct intr_frame *f)
       f->eax = process_wait(wait_on_child_id);
       break;
     }
-
-    default:
-    {
-      printf ("Executed an unknown system call!\n");
-      printf ("Stack top + 0: %d\n", esp[0]);
-      printf ("Stack top + 1: %d\n", esp[1]);
-      thread_exit ();
-    }
   }
 }

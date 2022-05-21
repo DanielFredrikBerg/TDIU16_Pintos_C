@@ -205,9 +205,9 @@ start_process (struct parameters_to_start_process* parameters)
   // and another new process B gets to run plist_add_process(). When it will be 
   // A's turn to run it will think that the spot it previousy found is still empty
   // which is not, and it will write over.
-  lock_acquire(&process_map_lock);
+  //lock_acquire(&process_map_lock);
   int process_id = plist_add_process(&process_map, process_info);
-  lock_release(&process_map_lock);
+  //lock_release(&process_map_lock);
 
   process_info->status=-1;
   process_info->is_alive=true;
@@ -253,7 +253,7 @@ start_process (struct parameters_to_start_process* parameters)
         thread_current()->tid,
         parameters->command_line);
 
-  if(!success)
+  if(!success || process_id == -1)
     { 
       parameters->is_success = false;
     }

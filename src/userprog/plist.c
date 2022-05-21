@@ -5,67 +5,72 @@
 
 
 
-void plist_init(struct p_list* m)
+void plist_init(struct p_list* plist)
 {
   for (unsigned i = 0; i < MAP_SIZE; i++)
   {
-    m->content[i] = NULL;
+    plist->content[i] = NULL;
   }
+  lock_init(&plist->plist_lock);
 }
 
 
-key_t plist_add_process(struct p_list* m, value_p pi_t)
+key_t plist_add_process(struct p_list* plist, value_p new_process)
 {
-  value_p *walker = m->content;
-  int counter = 0;
-  while (*walker != NULL)
+  lock_acquire(&plist->plist_lock);
+  for (int i = 0; i < MAP_SIZE; i++)
   {
-    walker++;
-    counter++;
+    if(plist->content[i] == NULL)
+    {
+      plist->content[i] = new_process;
+      lock_release(&plist->plist_lock);
+      return i;
+    }
   }
-  *walker = pi_t;
-  if(!check_within_bounds(counter))
-  {
-    debug("#Error plist_insert: map is full!\n");
-    return -1;
-  }
-  
-  return counter; 
+  lock_release(&plist->plist_lock);
+  return -1;
 }
 
 
-value_p plist_find_process(struct p_list* m, key_t k)
+value_p plist_find_process(struct p_list* plist, key_t process_id)
 {
-  if (check_within_bounds(k))
+  lock_acquire(&plist->plist_lock);
+  if (check_within_bounds(process_id))
   {
-    return m->content[k];
+    lock_release(&plist->plist_lock);
+    return plist->content[process_id];
   } 
   else 
   {
     debug("#ERROR plist_find: Key out of bounds!\n");
+    lock_release(&plist->plist_lock);
     return NULL;
   }
 }
 
 
-value_p plist_remove_process(struct p_list* m, key_t k)
+value_p plist_remove_process(struct p_list* plist, key_t process_id)
 {
-  if (!check_within_bounds(k))
+  lock_acquire(&plist->plist_lock);
+  if (!check_within_bounds(process_id))
   {
     debug("#ERROR plist_remove: Key out of bounds!\n");
+    lock_release(&plist->plist_lock);
     return NULL;
   }
   else
   {
-    if (m->content[k] != NULL)
+    if (plist->content[process_id] != NULL)
     {
-      value_p ret = m->content[k];
-      m->content[k] = NULL;
+      value_p ret = plist->content[process_id];
+      plist->content[process_id] = NULL;
+      lock_release(&plist->plist_lock);
       return ret;
     }
     else
     {
       debug("#Value for key not allocated\n");
+      lock_release(&plist->plist_lock);
       return NULL;
     }
   }
@@ -93,9 +98,10 @@ void plist_print(struct p_list* m)
 }
 
 
-void plist_orphan_my_children(struct p_list* m, key_t parent_id)
+void plist_orphan_my_children(struct p_list* plist, key_t parent_id)
 {
-  value_p process_list = m->content;
+  lock_acquire(&plist->plist_lock);
+  value_p process_list = plist->content;
   for(int i=0; i<MAP_SIZE-1; i++)
   {
     if(process_list[i].parent_id == parent_id)
@@ -103,17 +109,5 @@ void plist_orphan_my_children(struct p_list* m, key_t parent_id)
       process_list[i].status_needed = false;
     }
   }
-}
-
-
-void plist_remove_my_children(struct p_list* m, key_t parent_id)
-{
-  value_p process_list = m->content;
-  for(int i=0; i<MAP_SIZE-1; i++)
-  {
-    if(process_list[i].parent_id == parent_id)
-    {
-      plist_remove_process(m, process_list[i].id);
-    }
-  }
+  lock_release(&plist->plist_lock);
 }
