@@ -1,5 +1,2 @@
-20+1 records in
-21+0 records out
-86016 bytes (86 kB, 84 KiB) copied, 0,000790603 s, 109 MB/s
-make[1]: *** [../../tests/Make.tests:45: check] Error 1
-make: *** [../Makefile.kernel:10: check] Error 2
+make[1]: *** [../../tests/Make.tests:105: tests/klaar/pfs.output] Interrupt
+make: *** [../Makefile.kernel:10: check] Interrupt
