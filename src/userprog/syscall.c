@@ -309,9 +309,8 @@ syscall_handler (struct intr_frame *f)
 {
 
   int32_t* esp = (int32_t*)f->esp;
-  int32_t syscall_num = *(esp);
   struct thread* current_thread = thread_current();
-  int fd = esp[1];
+  //int fd = esp[1];
 
   int esp_size = sizeof(*esp);
   
@@ -329,7 +328,7 @@ syscall_handler (struct intr_frame *f)
     thread_exit();
   }
 
-  switch ( syscall_num )
+  switch ( esp[0] )
   {
     case SYS_EXIT:
     {
@@ -359,7 +358,7 @@ syscall_handler (struct intr_frame *f)
       if(!verify_fix_length((char*)esp[2], esp[3]))
         thread_exit();
 
-      f->eax = syscall_write(current_thread, fd, (char*)esp[2], esp[3]);
+      f->eax = syscall_write(current_thread, esp[1], (char*)esp[2], esp[3]);
       break;
     }
 
@@ -368,7 +367,7 @@ syscall_handler (struct intr_frame *f)
       if(!verify_fix_length((char*)esp[2], esp[3]))
         thread_exit();
 
-      f->eax = syscall_read(current_thread, fd, (char*)esp[2], esp[3]);
+      f->eax = syscall_read(current_thread, esp[1], (char*)esp[2], esp[3]);
       break;
     }
 
@@ -393,7 +392,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_CLOSE:
     {
-      syscall_close(current_thread, fd);
+      syscall_close(current_thread, esp[1]);
       break;
     }
 
@@ -408,19 +407,19 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_SEEK:
     {
-      syscall_seek(current_thread, fd, esp[2]);
+      syscall_seek(current_thread, esp[1], esp[2]);
       break;
     }
 
     case SYS_TELL:
     {
-      f->eax = syscall_tell(current_thread, fd);
+      f->eax = syscall_tell(current_thread, esp[1]);
       break;
     }
 
     case SYS_FILESIZE:
     {
-      f->eax = syscall_filesize(current_thread, fd);
+      f->eax = syscall_filesize(current_thread, esp[1]);
       break;
     }
 
@@ -442,6 +441,14 @@ syscall_handler (struct intr_frame *f)
       int wait_on_child_id = esp[1];
       f->eax = process_wait(wait_on_child_id);
       break;
+    }
+    default:
+    {
+      printf ("Executed an unknown system call!\n");
+      printf ("Stack top + 0: %d\n", esp[0]);
+      printf ("Stack top + 1: %d\n", esp[1]);
+      
+      thread_exit ();
     }
   }
 }
