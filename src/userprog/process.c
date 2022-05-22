@@ -126,10 +126,8 @@ process_execute (const char *command_line)
   
   strlcpy_first_word (debug_name, command_line, 64);
   
-  debug("++++++++++++++++++++++++++++++++++++++ before thread_create\n");
   thread_id = thread_create (debug_name, PRI_DEFAULT,
                              (thread_func*)start_process, &arguments);
-  debug("++++++++++++++++++++++++++++++++++++++ after thread_create\n");
    
   if (thread_id == -1)
   {
@@ -182,7 +180,6 @@ void *setup_main_stack_asm(const char *command_line, void *esp);
 static void
 start_process (struct parameters_to_start_process* parameters)
 {
-  debug("# --------------------------------------------------- IN START PROCESS \n");
   /* The last argument passed to thread_create is received here... */
   struct intr_frame if_;
   bool success;
@@ -230,7 +227,6 @@ start_process (struct parameters_to_start_process* parameters)
   thread_current()->id_in_process_map = process_id;    
   parameters->child_id = process_id; 
   
-  debug("# --------------------------------------------------- success is :%d \n", success);
   if (success)
   {
     /* We managed to load the new program to a process, and have
@@ -259,8 +255,6 @@ start_process (struct parameters_to_start_process* parameters)
       // Stoppa in skapelse av processen här.
     // ta hand om 0 processen efter wait.
     parameters->is_success = true;
-    debug("# --------------------------------------------------- was success\n");
-
   }
 
   debug("%s#%d: start_process(\"%s\") DONE\n",
