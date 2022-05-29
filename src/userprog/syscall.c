@@ -41,7 +41,8 @@ bool verify_fix_length(void* start, unsigned length)
   int last_page_number = pg_no(start+length-1);
   const void* walker = start;
 
-  if (is_kernel_vaddr(start))
+  // stop process from executing in kernel space as a user program
+  if (!is_user_vaddr(start))
     return false;
 
   
@@ -314,19 +315,22 @@ syscall_handler (struct intr_frame *f)
 
   int esp_size = sizeof(*esp);
   
-  // not needed?
+
+  // check if the esp stack is in valid page space  
   if (!verify_fix_length((void*)esp, esp_size)) {
     thread_exit();
   }
 
+  // check that the system call is within defined sys_call range
   if (esp[0] < 0 || esp[0] > SYS_NUMBER_OF_CALLS) {
     thread_exit();
   }
 
-  int argcSize = esp_size * argc[esp[0]];
-  if (!verify_fix_length((void*)&esp[1], argcSize)) {
+  // the size of all given arguments shouldn't be larger than argc_size
+  int argc_size = esp_size * argc[esp[0]];
+  if (!verify_fix_length((void*)&esp[1], argc_size))
     thread_exit();
-  }
+  
 
   switch ( esp[0] )
   {
@@ -346,6 +350,8 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_EXEC:
     {
+      // check the argument sent to the syscall so that it ends with a null terminating value
+      // and be in valid space.
       if(!verify_variable_length((char*)esp[1]))
         thread_exit();
 
@@ -355,6 +361,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_WRITE: /* int fd, void *buffer, unsigned lenght */
     {
+      // check that we write within buffer space
       if(!verify_fix_length((char*)esp[2], esp[3]))
         thread_exit();
 
@@ -364,6 +371,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_READ:
     {
+      // check that we read within buffer space
       if(!verify_fix_length((char*)esp[2], esp[3]))
         thread_exit();
 
@@ -373,8 +381,10 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_CREATE:
     {
+      
       if(!verify_fix_length((char*)esp[1], esp[2]))
         thread_exit();
+
 
       f->eax = filesys_create((char*)esp[1], esp[2]);
       break;
