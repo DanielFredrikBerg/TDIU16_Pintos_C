@@ -381,7 +381,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_CREATE:
     {
-      
+      // check that name within initial_size of the name (esp[2])
       if(!verify_fix_length((char*)esp[1], esp[2]))
         thread_exit();
 
@@ -392,6 +392,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_OPEN:
     {
+      // check that file name has '\0' within a valid page. 
       if(!verify_variable_length((char*)esp[1]))
       {
         thread_exit();
@@ -408,6 +409,7 @@ syscall_handler (struct intr_frame *f)
 
     case SYS_REMOVE:
     {
+      // check that file name has '\0' within a valid page.
       if(!verify_variable_length((char*)esp[1]))
         thread_exit();
 
